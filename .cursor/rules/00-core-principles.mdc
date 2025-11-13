@@ -167,4 +167,5 @@ When in doubt, reference:
 1. `.mba-template/design-systems/` - Big tech patterns
 2. `.mba-template/anti-patterns/` - What NOT to do
 3. `.mba-template/platforms/` - Platform-specific guidelines
-4. Other `.cursor/rules/*.mdc` files for specific topics
+4. `.cursor/rules/15-icons-assets.mdc` - NEVER generate SVGs, use icon libraries
+5. Other `.cursor/rules/*.mdc` files for specific topics

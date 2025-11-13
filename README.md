@@ -159,6 +159,11 @@ Generate data-dense dashboard with realistic data.
 
 The system actively prevents common AI-generated design tells:
 
+### Token-Wasting Patterns
+- ❌ **Generating SVG code from scratch** (HUGE token waste)
+  - ✅ Use Font Awesome, Heroicons, Lucide, Material Symbols instead
+  - ✅ See `.cursor/rules/15-icons-assets.mdc` for icon library guide
+
 ### Visual Red Flags
 - ❌ Excessive gradients everywhere
 - ❌ Over-rounded corners (>16px on small elements)
@@ -263,9 +268,24 @@ See `.mba-template/design-systems/` for detailed documentation.
 
 - **Getting Started**: This README
 - **Command Usage**: See individual command files in `.cursor/commands/`
+- **Icon Libraries**: `.cursor/rules/15-icons-assets.mdc` - **NEVER generate SVGs**
 - **Design System Patterns**: `.mba-template/design-systems/`
 - **Platform Guidelines**: `.mba-template/platforms/`
 - **Anti-Patterns**: `.mba-template/anti-patterns/`
+
+### Cursor Rules
+- `00-core-principles.mdc`: Foundation
+- `10-visual-hierarchy.mdc`: Size, weight, color hierarchy
+- `15-icons-assets.mdc`: **Icon libraries (NEVER generate SVGs)**
+- `20-typography.mdc`: Type system
+- `30-color-system.mdc`: Colors and contrast
+- `40-spacing-layout.mdc`: Spacing and layout
+- `50-components.mdc`: Component patterns
+- `60-pages-templates.mdc`: Page layouts
+- `70-accessibility.mdc`: A11y requirements
+- `80-anti-ai-patterns.mdc`: What to avoid
+- `90-responsive-adaptive.mdc`: Responsive design
+- `95-platform-specific.mdc`: iOS, Android, Desktop
 
 ## ✅ Quality Checklist
 

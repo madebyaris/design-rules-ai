@@ -8,6 +8,24 @@ alwaysApply: true
 
 Reference: `.mba-template/anti-patterns/ai-generated-tells.md`
 
+## Token-Wasting Anti-Patterns
+
+### ❌ 0. Generating SVG Code from Scratch
+**NEVER DO THIS - HUGE TOKEN WASTE**
+
+**Never:**
+- Generate SVG markup manually
+- Create icon SVG code from scratch
+- Write path data for icons
+
+**Instead:**
+- Use Font Awesome: `<i class="fa-solid fa-user"></i>`
+- Use Heroicons: `<UserIcon className="h-6 w-6" />`
+- Use Lucide: `<i data-lucide="user"></i>`
+- Use Material Symbols: `<span class="material-symbols-outlined">person</span>`
+
+**See `.cursor/rules/15-icons-assets.mdc` for complete icon library guide.**
+
 ## Visual Red Flags
 
 ### ❌ 1. Excessive Gradients

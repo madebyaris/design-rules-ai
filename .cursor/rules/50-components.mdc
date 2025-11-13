@@ -24,10 +24,13 @@ Reference: `.mba-template/design-systems/*/components.md` for detailed patterns
 ### Structure
 ```html
 <button class="btn btn-primary btn-medium">
-  <icon /> <!-- optional, 16-20px -->
+  <!-- Use icon library (Font Awesome, Heroicons, etc.) - NEVER generate SVG -->
+  <i class="fa-solid fa-save" aria-hidden="true"></i>
   <span>Button Text</span>
 </button>
 ```
+
+**IMPORTANT**: See `.cursor/rules/15-icons-assets.mdc` - Always use icon libraries, never generate SVG code.
 
 ### States
 - Default, Hover, Active, Focus, Disabled, Loading

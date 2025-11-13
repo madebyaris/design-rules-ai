@@ -84,6 +84,29 @@ Best for: Consumer apps, creative tools
 
 ## Key Principles
 
+### 0. Use Icon Libraries (NEVER Generate SVGs)
+**CRITICAL: This saves massive amounts of tokens!**
+
+```html
+✅ Use Font Awesome:
+<i class="fa-solid fa-user"></i>
+
+✅ Use Heroicons (React):
+<UserIcon className="h-6 w-6" />
+
+❌ NEVER generate SVG code:
+<svg>...</svg> <!-- NO! -->
+```
+
+**See `.cursor/rules/15-icons-assets.mdc` for complete guide.**
+
+Recommended libraries:
+- **Font Awesome**: Most popular, 2000+ icons
+- **Heroicons**: Modern, Tailwind ecosystem
+- **Lucide**: Clean, consistent
+- **Material Symbols**: Google's design system
+- **Bootstrap Icons**: Versatile, 2000+ icons
+
 ### 1. Consistent Spacing
 Always use a spacing scale. Never random values.
 ```
