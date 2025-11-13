@@ -1,0 +1,204 @@
+---
+description: Platform-specific design guidelines (iOS, Android, Desktop)
+globs: ["**/*.html", "**/*.css", "**/*.jsx", "**/*.tsx", "**/*.vue", "**/*.svelte", "**/*.swift", "**/*.kt"]
+alwaysApply: false
+---
+
+# Platform-Specific Guidelines
+
+## Web Responsive
+
+Reference: `.mba-template/platforms/web-responsive.md`
+
+### Key Points
+- Mobile-first approach
+- Breakpoints: 640px, 768px, 1024px, 1280px
+- Touch targets: 44px × 44px minimum
+- Responsive typography
+- Flexible layouts
+
+## Desktop Apps (Electron/Tauri)
+
+Reference: `.mba-template/platforms/desktop-apps.md`
+
+### Window Management
+- Title bar: 32-40px (Windows), 22px (macOS)
+- Window controls: native or custom
+- Drag region for moving window
+- Resize from all edges
+
+### Keyboard Shortcuts
+- Cmd/Ctrl + N: New
+- Cmd/Ctrl + S: Save
+- Cmd/Ctrl + W: Close
+- Cmd/Ctrl + Q: Quit
+- Cmd/Ctrl + ,: Preferences
+
+### Layout
+- Menu bar: 28-32px
+- Toolbar: 40-48px
+- Sidebar: 240-280px (collapsible)
+- Status bar: 24-28px
+
+### Interaction
+- Click targets: 24px × 24px minimum
+- Hover states essential
+- Right-click context menus
+- Keyboard navigation
+
+## iOS Mobile
+
+Reference: `.mba-template/platforms/ios-mobile.md`
+
+### Safe Areas
+- Top: Status bar + notch (44-59pt)
+- Bottom: Home indicator (34pt)
+- Always respect safe area insets
+
+### Navigation
+- Navigation bar: 44pt (compact), 96pt (large title)
+- Tab bar: 49pt, 2-5 tabs
+- Back button: Automatic
+- Swipe back gesture
+
+### Typography
+- SF Pro font family
+- Dynamic Type support (12 sizes)
+- Never use fixed sizes
+
+### Colors
+- System colors (adapt to light/dark)
+- Semantic colors (label, background, etc.)
+- Test in both modes
+
+### Components
+- Buttons: Filled, Gray, Tinted, Plain
+- Lists: Inset, Grouped, Plain
+- Sheets: Medium/Large detents
+- Alerts: 1-2 buttons
+
+### Touch Targets
+- Minimum: 44pt × 44pt
+- Recommended: 48pt × 48pt
+
+### Gestures
+- Tap, Long press, Swipe, Pinch, Drag
+- Don't block system gestures
+
+## Android Mobile
+
+Reference: `.mba-template/platforms/android-mobile.md`
+
+### Material Design 3
+- Dynamic color from wallpaper
+- Tonal palettes (13 tones)
+- Elevation via tinting
+- State layers for interaction
+
+### Navigation
+- Top app bar: 64dp
+- Bottom navigation: 80dp, 3-5 items
+- Navigation drawer: 360dp (standard)
+- Navigation rail: 80dp (vertical)
+
+### Typography
+- Roboto font family
+- Type scale: Display, Headline, Title, Body, Label
+- Support system font scaling
+
+### Colors
+- Color roles (primary, secondary, tertiary, error)
+- Surface tinting for elevation
+- Light and dark themes
+
+### Components
+- Buttons: Filled, Filled Tonal, Outlined, Text, Elevated
+- FAB: Small (40dp), Medium (56dp), Large (96dp)
+- Cards: Elevated, Filled, Outlined
+- Text fields: Filled, Outlined
+
+### Touch Targets
+- Minimum: 48dp × 48dp
+- Spacing: 8dp between targets
+
+### Gestures
+- Tap, Long press, Swipe, Pinch
+- System gesture navigation
+
+## Cross-Platform Considerations
+
+### Shared Principles
+- Consistent spacing scale
+- Semantic color system
+- Clear visual hierarchy
+- Accessible design
+- Responsive layouts
+
+### Platform Differences
+- **Navigation**: iOS (bottom tabs), Android (bottom nav), Desktop (sidebar)
+- **Typography**: SF Pro (iOS), Roboto (Android), System (Desktop)
+- **Interactions**: Touch (mobile), Mouse+Keyboard (desktop)
+- **Patterns**: Follow platform conventions
+
+### Adaptive Design
+```javascript
+// Detect platform
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+const isAndroid = /Android/.test(navigator.userAgent);
+const isDesktop = !isIOS && !isAndroid;
+
+// Apply platform-specific styles
+if (isIOS) {
+  // iOS-specific code
+} else if (isAndroid) {
+  // Android-specific code
+} else {
+  // Desktop code
+}
+```
+
+## Platform-Specific Rules
+
+### When Targeting iOS
+- Use SF Pro font
+- Respect safe areas
+- Support Dynamic Type
+- Use iOS components
+- Follow Apple HIG
+- Test with VoiceOver
+
+### When Targeting Android
+- Use Roboto font
+- Implement Material Design 3
+- Support dynamic color
+- Use Material components
+- Follow Material guidelines
+- Test with TalkBack
+
+### When Targeting Desktop
+- Support keyboard shortcuts
+- Implement window management
+- Use native menus
+- Support system theme
+- Test keyboard navigation
+- Respect system preferences
+
+## Best Practices
+
+### Do
+- Follow platform conventions
+- Use platform components
+- Respect system preferences
+- Test on target platforms
+- Support platform gestures
+- Use platform fonts
+- Adapt to screen sizes
+
+### Don't
+- Force one design everywhere
+- Ignore platform patterns
+- Block system gestures
+- Use wrong components
+- Ignore accessibility
+- Hardcode dimensions
+- Skip platform testing

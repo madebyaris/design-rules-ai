@@ -1,0 +1,231 @@
+---
+description: Spacing and layout system for consistent, professional designs
+globs: ["**/*.html", "**/*.css", "**/*.jsx", "**/*.tsx", "**/*.vue", "**/*.svelte"]
+alwaysApply: true
+---
+
+# Spacing & Layout System
+
+## Choose ONE Base Unit
+
+### 8px Base (Recommended for most projects)
+`8, 16, 24, 32, 40, 48, 64, 96, 128`
+
+### 4px Base (Material Design, Fluent)
+`4, 8, 12, 16, 20, 24, 28, 32, 40, 48, 64`
+
+### 2px Base (Carbon - for dense UIs)
+`2, 4, 8, 12, 16, 24, 32, 40, 48, 64`
+
+**NEVER mix systems or use random values (7px, 13px, 19px)**
+
+## Spacing Scale (8px base example)
+
+### Token Names
+- `space-1`: 8px (0.5rem)
+- `space-2`: 16px (1rem)
+- `space-3`: 24px (1.5rem)
+- `space-4`: 32px (2rem)
+- `space-5`: 40px (2.5rem)
+- `space-6`: 48px (3rem)
+- `space-8`: 64px (4rem)
+- `space-12`: 96px (6rem)
+
+## Component Spacing
+
+### Buttons
+- **Padding horizontal**: 16-24px (space-2 to space-3)
+- **Padding vertical**: 8-12px (space-1 to space-1.5)
+- **Gap between buttons**: 8px (space-1)
+- **Icon to text**: 8px (space-1)
+
+### Input Fields
+- **Padding horizontal**: 12-16px
+- **Padding vertical**: 8-12px
+- **Label to input**: 4-8px
+- **Input to input**: 16px (space-2)
+- **Field group spacing**: 24px (space-3)
+
+### Cards
+- **Padding**: 16-24px (space-2 to space-3)
+- **Content spacing**: 12-16px
+- **Gap between cards**: 16-24px (space-2 to space-3)
+
+### Lists
+- **Item padding**: 12-16px horizontal, 8-12px vertical
+- **Gap between items**: 0-8px
+- **Section spacing**: 24-32px (space-3 to space-4)
+
+### Navigation
+- **Nav item padding**: 8-12px vertical, 12-16px horizontal
+- **Gap between items**: 4-8px
+- **Section spacing**: 16-24px (space-2 to space-3)
+
+## Layout Spacing
+
+### Container Margins
+- **Mobile** (< 640px): 16px (space-2)
+- **Tablet** (640-1023px): 24px (space-3)
+- **Desktop** (1024px+): 32-40px (space-4 to space-5)
+
+### Section Spacing
+- **Between sections**: 48-64px (space-6 to space-8)
+- **Within sections**: 24-32px (space-3 to space-4)
+- **Hero to content**: 64-96px (space-8 to space-12)
+
+### Grid Gaps
+- **Tight**: 8-12px
+- **Normal**: 16-24px
+- **Loose**: 32-40px
+
+## Vertical Rhythm
+
+### Typography Spacing
+- **Paragraph spacing**: 16px (1em)
+- **Heading to paragraph**: 8-16px
+- **Section heading**: 32-48px above, 16-24px below
+
+### Content Blocks
+- **Related content**: 8-16px
+- **Separate blocks**: 24-32px
+- **Major sections**: 48-64px
+
+## Grid Systems
+
+### 12-Column Grid
+- **Mobile**: 4 columns, 16px gutters, 16px margins
+- **Tablet**: 8 columns, 16-24px gutters, 24px margins
+- **Desktop**: 12 columns, 24px gutters, 32-40px margins
+
+### Max Width
+- **Content**: 1280-1440px
+- **Reading width**: 65ch (characters) or 672px
+- **Form width**: 480-600px
+
+## Responsive Spacing
+
+### Mobile (< 640px)
+- Reduce spacing by 25-50%
+- Minimum touch targets: 44px × 44px
+- Margins: 16px
+
+### Tablet (640-1023px)
+- Standard spacing
+- Touch targets: 44px × 44px
+- Margins: 24px
+
+### Desktop (1024px+)
+- Standard or increased spacing
+- Click targets: 32px × 32px minimum
+- Margins: 32-40px
+
+## Touch/Click Targets
+
+### Minimum Sizes
+- **Mobile/Touch**: 44px × 44px (Apple HIG, Material)
+- **Desktop/Mouse**: 32px × 32px
+- **Recommended**: 48px × 48px for touch
+
+### Spacing Between
+- **Minimum**: 8px between touch targets
+- **Recommended**: 12-16px
+
+## Elevation/Shadow Spacing
+
+### Shadow Offset
+- **Level 1**: 0 1px 2px
+- **Level 2**: 0 2px 4px
+- **Level 3**: 0 4px 8px
+- **Level 4**: 0 8px 16px
+- **Level 5**: 0 16px 32px
+
+## Common Patterns
+
+### Form Layout
+```
+Label (12-14px)
+↓ 4-8px
+Input Field (40px height)
+↓ 4px
+Help Text (12px)
+↓ 16px
+Next Field
+```
+
+### Card Layout
+```
+┌─────────────────────┐
+│ ← 16-24px padding → │
+│                     │
+│ Content             │
+│ ↕ 12-16px spacing   │
+│ More Content        │
+│                     │
+│ ← 16-24px padding → │
+└─────────────────────┘
+```
+
+### Page Layout
+```
+Header (64px height)
+↓ 0px (sticky)
+Hero Section
+↓ 64-96px
+Content Section
+↓ 48-64px
+Another Section
+↓ 48-64px
+Footer
+```
+
+## Best Practices
+
+### Do
+- Use consistent spacing scale
+- Increase spacing at larger breakpoints
+- Group related elements with less space
+- Separate unrelated elements with more space
+- Use rem/em for scalability
+- Maintain vertical rhythm
+- Respect touch target sizes
+
+### Don't
+- Use random pixel values (7px, 13px, 19px)
+- Mix spacing systems
+- Cram elements together
+- Use excessive whitespace everywhere
+- Ignore responsive spacing
+- Make touch targets too small
+- Forget about keyboard users
+
+## Spacing Tokens (CSS Variables)
+
+```css
+:root {
+  --space-1: 0.5rem;   /* 8px */
+  --space-2: 1rem;     /* 16px */
+  --space-3: 1.5rem;   /* 24px */
+  --space-4: 2rem;     /* 32px */
+  --space-5: 2.5rem;   /* 40px */
+  --space-6: 3rem;     /* 48px */
+  --space-8: 4rem;     /* 64px */
+  --space-12: 6rem;    /* 96px */
+}
+```
+
+## Accessibility
+
+### Focus Spacing
+- Focus outline: 2px minimum
+- Focus offset: 2px from element
+- Clear visual separation
+
+### Reading Comfort
+- Line length: 65ch maximum
+- Paragraph spacing: 1em
+- Line height: 1.5-1.6
+
+### Touch Accessibility
+- Targets: 44px × 44px minimum
+- Spacing: 8px between targets
+- Adequate padding for easy tapping

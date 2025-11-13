@@ -1,0 +1,258 @@
+---
+description: Page-level templates and layout patterns
+globs: ["**/*.html", "**/*.jsx", "**/*.tsx", "**/*.vue", "**/*.svelte"]
+alwaysApply: true
+---
+
+# Page Templates
+
+## Landing Page
+
+### Structure
+```
+Header/Navigation
+Hero Section
+Social Proof (logos, testimonials)
+Features Section
+How It Works
+Pricing (optional)
+FAQ
+CTA Section
+Footer
+```
+
+### Hero Section
+- **Headline**: Clear value proposition (< 60 chars)
+- **Subheadline**: Supporting detail (2-3 sentences)
+- **Primary CTA**: Prominent button
+- **Secondary CTA**: Optional alternative action
+- **Visual**: Image, illustration, or product screenshot
+- **Height**: 60-80vh (viewport height)
+
+### Features Section
+- **Grid**: 2-4 columns (responsive)
+- **Icon**: 24-48px per feature
+- **Title**: 18-24px, semibold
+- **Description**: 2-3 sentences
+- **Spacing**: 48-64px between features
+
+### Social Proof
+- **Customer logos**: 4-8 logos, grayscale
+- **Testimonials**: 2-3 quotes with photos
+- **Stats**: Key metrics (users, revenue, etc.)
+
+### CTA Section
+- **Headline**: Action-oriented
+- **Button**: Large, prominent
+- **Background**: Contrasting color or gradient
+- **Padding**: Generous (64-96px vertical)
+
+## Dashboard Page
+
+### Layout
+```
+┌─────────────────────────────────┐
+│ Header (logo, search, profile)  │
+├────────┬────────────────────────┤
+│ Side   │ Main Content           │
+│ Nav    │ ┌────────────────────┐ │
+│        │ │ Page Header        │ │
+│        │ ├────────────────────┤ │
+│        │ │ Metrics/Stats      │ │
+│        │ ├────────────────────┤ │
+│        │ │ Data Table         │ │
+│        │ └────────────────────┘ │
+└────────┴────────────────────────┘
+```
+
+### Components
+- **Sidebar**: 240-280px, collapsible
+- **Header**: 56-64px height, sticky
+- **Page Title**: H1, with actions
+- **Metrics Cards**: 2-4 columns, key stats
+- **Data Table**: Sortable, paginated
+- **Filters**: Above table or in sidebar
+- **Charts**: Responsive, labeled
+
+### Metrics Cards
+```html
+<div class="metrics-grid">
+  <div class="metric-card">
+    <div class="metric-label">Total Users</div>
+    <div class="metric-value">12,345</div>
+    <div class="metric-change">+12.5%</div>
+  </div>
+</div>
+```
+
+## Settings Page
+
+### Layout
+- **Sidebar**: Category navigation
+- **Main**: Form sections
+- **Sticky Save**: Save button always visible
+
+### Sections
+- Profile Settings
+- Account Settings
+- Notifications
+- Privacy & Security
+- Billing (if applicable)
+
+### Form Pattern
+```html
+<section class="settings-section">
+  <h2>Section Title</h2>
+  <p>Section description</p>
+  
+  <div class="form-field">
+    <label>Setting Name</label>
+    <input type="text">
+    <span class="help-text">Help text</span>
+  </div>
+  
+  <button>Save Changes</button>
+</section>
+```
+
+## Authentication Pages
+
+### Login
+```
+┌─────────────────┐
+│ Logo            │
+│                 │
+│ Welcome Back    │
+│                 │
+│ Email           │
+│ Password        │
+│ [Remember Me]   │
+│                 │
+│ [Sign In]       │
+│                 │
+│ Forgot Password?│
+│ Sign Up         │
+└─────────────────┘
+```
+
+### Sign Up
+- Similar to login
+- Additional fields (name, etc.)
+- Password requirements
+- Terms acceptance
+- Social sign-up options
+
+## Error Pages
+
+### 404 Not Found
+- **Headline**: "Page Not Found"
+- **Description**: Helpful message
+- **Search**: Optional search box
+- **Links**: Popular pages
+- **CTA**: Back to home
+
+### 500 Server Error
+- **Headline**: "Something Went Wrong"
+- **Description**: Apologetic message
+- **Action**: Retry button
+- **Support**: Contact link
+
+## Blog/Article Page
+
+### Structure
+```
+Header
+Article Header
+  - Title (H1)
+  - Meta (author, date, reading time)
+  - Featured Image
+Article Body
+  - Headings (H2, H3)
+  - Paragraphs (max-width: 65ch)
+  - Images
+  - Code blocks
+  - Quotes
+Related Articles
+Comments (optional)
+Footer
+```
+
+### Typography
+- **Title**: 32-48px, bold
+- **Body**: 16-18px, line-height 1.6
+- **Max width**: 65ch (characters)
+- **Paragraph spacing**: 1em
+
+## Profile Page
+
+### Header
+- **Avatar**: 80-120px
+- **Name**: H1
+- **Bio**: 2-3 sentences
+- **Stats**: Followers, following, posts
+- **Actions**: Follow, message, edit
+
+### Content
+- **Tabs**: Posts, About, Activity
+- **Grid**: 2-3 columns for posts
+- **List**: Activity feed
+
+## Search Results Page
+
+### Layout
+```
+┌─────────────────────────────────┐
+│ Search Bar                      │
+├─────────┬───────────────────────┤
+│ Filters │ Results               │
+│         │ ┌───────────────────┐ │
+│ Type    │ │ Result 1          │ │
+│ Date    │ ├───────────────────┤ │
+│ Sort    │ │ Result 2          │ │
+│         │ └───────────────────┘ │
+│         │ Pagination            │
+└─────────┴───────────────────────┘
+```
+
+### Result Item
+- **Title**: H3, link
+- **Snippet**: 2-3 lines
+- **Meta**: Date, author, category
+- **Thumbnail**: Optional image
+
+## Checkout/Payment Page
+
+### Steps
+1. Cart Review
+2. Shipping Information
+3. Payment Method
+4. Order Confirmation
+
+### Layout
+- **Main**: Form (left, 60%)
+- **Sidebar**: Order summary (right, 40%)
+- **Progress**: Step indicator at top
+- **Security**: Trust badges
+
+## Best Practices
+
+### Do
+- Use consistent page structure
+- Include breadcrumbs for deep pages
+- Show loading states
+- Handle empty states
+- Provide clear navigation
+- Use semantic landmarks
+- Optimize for SEO (title, meta, headings)
+- Make CTAs obvious
+- Test on mobile
+
+### Don't
+- Bury important content
+- Use too many columns
+- Ignore mobile layout
+- Forget page titles
+- Skip loading indicators
+- Use unclear navigation
+- Make users scroll excessively
+- Hide important actions

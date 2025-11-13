@@ -1,0 +1,373 @@
+---
+description: Component design patterns and best practices
+globs: ["**/*.html", "**/*.css", "**/*.jsx", "**/*.tsx", "**/*.vue", "**/*.svelte"]
+alwaysApply: true
+---
+
+# Component Patterns
+
+Reference: `.mba-template/design-systems/*/components.md` for detailed patterns
+
+## Button
+
+### Variants (choose 3-4)
+- **Primary/Filled**: Solid background, high emphasis
+- **Secondary/Outlined**: Border, medium emphasis
+- **Tertiary/Ghost**: No border, low emphasis
+- **Danger/Destructive**: Red, for delete/remove actions
+
+### Sizes
+- **Small**: 28-32px height
+- **Medium**: 36-40px height (default)
+- **Large**: 44-48px height
+
+### Structure
+```html
+<button class="btn btn-primary btn-medium">
+  <icon /> <!-- optional, 16-20px -->
+  <span>Button Text</span>
+</button>
+```
+
+### States
+- Default, Hover, Active, Focus, Disabled, Loading
+
+### Focus State
+- 2px outline, primary color
+- 2px offset from button
+- Visible on keyboard navigation
+
+## Input Fields
+
+### Types
+- Text, Email, Password, Number, Tel, URL, Search, Textarea
+
+### Structure
+```html
+<div class="form-field">
+  <label for="input-id">Label</label>
+  <input type="text" id="input-id" placeholder="Placeholder">
+  <span class="help-text">Help text</span>
+  <span class="error-text">Error message</span>
+</div>
+```
+
+### Sizes
+- **Small**: 32px height
+- **Medium**: 40px height (default)
+- **Large**: 48px height
+
+### States
+- Default, Hover, Focus, Error, Disabled, Read-only
+
+### Validation
+- Inline validation on blur
+- Error message below field
+- Error icon in field (optional)
+- Red border on error
+
+## Card
+
+### Structure
+```html
+<div class="card">
+  <div class="card-header">
+    <h3>Title</h3>
+    <button>Action</button>
+  </div>
+  <div class="card-body">
+    Content
+  </div>
+  <div class="card-footer">
+    <button>Cancel</button>
+    <button>Save</button>
+  </div>
+</div>
+```
+
+### Variants
+- **Flat**: Border only, no shadow
+- **Elevated**: Subtle shadow
+- **Interactive**: Hover state, clickable
+
+### Spacing
+- Padding: 16-24px
+- Header to body: 12-16px
+- Body to footer: 16px
+
+## Table
+
+### Structure
+```html
+<table>
+  <thead>
+    <tr>
+      <th>Column 1</th>
+      <th>Column 2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Data 1</td>
+      <td>Data 2</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+### Features
+- Sortable columns (with icon)
+- Row hover state
+- Selected row state
+- Pagination
+- Empty state
+
+### Spacing
+- Cell padding: 8-12px horizontal, 8-12px vertical
+- Row height: 40-48px
+- Header background: Subtle gray
+
+## Modal/Dialog
+
+### Structure
+```html
+<div class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Title</h2>
+      <button aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      Content
+    </div>
+    <div class="modal-footer">
+      <button>Cancel</button>
+      <button>Confirm</button>
+    </div>
+  </div>
+</div>
+```
+
+### Sizes
+- Small: 400-480px
+- Medium: 600px (default)
+- Large: 800-960px
+- Full: 90% viewport
+
+### Behavior
+- Overlay dims background (rgba(0,0,0,0.5))
+- Center on screen
+- Trap focus inside modal
+- Escape to close (if safe)
+- Return focus on close
+
+## Navigation
+
+### Top Navigation
+```html
+<nav class="top-nav">
+  <div class="nav-brand">Logo</div>
+  <ul class="nav-menu">
+    <li><a href="#">Link 1</a></li>
+    <li><a href="#">Link 2</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button>Sign In</button>
+  </div>
+</nav>
+```
+
+### Side Navigation
+```html
+<aside class="side-nav">
+  <nav>
+    <ul>
+      <li class="active">
+        <icon />
+        <span>Dashboard</span>
+      </li>
+      <li>
+        <icon />
+        <span>Settings</span>
+      </li>
+    </ul>
+  </nav>
+</aside>
+```
+
+### Mobile Navigation
+- Hamburger menu (top-left or top-right)
+- Full-screen overlay or slide-in drawer
+- Bottom tab bar (3-5 items)
+
+## Form Layout
+
+### Vertical (Default)
+```html
+<form>
+  <div class="form-field">
+    <label>First Name</label>
+    <input type="text">
+  </div>
+  <div class="form-field">
+    <label>Last Name</label>
+    <input type="text">
+  </div>
+  <div class="form-actions">
+    <button type="button">Cancel</button>
+    <button type="submit">Submit</button>
+  </div>
+</form>
+```
+
+### Horizontal (Compact)
+```html
+<div class="form-field-horizontal">
+  <label>Label</label>
+  <input type="text">
+</div>
+```
+
+### Multi-Column (Desktop)
+```html
+<div class="form-grid">
+  <div class="form-field">...</div>
+  <div class="form-field">...</div>
+</div>
+```
+
+## Dropdown/Select
+
+### Structure
+```html
+<div class="dropdown">
+  <button class="dropdown-trigger">
+    Select Option
+    <icon name="chevron-down" />
+  </button>
+  <div class="dropdown-menu">
+    <button class="dropdown-item">Option 1</button>
+    <button class="dropdown-item">Option 2</button>
+  </div>
+</div>
+```
+
+### Behavior
+- Click to open
+- Click outside to close
+- Arrow keys to navigate
+- Enter to select
+- Escape to close
+
+## Toast/Notification
+
+### Structure
+```html
+<div class="toast toast-success">
+  <icon name="check" />
+  <div class="toast-content">
+    <strong>Success</strong>
+    <p>Action completed successfully</p>
+  </div>
+  <button aria-label="Close">×</button>
+</div>
+```
+
+### Types
+- Success (green)
+- Error (red)
+- Warning (orange)
+- Info (blue)
+
+### Position
+- Top-right (common)
+- Top-center
+- Bottom-right
+- Bottom-center
+
+### Duration
+- 3-5 seconds (auto-dismiss)
+- Persistent (manual dismiss)
+
+## Badge
+
+### Sizes
+- Small: 16px height
+- Medium: 20px height
+- Large: 24px height
+
+### Variants
+- Filled (solid background)
+- Outlined (border only)
+- Dot (small indicator)
+
+### Usage
+- Status indicators
+- Notification counts
+- Category labels
+
+## Tabs
+
+### Structure
+```html
+<div class="tabs">
+  <div class="tab-list" role="tablist">
+    <button role="tab" aria-selected="true">Tab 1</button>
+    <button role="tab">Tab 2</button>
+  </div>
+  <div class="tab-panel" role="tabpanel">
+    Content 1
+  </div>
+</div>
+```
+
+### Styles
+- Underline (active indicator below)
+- Filled (active has background)
+- Boxed (tabs look like tabs)
+
+## Accordion
+
+### Structure
+```html
+<div class="accordion">
+  <div class="accordion-item">
+    <button class="accordion-header">
+      <span>Section 1</span>
+      <icon name="chevron-down" />
+    </button>
+    <div class="accordion-content">
+      Content 1
+    </div>
+  </div>
+</div>
+```
+
+### Behavior
+- Click to expand/collapse
+- Chevron rotates
+- Smooth animation
+- Single or multiple open
+
+## Best Practices
+
+### Do
+- Use semantic HTML
+- Include all interactive states
+- Provide keyboard navigation
+- Add ARIA labels
+- Show loading states
+- Handle empty states
+- Display error states
+- Use consistent sizing
+- Follow platform patterns
+
+### Don't
+- Use divs for buttons
+- Forget focus states
+- Ignore keyboard users
+- Skip loading indicators
+- Use color alone for status
+- Make components too complex
+- Ignore accessibility
+- Reinvent standard patterns

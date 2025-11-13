@@ -1,0 +1,406 @@
+---
+description: Responsive and adaptive design for all screen sizes
+globs: ["**/*.html", "**/*.css", "**/*.jsx", "**/*.tsx", "**/*.vue", "**/*.svelte"]
+alwaysApply: true
+---
+
+# Responsive & Adaptive Design
+
+Reference: `.mba-template/platforms/web-responsive.md`
+
+## Mobile-First Approach
+
+Start with mobile design, enhance for larger screens.
+
+```css
+/* Mobile first (default) */
+.element {
+  width: 100%;
+  padding: 16px;
+}
+
+/* Tablet */
+@media (min-width: 640px) {
+  .element {
+    width: 50%;
+    padding: 24px;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .element {
+    width: 33.333%;
+    padding: 32px;
+  }
+}
+```
+
+## Breakpoints
+
+### Standard (Tailwind-style)
+- **sm**: 640px (tablet portrait)
+- **md**: 768px (tablet landscape)
+- **lg**: 1024px (desktop)
+- **xl**: 1280px (large desktop)
+- **2xl**: 1536px (extra large)
+
+### Material Design
+- **Compact**: 0-599px (phone)
+- **Medium**: 600-839px (tablet)
+- **Expanded**: 840px+ (desktop)
+
+## Layout Patterns
+
+### Mobile (< 640px)
+- Single column
+- Full-width components
+- Stacked navigation (hamburger)
+- Bottom tab bar
+- Touch targets: 44px minimum
+- Margins: 16px
+
+### Tablet (640-1023px)
+- 2-column layouts
+- Side navigation appears
+- Increased spacing
+- Touch targets: 44px
+- Margins: 24px
+
+### Desktop (1024px+)
+- Multi-column (3-4)
+- Persistent side nav
+- Hover states
+- Click targets: 32px minimum
+- Margins: 32-40px
+- Max width: 1280-1440px
+
+## Responsive Typography
+
+### Fluid Typography
+```css
+/* 16px at 320px, 20px at 1440px */
+font-size: clamp(1rem, 0.857rem + 0.357vw, 1.25rem);
+```
+
+### Scale by Breakpoint
+```css
+h1 {
+  font-size: 2rem; /* 32px mobile */
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: 2.5rem; /* 40px tablet */
+  }
+}
+
+@media (min-width: 1024px) {
+  h1 {
+    font-size: 3rem; /* 48px desktop */
+  }
+}
+```
+
+## Grid Systems
+
+### Mobile
+- 4-column grid
+- 16px gutters
+- 16px margins
+
+### Tablet
+- 8-column grid
+- 16-24px gutters
+- 24px margins
+
+### Desktop
+- 12-column grid
+- 24-32px gutters
+- 32-40px margins
+
+## Navigation Patterns
+
+### Mobile
+```html
+<!-- Hamburger menu -->
+<button class="menu-toggle">☰</button>
+<nav class="mobile-menu">...</nav>
+
+<!-- Bottom tab bar -->
+<nav class="bottom-tabs">
+  <a href="#">Home</a>
+  <a href="#">Search</a>
+  <a href="#">Profile</a>
+</nav>
+```
+
+### Tablet
+```html
+<!-- Hybrid: visible items + hamburger -->
+<nav class="top-nav">
+  <a href="#">Home</a>
+  <a href="#">Products</a>
+  <button class="menu-toggle">More</button>
+</nav>
+```
+
+### Desktop
+```html
+<!-- Full horizontal nav -->
+<nav class="top-nav">
+  <a href="#">Home</a>
+  <a href="#">Products</a>
+  <a href="#">About</a>
+  <a href="#">Contact</a>
+</nav>
+
+<!-- Or persistent sidebar -->
+<aside class="sidebar">...</aside>
+```
+
+## Responsive Images
+
+### Srcset
+```html
+<img 
+  srcset="image-320w.jpg 320w,
+          image-640w.jpg 640w,
+          image-1024w.jpg 1024w"
+  sizes="(max-width: 640px) 100vw,
+         (max-width: 1024px) 50vw,
+         33vw"
+  src="image-640w.jpg"
+  alt="Description">
+```
+
+### Picture Element
+```html
+<picture>
+  <source media="(min-width: 1024px)" srcset="desktop.jpg">
+  <source media="(min-width: 640px)" srcset="tablet.jpg">
+  <img src="mobile.jpg" alt="Description">
+</picture>
+```
+
+## Component Adaptations
+
+### Cards
+```css
+/* Mobile: 1 column */
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 640px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+/* Desktop: 3-4 columns */
+@media (min-width: 1024px) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+}
+```
+
+### Tables
+```css
+/* Mobile: Card-based */
+@media (max-width: 639px) {
+  table, thead, tbody, tr, td {
+    display: block;
+  }
+  
+  thead {
+    display: none;
+  }
+  
+  tr {
+    margin-bottom: 16px;
+    border: 1px solid #e5e5e5;
+  }
+}
+
+/* Desktop: Standard table */
+@media (min-width: 640px) {
+  table {
+    display: table;
+  }
+}
+```
+
+### Forms
+```css
+/* Mobile: Full width */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* Desktop: 2 columns */
+@media (min-width: 768px) {
+  .form-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+```
+
+## Touch vs Mouse
+
+### Touch Targets
+```css
+/* Mobile: larger targets */
+@media (max-width: 1023px) {
+  .button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Desktop: smaller acceptable */
+@media (min-width: 1024px) {
+  .button {
+    min-height: 32px;
+    min-width: 32px;
+  }
+}
+```
+
+### Hover States
+```css
+/* Only show hover on devices that support it */
+@media (hover: hover) {
+  .button:hover {
+    background: #0056b3;
+  }
+}
+```
+
+## Container Queries (Modern)
+
+```css
+.card-container {
+  container-type: inline-size;
+}
+
+/* When container is 400px+ */
+@container (min-width: 400px) {
+  .card {
+    display: flex;
+    flex-direction: row;
+  }
+}
+```
+
+## Viewport Units
+
+```css
+/* Hero section */
+.hero {
+  min-height: 60vh; /* 60% of viewport height */
+}
+
+/* Full-screen modal */
+.modal {
+  width: 90vw; /* 90% of viewport width */
+  max-width: 600px;
+}
+```
+
+## Responsive Spacing
+
+```css
+/* Fluid spacing */
+.section {
+  padding: clamp(2rem, 5vw, 4rem);
+}
+
+/* Breakpoint-based */
+.section {
+  padding: 32px 16px; /* mobile */
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 48px 24px; /* tablet */
+  }
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding: 64px 40px; /* desktop */
+  }
+}
+```
+
+## Accessibility
+
+### Zoom Support
+- Use relative units (rem, em)
+- Test at 200% zoom
+- Don't disable user scaling
+
+```html
+<!-- Good -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bad -->
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+```
+
+### Reduced Motion
+```css
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+```
+
+## Testing
+
+### Devices to Test
+- iPhone (375px, 390px, 428px)
+- Android (360px, 412px)
+- iPad (768px, 1024px)
+- Desktop (1280px, 1440px, 1920px)
+
+### Viewport Sizes
+- 320px (small mobile)
+- 375px (iPhone)
+- 768px (tablet portrait)
+- 1024px (tablet landscape)
+- 1440px (desktop)
+
+## Best Practices
+
+### Do
+- Start mobile-first
+- Use relative units
+- Test on real devices
+- Support zoom
+- Provide touch targets
+- Use responsive images
+- Test at breakpoints
+- Consider landscape
+
+### Don't
+- Design desktop-only
+- Use fixed widths
+- Disable zoom
+- Ignore touch targets
+- Use hover-only interactions
+- Assume screen size
+- Skip mobile testing
+- Forget orientation changes
