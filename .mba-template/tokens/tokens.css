@@ -1,0 +1,384 @@
+/**
+ * MBA Design System - Design Tokens
+ * 
+ * CRITICAL: These are the ONLY values you should use.
+ * Using any other values will result in inconsistent, AI-looking designs.
+ * 
+ * Copy this file into your project and reference these variables.
+ */
+
+:root {
+  /* ============================================
+   * SPACING SCALE (8px base)
+   * ONLY use these values. NO exceptions.
+   * ============================================ */
+  --space-0: 0;
+  --space-1: 0.25rem;   /* 4px - tight spacing */
+  --space-2: 0.5rem;    /* 8px - default small */
+  --space-3: 0.75rem;   /* 12px - medium-small */
+  --space-4: 1rem;      /* 16px - default medium */
+  --space-5: 1.25rem;   /* 20px - medium */
+  --space-6: 1.5rem;    /* 24px - large */
+  --space-8: 2rem;      /* 32px - section spacing */
+  --space-10: 2.5rem;   /* 40px - large section */
+  --space-12: 3rem;     /* 48px - major section */
+  --space-16: 4rem;     /* 64px - page section */
+  --space-20: 5rem;     /* 80px - hero spacing */
+  --space-24: 6rem;     /* 96px - major division */
+
+  /* ============================================
+   * BORDER RADIUS
+   * ONLY these 4 values. Pick ONE for consistency.
+   * ============================================ */
+  --radius-none: 0;
+  --radius-sm: 4px;     /* buttons, inputs, small elements */
+  --radius-md: 8px;     /* cards, modals, medium elements */
+  --radius-lg: 12px;    /* large cards, panels */
+  --radius-xl: 16px;    /* maximum for rectangular elements */
+  --radius-full: 9999px; /* pills, avatars, circular elements */
+
+  /* ============================================
+   * TYPOGRAPHY SCALE
+   * Based on 1.25 ratio (Major Third)
+   * ============================================ */
+  --font-size-xs: 0.75rem;    /* 12px - captions, metadata */
+  --font-size-sm: 0.875rem;   /* 14px - small body, labels */
+  --font-size-base: 1rem;     /* 16px - body text */
+  --font-size-lg: 1.125rem;   /* 18px - large body */
+  --font-size-xl: 1.25rem;    /* 20px - H5, lead text */
+  --font-size-2xl: 1.5rem;    /* 24px - H4 */
+  --font-size-3xl: 1.875rem;  /* 30px - H3 */
+  --font-size-4xl: 2.25rem;   /* 36px - H2 */
+  --font-size-5xl: 3rem;      /* 48px - H1 */
+  --font-size-6xl: 3.75rem;   /* 60px - Display */
+
+  /* Line Heights */
+  --line-height-none: 1;
+  --line-height-tight: 1.25;   /* headings */
+  --line-height-snug: 1.375;   /* subheadings */
+  --line-height-normal: 1.5;   /* body text */
+  --line-height-relaxed: 1.625; /* readable paragraphs */
+  --line-height-loose: 2;      /* spacious text */
+
+  /* Font Weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Letter Spacing */
+  --letter-spacing-tighter: -0.05em;
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-wider: 0.05em;
+  --letter-spacing-widest: 0.1em;  /* all caps only */
+
+  /* Font Families */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SF Mono", "Cascadia Code", "Fira Code", Consolas, "Liberation Mono", Menlo, monospace;
+
+  /* ============================================
+   * COLORS - Primitive Tokens (Raw Values)
+   * These define the actual color values.
+   * ============================================ */
+  
+  /* Gray Scale - Neutral palette */
+  --gray-50: #fafafa;
+  --gray-100: #f5f5f5;
+  --gray-200: #e5e5e5;
+  --gray-300: #d4d4d4;
+  --gray-400: #a3a3a3;
+  --gray-500: #737373;
+  --gray-600: #525252;
+  --gray-700: #404040;
+  --gray-800: #262626;
+  --gray-900: #171717;
+  --gray-950: #0a0a0a;
+
+  /* Primary - Blue (default brand color) */
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-300: #93c5fd;
+  --primary-400: #60a5fa;
+  --primary-500: #3b82f6;
+  --primary-600: #2563eb;
+  --primary-700: #1d4ed8;
+  --primary-800: #1e40af;
+  --primary-900: #1e3a8a;
+
+  /* Success - Green */
+  --success-50: #f0fdf4;
+  --success-100: #dcfce7;
+  --success-200: #bbf7d0;
+  --success-300: #86efac;
+  --success-400: #4ade80;
+  --success-500: #22c55e;
+  --success-600: #16a34a;
+  --success-700: #15803d;
+  --success-800: #166534;
+  --success-900: #14532d;
+
+  /* Warning - Amber/Orange */
+  --warning-50: #fffbeb;
+  --warning-100: #fef3c7;
+  --warning-200: #fde68a;
+  --warning-300: #fcd34d;
+  --warning-400: #fbbf24;
+  --warning-500: #f59e0b;
+  --warning-600: #d97706;
+  --warning-700: #b45309;
+  --warning-800: #92400e;
+  --warning-900: #78350f;
+
+  /* Error - Red */
+  --error-50: #fef2f2;
+  --error-100: #fee2e2;
+  --error-200: #fecaca;
+  --error-300: #fca5a5;
+  --error-400: #f87171;
+  --error-500: #ef4444;
+  --error-600: #dc2626;
+  --error-700: #b91c1c;
+  --error-800: #991b1b;
+  --error-900: #7f1d1d;
+
+  /* Info - Sky Blue */
+  --info-50: #f0f9ff;
+  --info-100: #e0f2fe;
+  --info-200: #bae6fd;
+  --info-300: #7dd3fc;
+  --info-400: #38bdf8;
+  --info-500: #0ea5e9;
+  --info-600: #0284c7;
+  --info-700: #0369a1;
+  --info-800: #075985;
+  --info-900: #0c4a6e;
+
+  /* ============================================
+   * COLORS - Semantic Tokens (Light Mode)
+   * Use THESE in your components, not primitives.
+   * ============================================ */
+  
+  /* Text Colors */
+  --color-text-primary: var(--gray-900);
+  --color-text-secondary: var(--gray-600);
+  --color-text-tertiary: var(--gray-500);
+  --color-text-disabled: var(--gray-400);
+  --color-text-inverse: var(--gray-50);
+  --color-text-link: var(--primary-600);
+  --color-text-link-hover: var(--primary-700);
+
+  /* Background Colors */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: var(--gray-50);
+  --color-bg-tertiary: var(--gray-100);
+  --color-bg-inverse: var(--gray-900);
+  --color-bg-hover: var(--gray-100);
+  --color-bg-active: var(--gray-200);
+
+  /* Border Colors */
+  --color-border-primary: var(--gray-200);
+  --color-border-secondary: var(--gray-300);
+  --color-border-focus: var(--primary-500);
+  --color-border-error: var(--error-500);
+
+  /* Interactive Colors */
+  --color-interactive-primary: var(--primary-600);
+  --color-interactive-primary-hover: var(--primary-700);
+  --color-interactive-primary-active: var(--primary-800);
+  --color-interactive-secondary: var(--gray-100);
+  --color-interactive-secondary-hover: var(--gray-200);
+  --color-interactive-danger: var(--error-600);
+  --color-interactive-danger-hover: var(--error-700);
+
+  /* Status Colors */
+  --color-status-success: var(--success-600);
+  --color-status-success-bg: var(--success-50);
+  --color-status-warning: var(--warning-600);
+  --color-status-warning-bg: var(--warning-50);
+  --color-status-error: var(--error-600);
+  --color-status-error-bg: var(--error-50);
+  --color-status-info: var(--info-600);
+  --color-status-info-bg: var(--info-50);
+
+  /* ============================================
+   * SHADOWS
+   * Use for elevation. ONLY these values.
+   * ============================================ */
+  --shadow-none: none;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+
+  /* Focus Ring */
+  --shadow-focus: 0 0 0 2px var(--color-bg-primary), 0 0 0 4px var(--primary-500);
+
+  /* ============================================
+   * TRANSITIONS
+   * Standard durations and easings.
+   * ============================================ */
+  --duration-instant: 0ms;
+  --duration-fast: 100ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  --duration-slower: 500ms;
+
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* Common Transitions */
+  --transition-colors: color var(--duration-normal) var(--ease-out), 
+                       background-color var(--duration-normal) var(--ease-out), 
+                       border-color var(--duration-normal) var(--ease-out);
+  --transition-opacity: opacity var(--duration-normal) var(--ease-out);
+  --transition-transform: transform var(--duration-normal) var(--ease-out);
+  --transition-all: all var(--duration-normal) var(--ease-out);
+
+  /* ============================================
+   * Z-INDEX SCALE
+   * Consistent layering system.
+   * ============================================ */
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+  --z-toast: 800;
+
+  /* ============================================
+   * COMPONENT SIZES
+   * Standard heights for interactive elements.
+   * ============================================ */
+  --size-xs: 1.5rem;    /* 24px */
+  --size-sm: 2rem;      /* 32px */
+  --size-md: 2.5rem;    /* 40px - default */
+  --size-lg: 3rem;      /* 48px */
+  --size-xl: 3.5rem;    /* 56px */
+
+  /* Touch Targets */
+  --touch-target-min: 44px;  /* iOS/Apple HIG minimum */
+  --click-target-min: 32px;  /* Desktop minimum */
+
+  /* ============================================
+   * BREAKPOINTS (for reference)
+   * Use in media queries.
+   * ============================================ */
+  /* 
+   * --breakpoint-sm: 640px;
+   * --breakpoint-md: 768px;
+   * --breakpoint-lg: 1024px;
+   * --breakpoint-xl: 1280px;
+   * --breakpoint-2xl: 1536px;
+   */
+
+  /* ============================================
+   * MAX WIDTHS
+   * Content containers.
+   * ============================================ */
+  --max-width-prose: 65ch;      /* Optimal reading width */
+  --max-width-sm: 640px;
+  --max-width-md: 768px;
+  --max-width-lg: 1024px;
+  --max-width-xl: 1280px;
+  --max-width-2xl: 1536px;
+}
+
+/* ============================================
+ * DARK MODE
+ * Apply with [data-theme="dark"] or .dark class
+ * ============================================ */
+[data-theme="dark"],
+.dark {
+  /* Text Colors */
+  --color-text-primary: var(--gray-50);
+  --color-text-secondary: var(--gray-400);
+  --color-text-tertiary: var(--gray-500);
+  --color-text-disabled: var(--gray-600);
+  --color-text-inverse: var(--gray-900);
+  --color-text-link: var(--primary-400);
+  --color-text-link-hover: var(--primary-300);
+
+  /* Background Colors */
+  --color-bg-primary: var(--gray-950);
+  --color-bg-secondary: var(--gray-900);
+  --color-bg-tertiary: var(--gray-800);
+  --color-bg-inverse: var(--gray-50);
+  --color-bg-hover: var(--gray-800);
+  --color-bg-active: var(--gray-700);
+
+  /* Border Colors */
+  --color-border-primary: var(--gray-800);
+  --color-border-secondary: var(--gray-700);
+
+  /* Interactive Colors */
+  --color-interactive-primary: var(--primary-500);
+  --color-interactive-primary-hover: var(--primary-400);
+  --color-interactive-primary-active: var(--primary-300);
+  --color-interactive-secondary: var(--gray-800);
+  --color-interactive-secondary-hover: var(--gray-700);
+
+  /* Status Background Colors (darker for dark mode) */
+  --color-status-success-bg: var(--success-900);
+  --color-status-warning-bg: var(--warning-900);
+  --color-status-error-bg: var(--error-900);
+  --color-status-info-bg: var(--info-900);
+
+  /* Shadows (more subtle in dark mode) */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.6);
+
+  /* Focus Ring */
+  --shadow-focus: 0 0 0 2px var(--color-bg-primary), 0 0 0 4px var(--primary-400);
+}
+
+/* ============================================
+ * REDUCED MOTION
+ * Respect user preferences.
+ * ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-instant: 0ms;
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+    --duration-slow: 0ms;
+    --duration-slower: 0ms;
+  }
+}
+
+/* ============================================
+ * UTILITY CLASSES (Optional)
+ * Common patterns using tokens.
+ * ============================================ */
+
+/* Focus visible ring */
+.focus-ring:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

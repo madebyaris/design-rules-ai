@@ -1,0 +1,398 @@
+{
+  "_description": "Realistic content for AI to use instead of Lorem Ipsum and generic placeholders. NEVER use 'Lorem ipsum', 'John Doe', or 'Acme Corp'.",
+  
+  "companies": {
+    "saas": [
+      "Meridian Analytics",
+      "Vertex Cloud",
+      "Prism Data",
+      "Cascade Systems",
+      "Luminary Software",
+      "Stratum Labs",
+      "Nexus Platform",
+      "Elevate Tech",
+      "Quantum Metrics",
+      "Horizon Digital"
+    ],
+    "fintech": [
+      "Ledger Finance",
+      "Apex Capital",
+      "Harbor Payments",
+      "Sterling Bank",
+      "Forge Financial",
+      "Pinnacle Wealth",
+      "Vanguard Trust",
+      "Citadel Investments",
+      "Beacon Credit",
+      "Summit Banking"
+    ],
+    "healthcare": [
+      "Vitality Health",
+      "MedCore Systems",
+      "Pulse Medical",
+      "Clarity Diagnostics",
+      "Wellness Partners",
+      "CarePoint Network",
+      "HealthBridge",
+      "Remedy Labs",
+      "Thrive Medical",
+      "Synapse Health"
+    ],
+    "ecommerce": [
+      "Artisan Goods Co",
+      "Urban Essentials",
+      "Craft & Carry",
+      "Modern Market",
+      "Curated Home",
+      "The Daily Shop",
+      "Provisions Co",
+      "Handmade Studio",
+      "Gather & Co",
+      "Foundry Goods"
+    ],
+    "enterprise": [
+      "Northwind Industries",
+      "Contoso Corporation",
+      "Fabrikam Inc",
+      "Tailspin Technologies",
+      "Woodgrove Systems",
+      "Litware Solutions",
+      "Adventure Works",
+      "Consolidated Messenger",
+      "Graphic Design Institute",
+      "Wide World Importers"
+    ]
+  },
+
+  "products": {
+    "saas": [
+      "Analytics Pro",
+      "Dashboard Suite",
+      "Insight Engine",
+      "Data Studio",
+      "Report Builder",
+      "Metric Tracker",
+      "Performance Hub",
+      "Growth Platform",
+      "Intelligence Cloud",
+      "Business Monitor"
+    ],
+    "tools": [
+      "TaskFlow",
+      "ProjectSync",
+      "TeamSpace",
+      "WorkHub",
+      "CollabDesk",
+      "PlannerPro",
+      "SprintBoard",
+      "MeetingRoom",
+      "DocuShare",
+      "FileVault"
+    ]
+  },
+
+  "names": {
+    "diverse": [
+      "Sarah Chen",
+      "Marcus Johnson",
+      "Priya Sharma",
+      "Alex Rivera",
+      "Emma Thompson",
+      "David Kim",
+      "Fatima Hassan",
+      "James O'Brien",
+      "Maria Garcia",
+      "Wei Zhang",
+      "Oluwaseun Adeyemi",
+      "Yuki Tanaka",
+      "Ahmed Al-Rashid",
+      "Sofia Andersson",
+      "Raj Patel",
+      "Isabella Santos",
+      "Michael Brown",
+      "Aisha Mohammed",
+      "Lucas Müller",
+      "Mei Lin Wong"
+    ],
+    "firstNames": [
+      "Sarah", "Marcus", "Priya", "Alex", "Emma",
+      "David", "Fatima", "James", "Maria", "Wei",
+      "Oluwaseun", "Yuki", "Ahmed", "Sofia", "Raj",
+      "Isabella", "Michael", "Aisha", "Lucas", "Mei Lin"
+    ],
+    "lastNames": [
+      "Chen", "Johnson", "Sharma", "Rivera", "Thompson",
+      "Kim", "Hassan", "O'Brien", "Garcia", "Zhang",
+      "Adeyemi", "Tanaka", "Al-Rashid", "Andersson", "Patel",
+      "Santos", "Brown", "Mohammed", "Müller", "Wong"
+    ]
+  },
+
+  "emails": [
+    "sarah.chen@meridian.io",
+    "m.johnson@vertexcloud.com",
+    "priya@prismdata.co",
+    "alex.rivera@cascade.systems",
+    "emma.t@luminary.software",
+    "david.kim@stratum.labs",
+    "fatima.h@nexusplatform.io",
+    "james@elevatech.com",
+    "maria.garcia@quantummetrics.co",
+    "wei.zhang@horizondigital.io"
+  ],
+
+  "jobTitles": [
+    "Product Designer",
+    "Senior Engineer",
+    "Marketing Manager",
+    "Data Analyst",
+    "UX Researcher",
+    "Frontend Developer",
+    "Project Manager",
+    "Sales Director",
+    "Customer Success Lead",
+    "Operations Coordinator",
+    "Chief Technology Officer",
+    "Head of Design",
+    "Growth Lead",
+    "DevOps Engineer",
+    "Content Strategist"
+  ],
+
+  "departments": [
+    "Engineering",
+    "Design",
+    "Marketing",
+    "Sales",
+    "Customer Success",
+    "Operations",
+    "Finance",
+    "Human Resources",
+    "Product",
+    "Legal"
+  ],
+
+  "metrics": {
+    "users": {
+      "small": [847, 1234, 2891, 3456, 4012],
+      "medium": [12847, 18923, 24531, 31245, 45231],
+      "large": [127450, 234891, 389234, 512847, 678234]
+    },
+    "revenue": {
+      "small": ["$8,450", "$12,340", "$28,910", "$34,560", "$40,120"],
+      "medium": ["$127,450", "$189,230", "$245,310", "$312,450", "$452,310"],
+      "large": ["$1.27M", "$2.34M", "$3.89M", "$5.12M", "$6.78M"]
+    },
+    "percentages": {
+      "growth": ["+12.4%", "+8.7%", "+23.1%", "+15.8%", "+31.2%"],
+      "decline": ["-3.2%", "-7.8%", "-2.1%", "-5.4%", "-1.9%"],
+      "conversion": ["2.4%", "3.8%", "5.2%", "4.1%", "6.7%"],
+      "completion": ["78%", "84%", "91%", "67%", "95%"]
+    },
+    "counts": {
+      "tasks": [12, 24, 37, 8, 45, 19, 31],
+      "projects": [3, 7, 12, 5, 9, 15, 21],
+      "messages": [156, 234, 89, 312, 178, 445, 267]
+    },
+    "time": {
+      "duration": ["2h 34m", "45m", "1h 12m", "3h 08m", "28m"],
+      "response": ["< 1 hour", "2-4 hours", "Same day", "24 hours", "< 30 min"]
+    }
+  },
+
+  "dates": {
+    "recent": [
+      "Jan 13, 2026",
+      "Jan 12, 2026",
+      "Jan 10, 2026",
+      "Jan 8, 2026",
+      "Jan 5, 2026",
+      "Dec 28, 2025",
+      "Dec 21, 2025",
+      "Dec 15, 2025"
+    ],
+    "relative": [
+      "Just now",
+      "2 minutes ago",
+      "15 minutes ago",
+      "1 hour ago",
+      "3 hours ago",
+      "Yesterday",
+      "2 days ago",
+      "Last week",
+      "2 weeks ago",
+      "Last month"
+    ],
+    "timestamps": [
+      "9:34 AM",
+      "11:15 AM",
+      "2:45 PM",
+      "4:22 PM",
+      "6:08 PM",
+      "8:30 AM",
+      "12:00 PM",
+      "3:17 PM"
+    ]
+  },
+
+  "statuses": {
+    "tasks": ["Not Started", "In Progress", "In Review", "Completed", "On Hold", "Cancelled"],
+    "orders": ["Pending", "Processing", "Shipped", "Delivered", "Returned", "Refunded"],
+    "tickets": ["Open", "In Progress", "Waiting on Customer", "Resolved", "Closed"],
+    "projects": ["Planning", "Active", "On Track", "At Risk", "Completed", "Archived"]
+  },
+
+  "priorities": ["Critical", "High", "Medium", "Low", "None"],
+
+  "categories": {
+    "products": ["Electronics", "Clothing", "Home & Garden", "Sports", "Books", "Toys"],
+    "content": ["Blog Post", "Case Study", "Tutorial", "Documentation", "News", "Announcement"],
+    "support": ["Bug Report", "Feature Request", "Question", "Feedback", "Account Issue"]
+  },
+
+  "headlines": {
+    "marketing": [
+      "Streamline your workflow with intelligent automation",
+      "Turn data into actionable insights",
+      "Scale your business without the complexity",
+      "The modern platform for growing teams",
+      "Built for speed. Designed for clarity.",
+      "Your data, your way. No compromises.",
+      "From chaos to clarity in minutes",
+      "The toolkit trusted by leading teams"
+    ],
+    "features": [
+      "Real-time collaboration",
+      "Advanced analytics",
+      "Seamless integrations",
+      "Enterprise-grade security",
+      "Customizable workflows",
+      "Automated reporting",
+      "Team management",
+      "API access"
+    ],
+    "benefits": [
+      "Save 10+ hours per week",
+      "Reduce errors by 90%",
+      "Increase team productivity",
+      "Make faster decisions",
+      "Improve customer satisfaction",
+      "Scale without limits"
+    ]
+  },
+
+  "descriptions": {
+    "short": [
+      "A powerful tool for modern teams.",
+      "Simplify complex workflows instantly.",
+      "Built with performance in mind.",
+      "Trusted by thousands of companies.",
+      "The smarter way to work."
+    ],
+    "medium": [
+      "Our platform helps teams collaborate more effectively, automate repetitive tasks, and focus on what matters most.",
+      "Designed for businesses of all sizes, we provide the tools you need to scale without the complexity.",
+      "With real-time analytics and intuitive dashboards, you'll always have the insights you need to make informed decisions.",
+      "Join thousands of teams who have transformed their workflow and achieved measurable results."
+    ],
+    "features": [
+      "Automatically sync data across all your tools and platforms in real-time.",
+      "Create custom reports with drag-and-drop simplicity. No coding required.",
+      "Set up automated workflows that trigger based on your specific conditions.",
+      "Collaborate with your team in real-time with built-in comments and mentions.",
+      "Track progress with visual dashboards that update automatically."
+    ]
+  },
+
+  "testimonials": [
+    {
+      "quote": "This platform has completely transformed how our team works. We've cut our reporting time in half.",
+      "author": "Sarah Chen",
+      "title": "Head of Operations",
+      "company": "Meridian Analytics"
+    },
+    {
+      "quote": "The best investment we've made this year. The ROI was visible within the first month.",
+      "author": "Marcus Johnson",
+      "title": "CEO",
+      "company": "Vertex Cloud"
+    },
+    {
+      "quote": "Finally, a tool that actually delivers on its promises. Our team adoption was nearly instant.",
+      "author": "Priya Sharma",
+      "title": "Product Manager",
+      "company": "Prism Data"
+    },
+    {
+      "quote": "We evaluated dozens of solutions. This was the clear winner for our enterprise needs.",
+      "author": "David Kim",
+      "title": "CTO",
+      "company": "Cascade Systems"
+    }
+  ],
+
+  "pricing": {
+    "tiers": [
+      {
+        "name": "Starter",
+        "price": "$0",
+        "period": "forever",
+        "description": "Perfect for individuals and small projects",
+        "features": ["Up to 3 projects", "Basic analytics", "Email support", "1 team member"]
+      },
+      {
+        "name": "Professional",
+        "price": "$29",
+        "period": "per month",
+        "description": "For growing teams that need more power",
+        "features": ["Unlimited projects", "Advanced analytics", "Priority support", "Up to 10 team members", "Custom integrations"]
+      },
+      {
+        "name": "Enterprise",
+        "price": "Custom",
+        "period": "contact us",
+        "description": "For organizations with advanced needs",
+        "features": ["Everything in Professional", "Unlimited team members", "Dedicated support", "Custom contracts", "SLA guarantees", "SSO & SAML"]
+      }
+    ]
+  },
+
+  "navigation": {
+    "main": ["Home", "Features", "Pricing", "About", "Contact"],
+    "product": ["Overview", "Features", "Integrations", "Pricing", "Changelog"],
+    "resources": ["Documentation", "API Reference", "Tutorials", "Blog", "Community"],
+    "company": ["About Us", "Careers", "Press", "Partners", "Contact"],
+    "legal": ["Privacy Policy", "Terms of Service", "Cookie Policy", "Security"],
+    "dashboard": ["Dashboard", "Projects", "Analytics", "Team", "Settings"]
+  },
+
+  "cta": {
+    "primary": ["Get Started", "Start Free Trial", "Sign Up Free", "Try It Free", "Get Started Free"],
+    "secondary": ["Learn More", "See How It Works", "View Demo", "Book a Demo", "Contact Sales"],
+    "action": ["Save Changes", "Create Project", "Send Message", "Submit", "Confirm", "Continue"]
+  },
+
+  "emptyStates": {
+    "noData": "No data available yet. Start by creating your first project.",
+    "noResults": "No results found. Try adjusting your search or filters.",
+    "noProjects": "You don't have any projects yet. Create one to get started.",
+    "noMessages": "No messages yet. Start a conversation with your team.",
+    "noNotifications": "You're all caught up! No new notifications."
+  },
+
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "network": "Unable to connect. Please check your internet connection.",
+    "notFound": "The page you're looking for doesn't exist.",
+    "unauthorized": "You don't have permission to access this resource.",
+    "validation": "Please check your input and try again."
+  },
+
+  "success": {
+    "saved": "Changes saved successfully.",
+    "created": "Created successfully.",
+    "deleted": "Deleted successfully.",
+    "sent": "Message sent successfully.",
+    "updated": "Updated successfully."
+  }
+}

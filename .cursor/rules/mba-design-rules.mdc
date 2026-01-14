@@ -1,0 +1,215 @@
+---
+description: MBA Design Rules - Professional UI/UX that avoids AI slop
+globs: ["**/*.html", "**/*.css", "**/*.jsx", "**/*.tsx", "**/*.vue", "**/*.svelte"]
+alwaysApply: true
+---
+
+# MBA Design Rules
+
+Generate UI/UX that looks professionally designed by humans, not AI.
+
+## Critical Resources
+
+| Resource | Path | Purpose |
+|----------|------|---------|
+| Design Tokens | `.mba-template/tokens/tokens.css` | ALL approved values |
+| Sample Content | `.mba-template/content/sample-content.json` | Realistic placeholder data |
+| Component Examples | `.mba-template/examples/` | Working HTML references |
+| Anti-Patterns | `.mba-template/anti-patterns/ai-generated-tells.md` | What NOT to do |
+
+---
+
+## 1. Spacing (Use tokens.css)
+
+**APPROVED VALUES ONLY:**
+```
+4px, 8px, 12px, 16px, 20px, 24px, 32px, 40px, 48px, 64px, 80px, 96px
+```
+
+**FORBIDDEN:** 7px, 13px, 19px, 23px, or ANY value not listed above.
+
+| Context | Values |
+|---------|--------|
+| Icon gaps | 4-8px |
+| Button padding | 8-12px vertical, 16-24px horizontal |
+| Card padding | 16-24px |
+| Section spacing | 48-64px |
+| Page margins | 16px (mobile), 24px (tablet), 32px (desktop) |
+
+---
+
+## 2. Colors (Use tokens.css)
+
+**Use semantic tokens only.** Never invent hex colors.
+
+| Role | Token | Usage |
+|------|-------|-------|
+| Text primary | `--color-text-primary` | Main content |
+| Text secondary | `--color-text-secondary` | Supporting text |
+| Background | `--color-bg-primary` | Page background |
+| Interactive | `--color-interactive-primary` | Buttons, links |
+| Success | `--color-status-success` | Positive feedback |
+| Error | `--color-status-error` | Errors, destructive |
+| Warning | `--color-status-warning` | Caution states |
+
+**Contrast:** 4.5:1 minimum (body text), 3:1 (large text 18px+)
+
+---
+
+## 3. Typography
+
+**Font:** System stack (`-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`)
+
+| Element | Size | Weight | Line Height |
+|---------|------|--------|-------------|
+| H1 | 32-48px | 700 | 1.1-1.2 |
+| H2 | 24-32px | 600 | 1.2-1.3 |
+| H3 | 20-24px | 600 | 1.3 |
+| Body | 14-16px | 400 | 1.5-1.6 |
+| Small | 12-14px | 400 | 1.4 |
+
+**Line length:** 50-75 characters (`max-width: 65ch`)
+
+---
+
+## 4. Border Radius
+
+**ONLY these 4 values:**
+```
+4px  - buttons, inputs, tags
+8px  - cards, dropdowns
+12px - modals, large panels
+9999px - pills, avatars ONLY
+```
+
+**FORBIDDEN:** 16px+ on small elements, random values like 6px, 10px, 14px.
+
+---
+
+## 5. Icons
+
+**NEVER generate SVG code.** Use icon libraries:
+
+```html
+<!-- Font Awesome (recommended) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<i class="fa-solid fa-user" aria-hidden="true"></i>
+
+<!-- With accessible label -->
+<button aria-label="Close"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+```
+
+**Sizes:** 16px, 20px, 24px, 32px, 48px
+
+---
+
+## 6. Components
+
+### Buttons
+- **Primary:** Filled, brand color
+- **Secondary:** Outlined/ghost
+- **Danger:** Red, destructive actions
+- **Sizes:** 32px (sm), 40px (md), 48px (lg) height
+
+### Inputs
+- Height: 40px default
+- Padding: 12-16px horizontal
+- States: default, hover, focus (2px outline), error (red border), disabled
+
+### Cards
+- Padding: 16-24px
+- Variants: flat (border), elevated (shadow), interactive (hover state)
+
+---
+
+## 7. Accessibility
+
+| Requirement | Value |
+|-------------|-------|
+| Touch targets | 44px × 44px minimum |
+| Focus outline | 2px solid, 2px offset |
+| Contrast (body) | 4.5:1 |
+| Contrast (large) | 3:1 |
+
+**Required:**
+- Semantic HTML (`<button>`, `<nav>`, `<main>`, not `<div onclick>`)
+- Form labels for all inputs
+- `aria-label` for icon-only buttons
+- `aria-hidden="true"` for decorative icons
+- `prefers-reduced-motion` support
+
+---
+
+## 8. Motion (Use tokens.css)
+
+**APPROVED DURATIONS:**
+```
+100ms - hover, focus
+200ms - buttons, inputs
+300ms - modals, drawers
+500ms - page transitions
+```
+
+**Easing:**
+- `ease-out` - entrances
+- `ease-in` - exits
+- `ease-in-out` - state changes
+
+**Only animate:** `transform`, `opacity` (avoid `width`, `height`, `margin`)
+
+---
+
+## 9. Responsive
+
+**Breakpoints:**
+```
+640px  - tablet
+768px  - tablet landscape
+1024px - desktop
+1280px - large desktop
+```
+
+**Mobile-first:** Start with mobile styles, enhance with `@media (min-width: ...)`.
+
+---
+
+## 10. Anti-AI Patterns (NEVER DO)
+
+| ❌ Never | ✅ Instead |
+|----------|-----------|
+| Gradients everywhere | Solid colors, gradients sparingly |
+| Random spacing (7px, 13px) | Use approved scale |
+| Over-rounded corners (>16px) | 4px, 8px, 12px only |
+| "Lorem ipsum" | Use sample-content.json |
+| "John Doe", "Acme Corp" | Realistic names from sample-content.json |
+| All text centered | Left-align body text |
+| Rainbow colors (8+) | 2-3 accent colors max |
+| No hover/focus states | Clear interactive feedback |
+| Generate SVG code | Use icon libraries |
+
+---
+
+## Quick Checklist
+
+Before finalizing:
+- [ ] Spacing uses approved scale only
+- [ ] Colors from tokens.css only
+- [ ] Icons from library (no generated SVG)
+- [ ] Touch targets ≥ 44px
+- [ ] Focus states visible (2px outline)
+- [ ] Contrast ≥ 4.5:1
+- [ ] Semantic HTML
+- [ ] Real content (no Lorem ipsum)
+- [ ] Reduced motion support
+
+---
+
+## References
+
+| System | Path |
+|--------|------|
+| shadcn/ui | `.mba-template/design-systems/shadcn-ui/` |
+| Vercel Geist | `.mba-template/design-systems/vercel-geist/` |
+| Linear | `.mba-template/design-systems/linear/` |
+| Material Design 3 | `.mba-template/design-systems/material-design-3/` |
+| Apple HIG | `.mba-template/design-systems/apple-hig/` |

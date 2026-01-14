@@ -30,7 +30,7 @@ Reference: `.mba-template/design-systems/*/components.md` for detailed patterns
 </button>
 ```
 
-**IMPORTANT**: See `.cursor/rules/15-icons-assets.mdc` - Always use icon libraries, never generate SVG code.
+**IMPORTANT**: NEVER generate SVG code - use icon libraries (Font Awesome, Heroicons, etc.)
 
 ### States
 - Default, Hover, Active, Focus, Disabled, Loading

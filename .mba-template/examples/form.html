@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Components - MBA Design System</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* 
+     * Form Components
+     * Copy this CSS into your project.
+     * Uses design tokens from tokens.css
+     */
+    
+    /* Form Layout */
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+
+    .form-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .form-section-title {
+      font-size: var(--font-size-base);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-primary);
+      margin: 0;
+      padding-bottom: var(--space-2);
+      border-bottom: 1px solid var(--color-border-primary);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-4);
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--space-3);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--color-border-primary);
+    }
+
+    /* Form Field */
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    /* Label */
+    .form-label {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+      color: var(--color-text-primary);
+    }
+
+    .form-label-required::after {
+      content: " *";
+      color: var(--color-status-error);
+    }
+
+    /* Input Base */
+    .form-input {
+      height: var(--size-md);
+      padding: 0 var(--space-3);
+      font-family: var(--font-sans);
+      font-size: var(--font-size-sm);
+      color: var(--color-text-primary);
+      background-color: var(--color-bg-primary);
+      border: 1px solid var(--color-border-primary);
+      border-radius: var(--radius-md);
+      transition: var(--transition-colors);
+      outline: none;
+    }
+
+    .form-input::placeholder {
+      color: var(--color-text-tertiary);
+    }
+
+    .form-input:hover:not(:disabled) {
+      border-color: var(--color-border-secondary);
+    }
+
+    .form-input:focus {
+      border-color: var(--color-border-focus);
+      box-shadow: 0 0 0 3px var(--primary-100);
+    }
+
+    .form-input:disabled {
+      background-color: var(--color-bg-secondary);
+      color: var(--color-text-disabled);
+      cursor: not-allowed;
+    }
+
+    /* Input Sizes */
+    .form-input-sm {
+      height: var(--size-sm);
+      font-size: var(--font-size-xs);
+    }
+
+    .form-input-lg {
+      height: var(--size-lg);
+      font-size: var(--font-size-base);
+    }
+
+    /* Input with Icon */
+    .form-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .form-input-icon {
+      position: absolute;
+      left: var(--space-3);
+      color: var(--color-text-tertiary);
+      pointer-events: none;
+    }
+
+    .form-input-icon-right {
+      left: auto;
+      right: var(--space-3);
+    }
+
+    .form-input-wrapper .form-input {
+      padding-left: var(--space-10);
+    }
+
+    .form-input-wrapper .form-input.has-icon-right {
+      padding-right: var(--space-10);
+      padding-left: var(--space-3);
+    }
+
+    /* Textarea */
+    .form-textarea {
+      min-height: 120px;
+      padding: var(--space-3);
+      resize: vertical;
+      height: auto;
+    }
+
+    /* Select */
+    .form-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23737373' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right var(--space-3) center;
+      padding-right: var(--space-10);
+      cursor: pointer;
+    }
+
+    /* Checkbox & Radio */
+    .form-checkbox-group,
+    .form-radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .form-checkbox,
+    .form-radio {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-2);
+      cursor: pointer;
+    }
+
+    .form-checkbox input,
+    .form-radio input {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      cursor: pointer;
+      accent-color: var(--color-interactive-primary);
+    }
+
+    .form-checkbox-label,
+    .form-radio-label {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-primary);
+      line-height: var(--line-height-snug);
+    }
+
+    .form-checkbox-description,
+    .form-radio-description {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-secondary);
+      margin-top: var(--space-1);
+    }
+
+    /* Help Text */
+    .form-help {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-secondary);
+    }
+
+    /* Error State */
+    .form-field-error .form-input,
+    .form-field-error .form-select,
+    .form-field-error .form-textarea {
+      border-color: var(--color-status-error);
+    }
+
+    .form-field-error .form-input:focus,
+    .form-field-error .form-select:focus,
+    .form-field-error .form-textarea:focus {
+      box-shadow: 0 0 0 3px var(--error-100);
+    }
+
+    .form-error {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+      font-size: var(--font-size-xs);
+      color: var(--color-status-error);
+    }
+
+    /* Success State */
+    .form-field-success .form-input,
+    .form-field-success .form-select {
+      border-color: var(--color-status-success);
+    }
+
+    .form-field-success .form-input:focus,
+    .form-field-success .form-select:focus {
+      box-shadow: 0 0 0 3px var(--success-100);
+    }
+
+    .form-success {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+      font-size: var(--font-size-xs);
+      color: var(--color-status-success);
+    }
+
+    /* Toggle/Switch */
+    .form-toggle {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      cursor: pointer;
+    }
+
+    .form-toggle-input {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      appearance: none;
+      background-color: var(--gray-300);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: var(--transition-colors);
+    }
+
+    .form-toggle-input::before {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background-color: white;
+      border-radius: var(--radius-full);
+      transition: transform var(--duration-normal) var(--ease-out);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .form-toggle-input:checked {
+      background-color: var(--color-interactive-primary);
+    }
+
+    .form-toggle-input:checked::before {
+      transform: translateX(20px);
+    }
+
+    .form-toggle-input:focus-visible {
+      outline: none;
+      box-shadow: var(--shadow-focus);
+    }
+
+    .form-toggle-label {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-primary);
+    }
+
+    /* Button styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      font-family: var(--font-sans);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+      line-height: var(--line-height-none);
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition-colors);
+    }
+
+    .btn:focus-visible {
+      outline: none;
+      box-shadow: var(--shadow-focus);
+    }
+
+    .btn-md {
+      height: var(--size-md);
+      padding: 0 var(--space-4);
+    }
+
+    .btn-primary {
+      background-color: var(--color-interactive-primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--color-interactive-primary-hover);
+    }
+
+    .btn-secondary {
+      background-color: var(--color-bg-primary);
+      color: var(--color-text-primary);
+      border-color: var(--color-border-primary);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--color-bg-hover);
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      color: var(--color-text-primary);
+    }
+
+    .btn-ghost:hover {
+      background-color: var(--color-bg-hover);
+    }
+
+    /* ========================================
+     * Demo Page Styles
+     * ======================================== */
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--color-bg-secondary);
+      color: var(--color-text-primary);
+      line-height: var(--line-height-normal);
+      padding: var(--space-8);
+      margin: 0;
+    }
+
+    .demo-section {
+      background-color: var(--color-bg-primary);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      margin-bottom: var(--space-6);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .demo-section h2 {
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-semibold);
+      margin: 0 0 var(--space-4) 0;
+    }
+
+    .demo-section h3 {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+      color: var(--color-text-secondary);
+      margin: var(--space-6) 0 var(--space-3) 0;
+      text-transform: uppercase;
+      letter-spacing: var(--letter-spacing-wide);
+    }
+
+    .demo-section h3:first-of-type {
+      margin-top: 0;
+    }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-6);
+    }
+
+    .demo-title {
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-bold);
+      margin: 0 0 var(--space-2) 0;
+    }
+
+    .demo-subtitle {
+      font-size: var(--font-size-base);
+      color: var(--color-text-secondary);
+      margin: 0 0 var(--space-8) 0;
+    }
+
+    .code-block {
+      background-color: var(--gray-900);
+      color: var(--gray-100);
+      padding: var(--space-4);
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      font-size: var(--font-size-sm);
+      overflow-x: auto;
+      margin-top: var(--space-4);
+    }
+  </style>
+</head>
+<body>
+  <h1 class="demo-title">Form Components</h1>
+  <p class="demo-subtitle">Complete form system with inputs, validation states, and layouts. Copy the CSS above into your project.</p>
+
+  <!-- Text Inputs -->
+  <section class="demo-section">
+    <h2>Text Inputs</h2>
+    
+    <h3>Basic Input</h3>
+    <div class="demo-grid">
+      <div class="form-field">
+        <label class="form-label" for="input-basic">Email Address</label>
+        <input type="email" id="input-basic" class="form-input" placeholder="sarah.chen@meridian.io">
+        <span class="form-help">We'll never share your email with anyone else.</span>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label form-label-required" for="input-required">Full Name</label>
+        <input type="text" id="input-required" class="form-input" placeholder="Sarah Chen" required>
+      </div>
+    </div>
+
+    <h3>Input Sizes</h3>
+    <div class="demo-grid">
+      <div class="form-field">
+        <label class="form-label" for="input-sm">Small</label>
+        <input type="text" id="input-sm" class="form-input form-input-sm" placeholder="Small input">
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="input-md">Medium (Default)</label>
+        <input type="text" id="input-md" class="form-input" placeholder="Medium input">
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="input-lg">Large</label>
+        <input type="text" id="input-lg" class="form-input form-input-lg" placeholder="Large input">
+      </div>
+    </div>
+
+    <h3>Input with Icons</h3>
+    <div class="demo-grid">
+      <div class="form-field">
+        <label class="form-label" for="input-search">Search</label>
+        <div class="form-input-wrapper">
+          <i class="fa-solid fa-magnifying-glass form-input-icon" aria-hidden="true"></i>
+          <input type="search" id="input-search" class="form-input" placeholder="Search projects...">
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="input-email">Email</label>
+        <div class="form-input-wrapper">
+          <i class="fa-solid fa-envelope form-input-icon" aria-hidden="true"></i>
+          <input type="email" id="input-email" class="form-input" placeholder="you@company.com">
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="input-password">Password</label>
+        <div class="form-input-wrapper">
+          <input type="password" id="input-password" class="form-input has-icon-right" placeholder="Enter password">
+          <i class="fa-solid fa-eye form-input-icon form-input-icon-right" aria-hidden="true"></i>
+        </div>
+      </div>
+    </div>
+
+    <h3>Disabled State</h3>
+    <div class="form-field" style="max-width: 320px;">
+      <label class="form-label" for="input-disabled">Disabled Input</label>
+      <input type="text" id="input-disabled" class="form-input" value="Cannot edit this" disabled>
+    </div>
+  </section>
+
+  <!-- Validation States -->
+  <section class="demo-section">
+    <h2>Validation States</h2>
+    <div class="demo-grid">
+      <div class="form-field form-field-error">
+        <label class="form-label form-label-required" for="input-error">Email Address</label>
+        <input type="email" id="input-error" class="form-input" value="invalid-email" aria-invalid="true" aria-describedby="error-email">
+        <span class="form-error" id="error-email">
+          <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+          <span>Please enter a valid email address</span>
+        </span>
+      </div>
+
+      <div class="form-field form-field-success">
+        <label class="form-label" for="input-success">Username</label>
+        <input type="text" id="input-success" class="form-input" value="sarahchen" aria-describedby="success-username">
+        <span class="form-success" id="success-username">
+          <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+          <span>Username is available</span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Select & Textarea -->
+  <section class="demo-section">
+    <h2>Select & Textarea</h2>
+    <div class="demo-grid">
+      <div class="form-field">
+        <label class="form-label" for="select-basic">Department</label>
+        <select id="select-basic" class="form-input form-select">
+          <option value="">Select a department</option>
+          <option value="engineering">Engineering</option>
+          <option value="design">Design</option>
+          <option value="marketing">Marketing</option>
+          <option value="sales">Sales</option>
+          <option value="operations">Operations</option>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="select-disabled">Status (Disabled)</label>
+        <select id="select-disabled" class="form-input form-select" disabled>
+          <option value="active" selected>Active</option>
+        </select>
+      </div>
+    </div>
+
+    <h3>Textarea</h3>
+    <div class="form-field" style="max-width: 600px;">
+      <label class="form-label" for="textarea-basic">Project Description</label>
+      <textarea id="textarea-basic" class="form-input form-textarea" placeholder="Describe your project goals, timeline, and key deliverables..."></textarea>
+      <span class="form-help">Maximum 500 characters</span>
+    </div>
+  </section>
+
+  <!-- Checkboxes & Radios -->
+  <section class="demo-section">
+    <h2>Checkboxes & Radio Buttons</h2>
+    <div class="demo-grid">
+      <div class="form-field">
+        <span class="form-label">Notification Preferences</span>
+        <div class="form-checkbox-group">
+          <label class="form-checkbox">
+            <input type="checkbox" checked>
+            <div>
+              <span class="form-checkbox-label">Email notifications</span>
+              <p class="form-checkbox-description">Receive updates about your projects via email</p>
+            </div>
+          </label>
+          <label class="form-checkbox">
+            <input type="checkbox" checked>
+            <div>
+              <span class="form-checkbox-label">Push notifications</span>
+              <p class="form-checkbox-description">Get instant alerts on your device</p>
+            </div>
+          </label>
+          <label class="form-checkbox">
+            <input type="checkbox">
+            <div>
+              <span class="form-checkbox-label">Weekly digest</span>
+              <p class="form-checkbox-description">Summary of activity sent every Monday</p>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <span class="form-label">Billing Cycle</span>
+        <div class="form-radio-group">
+          <label class="form-radio">
+            <input type="radio" name="billing" value="monthly">
+            <div>
+              <span class="form-radio-label">Monthly</span>
+              <p class="form-radio-description">$29/month, billed monthly</p>
+            </div>
+          </label>
+          <label class="form-radio">
+            <input type="radio" name="billing" value="annual" checked>
+            <div>
+              <span class="form-radio-label">Annual</span>
+              <p class="form-radio-description">$290/year, save 17%</p>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Toggle Switches -->
+  <section class="demo-section">
+    <h2>Toggle Switches</h2>
+    <div style="display: flex; flex-direction: column; gap: var(--space-4); max-width: 400px;">
+      <label class="form-toggle">
+        <input type="checkbox" class="form-toggle-input" checked>
+        <span class="form-toggle-label">Enable two-factor authentication</span>
+      </label>
+      <label class="form-toggle">
+        <input type="checkbox" class="form-toggle-input">
+        <span class="form-toggle-label">Show online status</span>
+      </label>
+      <label class="form-toggle">
+        <input type="checkbox" class="form-toggle-input" checked>
+        <span class="form-toggle-label">Auto-save drafts</span>
+      </label>
+    </div>
+  </section>
+
+  <!-- Complete Form Example -->
+  <section class="demo-section">
+    <h2>Complete Form Example</h2>
+    <form class="form" style="max-width: 600px;">
+      <div class="form-section">
+        <h3 class="form-section-title">Personal Information</h3>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label form-label-required" for="form-firstname">First Name</label>
+            <input type="text" id="form-firstname" class="form-input" placeholder="Sarah">
+          </div>
+          <div class="form-field">
+            <label class="form-label form-label-required" for="form-lastname">Last Name</label>
+            <input type="text" id="form-lastname" class="form-input" placeholder="Chen">
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label form-label-required" for="form-email">Email Address</label>
+          <div class="form-input-wrapper">
+            <i class="fa-solid fa-envelope form-input-icon" aria-hidden="true"></i>
+            <input type="email" id="form-email" class="form-input" placeholder="sarah.chen@meridian.io">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="form-section-title">Work Details</h3>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label" for="form-company">Company</label>
+            <input type="text" id="form-company" class="form-input" placeholder="Meridian Analytics">
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="form-role">Job Title</label>
+            <select id="form-role" class="form-input form-select">
+              <option value="">Select role</option>
+              <option value="designer">Product Designer</option>
+              <option value="engineer">Senior Engineer</option>
+              <option value="manager">Project Manager</option>
+              <option value="analyst">Data Analyst</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="form-bio">Bio</label>
+          <textarea id="form-bio" class="form-input form-textarea" placeholder="Tell us a bit about yourself and your work..."></textarea>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="form-section-title">Preferences</h3>
+        <label class="form-toggle">
+          <input type="checkbox" class="form-toggle-input" checked>
+          <span class="form-toggle-label">Receive product updates</span>
+        </label>
+        <label class="form-toggle">
+          <input type="checkbox" class="form-toggle-input">
+          <span class="form-toggle-label">Subscribe to newsletter</span>
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost btn-md">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-md">
+          <i class="fa-solid fa-check" aria-hidden="true"></i>
+          <span>Save Profile</span>
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Usage Code -->
+  <section class="demo-section">
+    <h2>Usage</h2>
+    <pre class="code-block">&lt;!-- Basic input with label --&gt;
+&lt;div class="form-field"&gt;
+  &lt;label class="form-label" for="email"&gt;Email&lt;/label&gt;
+  &lt;input type="email" id="email" class="form-input" placeholder="you@company.com"&gt;
+  &lt;span class="form-help"&gt;We'll never share your email.&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;!-- Input with error state --&gt;
+&lt;div class="form-field form-field-error"&gt;
+  &lt;label class="form-label form-label-required" for="email"&gt;Email&lt;/label&gt;
+  &lt;input type="email" id="email" class="form-input" aria-invalid="true"&gt;
+  &lt;span class="form-error"&gt;
+    &lt;i class="fa-solid fa-circle-exclamation"&gt;&lt;/i&gt;
+    &lt;span&gt;Please enter a valid email&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/div&gt;
+
+&lt;!-- Input with icon --&gt;
+&lt;div class="form-input-wrapper"&gt;
+  &lt;i class="fa-solid fa-magnifying-glass form-input-icon"&gt;&lt;/i&gt;
+  &lt;input type="search" class="form-input" placeholder="Search..."&gt;
+&lt;/div&gt;
+
+&lt;!-- Toggle switch --&gt;
+&lt;label class="form-toggle"&gt;
+  &lt;input type="checkbox" class="form-toggle-input" checked&gt;
+  &lt;span class="form-toggle-label"&gt;Enable feature&lt;/span&gt;
+&lt;/label&gt;</pre>
+  </section>
+
+</body>
+</html>
