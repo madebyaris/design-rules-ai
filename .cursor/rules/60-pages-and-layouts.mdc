@@ -1,0 +1,207 @@
+---
+description: Page archetypes and layout primitives — focal point, scan pattern, density-per-archetype. Read when designing or generating any page.
+globs: ["**/*.html", "**/*.jsx", "**/*.tsx", "**/*.vue", "**/*.svelte", "**/*.astro"]
+alwaysApply: true
+---
+
+# Pages and Layouts
+
+This rule is about composing pages, not page templates to copy verbatim. Start from primitives, choose an archetype, apply the density.
+
+---
+
+## 1. Layout primitives
+
+Use these six primitives (Every Layout vocabulary). Compose pages from primitives, not from one-off divs with custom flex/grid every time.
+
+| Primitive | Purpose | Implementation |
+|-----------|---------|----------------|
+| **Stack** | Vertical rhythm | `display: flex; flex-direction: column; gap: var(--space-N)` |
+| **Cluster** | Horizontal grouping that wraps | `display: flex; flex-wrap: wrap; gap: var(--space-N); align-items: center` |
+| **Grid** | Equal-width cells, auto-responsive | `display: grid; grid-template-columns: repeat(auto-fit, minmax(MIN, 1fr)); gap: var(--space-N)` |
+| **Sidebar** | Fixed sidebar + flexible main | `display: grid; grid-template-columns: 240px 1fr` (or `auto 1fr` for collapsible) |
+| **Switcher** | Switches between rows and columns | Flex with `flex-basis: calc((BREAKPOINT - 100%) * 999)` |
+| **Cover** | Hero/full-bleed centered content | `display: grid; min-height: MIN; place-items: center` |
+
+---
+
+## 2. Focal point rule
+
+**Every page has exactly ONE primary action above the fold.** No exceptions.
+
+- Landing page: one CTA in the hero (e.g. "Start free trial"). The nav "Sign up" is secondary because it's chrome.
+- Dashboard: one primary action in the page header (e.g. "Create invoice"). Filter/search are tools, not actions.
+- Settings: usually no primary action — the form's "Save" is the implicit primary, and it sticks to the bottom.
+- Empty state: one primary CTA per empty surface.
+
+If you find yourself with two equally-weighted CTAs, you've already lost. Demote one.
+
+---
+
+## 3. Scan pattern rule
+
+Pick one based on archetype:
+
+- **F-pattern** (left-to-right, top-down): for content-heavy pages — articles, search results, dashboards, settings.
+- **Z-pattern** (top-left → top-right → bottom-left → bottom-right): for marketing pages with a clear linear narrative — landing pages, pricing, product tours.
+
+Place the focal CTA where the scan ends.
+
+---
+
+## 4. Density per archetype
+
+| Archetype | Density (see [10-tokens-and-scales.mdc §10](mdc:.cursor/rules/10-tokens-and-scales.mdc)) |
+|-----------|------------------------------------------------------------|
+| Marketing landing | **Spacious** (24px base, 16–18px body, 80–96px section padding) |
+| Article / blog | **Spacious** with `max-width: 65ch` body |
+| SaaS dashboard | **Compact** (8px base, 13–14px body, 32px row height) |
+| Admin panel | **Compact** |
+| Settings | **Comfortable** (16px base, 14–16px body, 40px row height) |
+| Auth (login/signup) | **Comfortable**, narrow (max 400px) |
+| Onboarding | **Spacious**, single-column |
+| E-commerce product | **Comfortable** |
+| Profile | **Comfortable** |
+
+---
+
+## 5. Page archetypes
+
+### Landing (marketing)
+
+**Density:** spacious. **Scan:** Z-pattern.
+
+Sections (compose with Stack primitive):
+1. **Header / nav** — sticky, transparent over hero, opaque on scroll.
+2. **Hero** — Cover primitive, 60–80vh. Headline (≤ 60 chars), subhead (≤ 2 sentences), 1 primary CTA, 1 optional secondary, visual.
+3. **Social proof** — logos (4–8, grayscale) OR stats OR a single anchor testimonial.
+4. **Features** — Grid of 3–4 cells. Icon (32px) + 2-word title + 1-sentence description.
+5. **How it works** — 3 steps, numbered.
+6. **Testimonials** — 1–3 with photo, name, title, company.
+7. **Pricing** (optional) — 2–3 tiers, recommended tier visually emphasized.
+8. **FAQ** — 5–8 questions in `<details>` accordions.
+9. **Final CTA** — repeats hero CTA with different framing.
+10. **Footer** — 3–5 columns of links + copyright + social.
+
+Pull copy and names from `[.mba-template/content/sample-content.json](mdc:.mba-template/content/sample-content.json)`. See `[.mba-template/patterns/landing-page-sections.md](mdc:.mba-template/patterns/landing-page-sections.md)`.
+
+### Dashboard
+
+**Density:** compact. **Scan:** F-pattern.
+
+Layout (Sidebar primitive):
+- **Header** (56–64px, sticky): brand, search, notifications, profile.
+- **Sidebar** (240–280px, collapsible to 56px): nav grouped by section, active indicator, collapse toggle at bottom.
+- **Main:**
+  - Page header: H1 + breadcrumbs + actions (right) + filters (below).
+  - Metrics row (Grid, 2–4 KPI cards with realistic numbers from sample-content).
+  - Primary view: chart, table, or kanban.
+  - Secondary view: activity feed or recent items.
+
+**Required:** empty, loading (skeleton), error states for every data block. Realistic data — no `User 1`, `User 2`, `$1,000.00`. See `[.mba-template/patterns/dashboard-layouts.md](mdc:.mba-template/patterns/dashboard-layouts.md)`.
+
+### Settings
+
+**Density:** comfortable. **Scan:** F-pattern.
+
+Layout: Sidebar (settings sub-nav, 200–240px) + main form. Or Stack (sections with anchor links) for shorter settings.
+
+- Each section: H2 + 1-line description + form fields + section-scoped Save button OR sticky page Save bar at bottom.
+- Use native `<form>` elements with `<fieldset>` for grouped fields.
+- Destructive actions (delete account) live in their own section with red accent and confirmation dialog.
+
+### Auth (login / signup / forgot password)
+
+**Density:** comfortable. **Layout:** Cover primitive, max 400px content width.
+
+- Brand at top.
+- Heading (Welcome back / Create your account).
+- 1–2 SSO buttons (Google, GitHub, Apple) — top, equally weighted.
+- "or" divider.
+- Email + password fields.
+- Primary submit.
+- Secondary link (Forgot? / Sign in instead).
+- Optional: marketing visual on right half (desktop only, hide on mobile).
+
+### Article / blog
+
+**Density:** spacious. **Layout:** Single column, `max-width: 65ch` for prose, breakout for images/code/quotes.
+
+- Header: title, author + date + reading time, optional cover image.
+- Body: H2/H3 hierarchy, prose with `max-width: 65ch`, code blocks full-width, images with captions.
+- Footer: author bio, related articles (Grid), comments (optional).
+
+### Error (404, 500)
+
+**Density:** spacious. **Layout:** Cover primitive.
+
+- Large icon or illustration (don't generate — use icon library).
+- Heading: "Page not found" / "Something went wrong".
+- 1–2 sentences of helpful copy (not "Error 404").
+- 2 actions: primary (Back to home), secondary (Search OR Contact support).
+- Optional: top 3–5 popular page links.
+
+### Search results
+
+**Density:** comfortable. **Layout:** Sidebar (filters, 240px) + main (results stack).
+
+- Search bar prominent at top with current query.
+- Filters in sidebar: type, date, sort.
+- Results: title (link, H3), 2-line snippet with query highlighted, metadata row (date, author, category).
+- Pagination at bottom OR infinite scroll with "Load more" fallback.
+- Empty state if no results: rephrase suggestion + recent searches.
+
+### Profile
+
+**Density:** comfortable. **Layout:** Cover-style header + Tabs below.
+
+- Header: avatar (80–120px), name (H1), bio, stats cluster, action cluster (Follow / Message / Edit).
+- Tabs: Posts / About / Activity.
+- Content: Grid for visual posts, Stack for text posts.
+
+### Checkout / payment
+
+**Density:** comfortable. **Layout:** Sidebar (order summary, 360px, sticky) + main (form).
+
+- Progress indicator at top (3–4 steps).
+- Form sections in Stack: shipping → payment → review.
+- Order summary on right, sticky on desktop, collapsible on mobile.
+- Trust badges (lock icon + "Secure checkout") near payment fields.
+- Primary CTA per step, never two competing CTAs.
+
+---
+
+## 6. Responsive rules
+
+- **Mobile-first:** start with mobile styles, enhance with `@media (min-width: ...)`.
+- **Sidebar → Drawer:** sidebars collapse to hamburger drawers below `--bp-md`.
+- **Grid → Stack:** multi-column grids collapse to single column below `--bp-sm`.
+- **Sticky → Static:** disable sticky elements below `--bp-md` (they eat too much screen).
+- **Container queries (preferred):** for components inside grids that resize independently of viewport. See `[.mba-template/patterns/container-queries.md](mdc:.mba-template/patterns/container-queries.md)`.
+
+---
+
+## 7. View transitions (modern)
+
+For SPA-style navigation, list-to-detail, modal open, theme switch — use the View Transitions API:
+
+```css
+@view-transition { navigation: auto; }
+.detail-card { view-transition-name: card-N; }
+```
+
+See `[.mba-template/patterns/view-transitions.md](mdc:.mba-template/patterns/view-transitions.md)`. Always honor `prefers-reduced-motion`.
+
+---
+
+## 8. Self-check before returning
+
+- [ ] One primary action above the fold?
+- [ ] Page committed to a single density (compact / comfortable / spacious)?
+- [ ] Composed from primitives (Stack, Cluster, Grid, Sidebar, Switcher, Cover) — not one-off layouts?
+- [ ] Scan pattern matches archetype (F or Z)?
+- [ ] All data blocks have empty / loading / error states?
+- [ ] Real content (names, copy, numbers) from `sample-content.json`?
+- [ ] Mobile layout defined?
+- [ ] Semantic landmarks (`<header>`, `<nav>`, `<main>`, `<aside>`, `<footer>`)?
+- [ ] Heading hierarchy intact (one H1, then H2 → H3, no skips)?

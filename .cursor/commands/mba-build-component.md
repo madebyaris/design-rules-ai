@@ -1,167 +1,160 @@
 ---
 name: mba-build-component
-description: Generate a production-ready component with proper structure and states
+description: Generate a production-ready, accessible component using MBA design rules
 ---
 
 # MBA Build Component
 
-Generate a semantic, accessible, production-ready component following MBA design system rules.
+Generate a single, production-ready component. This command is a **thin orchestrator** — the design rules live in `.cursor/rules/`, not here.
 
 ## Arguments
 
-- `component_name` (required): Name of component (e.g., "button", "card", "navigation", "data-table")
-- `framework` (optional): html|react|vue|svelte|web-component - default: html
-- `variants` (optional): Comma-separated list (e.g., "primary,secondary,ghost") - default: based on component
-- `sizes` (optional): Comma-separated list (e.g., "small,medium,large") - default: "medium"
-- `theme` (optional): enterprise|neutral|editorial|playful - default: enterprise
-- `with_examples` (optional): true|false - include usage examples - default: true
+- `component_name` (required) — e.g. `button`, `input`, `card`, `data-table`, `combobox`.
+- `framework` (optional, default `html`) — `html` | `react` | `vue` | `svelte` | `web-component` | `react-native`.
+- `variants` (optional) — comma-separated. Default depends on component (e.g. button → `primary,secondary,ghost,danger`).
+- `sizes` (optional) — comma-separated. Default `sm,md,lg`.
+- `density` (optional, default `comfortable`) — `compact` | `comfortable` | `spacious`.
+- `system` (optional, default `shadcn-ui`) — design system to emulate: `shadcn-ui` | `vercel-geist` | `linear` | `material-design-3` | `apple-hig` | `adobe-spectrum` | `ibm-carbon` | `microsoft-fluent-2`.
+- `with_examples` (optional, default `true`) — generate a usage example file.
 
-## Instructions
+## Procedure
 
-1. **Review Component Patterns**:
-   - Read `.cursor/rules/50-components.mdc`
-   - Reference `.mba-template/design-systems/*/components.md`
-   - Check `.cursor/rules/70-accessibility.mdc`
+Run these steps in order. Do not skip the self-critique.
 
-2. **Generate Component Structure**:
-   
-   **HTML/CSS:**
-   ```html
-   <!-- Semantic HTML with proper ARIA -->
-   <button class="btn btn--primary btn--medium" type="button">
-     <span class="btn__icon"><!-- optional --></span>
-     <span class="btn__label">Button Text</span>
-   </button>
-   ```
-   
-   **React:**
-   ```jsx
-   interface ButtonProps {
-     variant?: 'primary' | 'secondary' | 'ghost';
-     size?: 'small' | 'medium' | 'large';
-     disabled?: boolean;
-     onClick?: () => void;
-     children: React.ReactNode;
-   }
-   
-   export const Button: React.FC<ButtonProps> = ({ ... }) => { ... }
-   ```
+### 1. READ the rules (in order)
 
-3. **Include All States**:
-   - Default
-   - Hover
-   - Active/Pressed
-   - Focus (keyboard navigation)
-   - Disabled
-   - Loading (if applicable)
-   - Error (if applicable)
+- `[.cursor/rules/00-design-principles.mdc](mdc:.cursor/rules/00-design-principles.mdc)` — principles + non-negotiables + self-critique.
+- `[.cursor/rules/10-tokens-and-scales.mdc](mdc:.cursor/rules/10-tokens-and-scales.mdc)` — every approved value. Use ONLY these.
+- `[.cursor/rules/50-components.mdc](mdc:.cursor/rules/50-components.mdc)` — anatomy framework + 8-state matrix.
 
-4. **Implement Accessibility**:
-   - Proper semantic HTML elements
-   - ARIA labels where needed
-   - Keyboard navigation support
-   - Focus indicators (2px outline)
-   - Screen reader support
-   - Touch targets (44px × 44px minimum for mobile)
+### 2. READ the reference
 
-5. **Apply Theme**:
-   - Use design tokens from `tokens.css`
-   - Apply theme-specific spacing/sizing
-   - Ensure WCAG AA contrast
-   - Platform-appropriate patterns
+- `[.mba-template/design-systems/{system}/components.md](mdc:.mba-template/design-systems/)` — what to copy from the chosen design system.
+- Matching example HTML in `[.mba-template/examples/](mdc:.mba-template/examples/)` if it exists (button, input, card, modal, table, nav, empty-state, skeleton).
+- `[.mba-template/tokens/tokens-modern.css](mdc:.mba-template/tokens/tokens-modern.css)` — token variable names.
 
-6. **Generate Documentation**:
-   - Component description
-   - Props/attributes
-   - Variants and sizes
-   - Usage examples
-   - Accessibility notes
-   - Do's and don'ts
+### 3. PLAN (write 5 lines before writing code)
 
-7. **Create Examples**:
-   - Basic usage
-   - All variants
-   - All sizes
-   - Different states
-   - Common patterns
-   - Edge cases
+Answer in your own words:
 
-## Common Components
+1. Container, content, affordances, states, density (the 5-part anatomy).
+2. Which of the 8 states apply (default, hover, focus-visible, active, disabled, loading, empty, error)?
+3. Density commitment (compact / comfortable / spacious) and which token vars that maps to.
+4. Reference design system (`{system}`) — what specifically you're borrowing.
+5. Accessibility notes (semantic element, ARIA needs, keyboard model).
 
-### Button
-- Variants: primary, secondary, tertiary/ghost, danger
-- Sizes: small (32px), medium (40px), large (48px)
-- States: default, hover, active, focus, disabled, loading
+### 4. GENERATE
 
-### Input
-- Types: text, email, password, number, search, textarea
-- States: default, hover, focus, error, disabled, readonly
-- Features: label, placeholder, help text, error message, icons
+Output the component using the framework selected. Reference design tokens via CSS variables — never hardcode pixel values, hex codes, or font sizes.
 
-### Card
-- Variants: flat (border only), elevated (shadow), interactive
-- Sections: header, body, footer
-- Features: title, actions, media, padding
+#### HTML / CSS shape
 
-### Table
-- Features: sortable columns, row hover, selection, pagination
-- Responsive: card-based on mobile
-- Accessibility: proper th/td, scope attributes
-
-### Navigation
-- Types: top nav, side nav, bottom tabs, breadcrumbs
-- States: active, hover, focus
-- Responsive: hamburger menu on mobile
-
-### Modal/Dialog
-- Sizes: small (480px), medium (600px), large (800px)
-- Features: overlay, header, body, footer, close button
-- Behavior: focus trap, escape to close, return focus
-
-## Output Files
-
-1. Component file:
-   - `components/{component_name}.{html|jsx|vue|svelte}`
-   - `components/{component_name}.css` (if separate)
-
-2. Documentation:
-   - `components/{component_name}.md`
-
-3. Examples:
-   - `examples/{component_name}-example.{html|jsx|vue|svelte}`
-
-## Quality Checks
-
-- [ ] Semantic HTML structure
-- [ ] All variants implemented
-- [ ] All sizes implemented
-- [ ] All states included (hover, focus, disabled, etc.)
-- [ ] ARIA labels where needed
-- [ ] Keyboard navigation works
-- [ ] Focus indicators visible (2px outline)
-- [ ] Touch targets adequate (44px+ for mobile)
-- [ ] WCAG AA contrast ratios
-- [ ] Design tokens used (no hardcoded values)
-- [ ] Responsive behavior defined
-- [ ] Documentation complete
-- [ ] Examples provided
-
-## Example Usage
-
-```
-/mba-build-component component_name="button" framework="react" variants="primary,secondary,ghost,danger" sizes="small,medium,large" theme="enterprise" with_examples="true"
+```html
+<button class="btn btn--primary btn--md" type="button">
+  <i class="fa-solid fa-save" aria-hidden="true"></i>
+  <span>Save changes</span>
+</button>
 ```
 
-This will generate a React button component with all variants, sizes, and comprehensive examples.
+```css
+.btn {
+  height: var(--component-row-h, 40px);
+  padding: 0 var(--space-4);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--easing-out),
+              transform var(--duration-fast) var(--easing-out);
+  /* ...all 8 states defined below... */
+}
+```
 
-## Anti-Patterns to Avoid
+#### React shape (TS)
 
-Reference `.cursor/rules/80-anti-ai-patterns.mdc`:
-- No random spacing values
-- No excessive gradients
-- No over-rounded corners (>16px)
-- No low contrast text
-- No missing states (hover, focus)
-- No tiny touch targets
-- No divs for buttons
+```tsx
+import { cva, type VariantProps } from "class-variance-authority";
 
+const button = cva("btn", {
+  variants: {
+    variant: { primary: "btn--primary", secondary: "btn--secondary", ghost: "btn--ghost", danger: "btn--danger" },
+    size: { sm: "btn--sm", md: "btn--md", lg: "btn--lg" },
+  },
+  defaultVariants: { variant: "primary", size: "md" },
+});
+
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof button> {
+  loading?: boolean;
+}
+
+export function Button({ variant, size, loading, children, className, ...rest }: ButtonProps) {
+  return (
+    <button className={button({ variant, size, className })} disabled={loading || rest.disabled} {...rest}>
+      {loading ? <Spinner /> : children}
+    </button>
+  );
+}
+```
+
+### 5. SELF-CRITIQUE (Layer C from `00-design-principles.mdc`)
+
+Score 1–5 on each. If any < 4, revise once before returning.
+
+- **Hierarchy** — is the primary visual emphasis on the most important element?
+- **Restraint** — anything you could remove and lose nothing?
+- **Rhythm** — every value from `10-tokens-and-scales.mdc`?
+- **Content fit** — realistic example copy (no Lorem, no "Acme")?
+- **Accessibility** — semantic HTML, focus-visible distinct from hover, ARIA, 44px touch targets?
+- **Reference** — would this look at home in the chosen design system's codebase?
+
+Then run the **anatomy + states checklist** from `50-components.mdc` §8.
+
+### 6. OUTPUT
+
+Files to create (exact paths):
+
+| Framework | Files |
+|-----------|-------|
+| `html` | `components/{name}.html`, `components/{name}.css` |
+| `react` | `components/{Name}.tsx`, `components/{name}.module.css` (or Tailwind classes inline) |
+| `vue` | `components/{Name}.vue` |
+| `svelte` | `components/{Name}.svelte` |
+| `web-component` | `components/{name}-element.ts` |
+
+If `with_examples=true`: also create `examples/{name}-example.{ext}` showing all variants × all sizes × key states.
+
+Finish with a 1-paragraph rationale: which design system you emulated and why, and the one most-important design decision.
+
+## Common components — quick reference
+
+| Component | Default variants | Default sizes | Notable states beyond the 8 |
+|-----------|-----------------|---------------|------------------------------|
+| `button` | primary, secondary, ghost, danger, link | sm 32 / md 40 / lg 48 | — |
+| `input` | text, email, password, search, number | sm 32 / md 40 / lg 48 | readonly |
+| `card` | flat, elevated, interactive | — | — |
+| `modal` | sm 400 / md 600 / lg 800 / full | — | open, closing |
+| `data-table` | basic, selectable, sortable | compact / comfortable / spacious rows | sorted-asc, sorted-desc |
+| `dropdown` | menu, select, combobox | — | open |
+| `toast` | success, warning, danger, info | — | entering, exiting |
+| `tabs` | underline, filled, pills | — | — |
+
+## Example invocations
+
+```
+/mba-build-component component_name="button" framework="react" variants="primary,secondary,ghost,danger"
+/mba-build-component component_name="data-table" framework="react" density="compact" system="vercel-geist"
+/mba-build-component component_name="modal" framework="html" sizes="sm,md,lg"
+```
+
+## Definition of done
+
+- [ ] All 8 states defined or N/A documented.
+- [ ] `:focus-visible` ring distinct from `:hover`.
+- [ ] Semantic element used (button, dialog, table, nav).
+- [ ] All values from `10-tokens-and-scales.mdc` (no hardcoded px / hex).
+- [ ] Empty / loading / error states for any data-dependent component.
+- [ ] No generated SVG — icons from a library.
+- [ ] Example file shows all variants × all sizes.
+- [ ] 1-paragraph design rationale written.

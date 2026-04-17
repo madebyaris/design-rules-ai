@@ -1,200 +1,74 @@
-# IBM Carbon - Component Patterns
+# IBM Carbon — Components Cheat Sheet
 
-## Button
+**Canonical docs:** https://carbondesignsystem.com
 
-### Variants
-- **Primary**: Filled, high emphasis, blue background
-- **Secondary**: Outlined, medium emphasis
-- **Tertiary**: Ghost, low emphasis, no border
-- **Danger**: Red, for destructive actions
-- **Danger--tertiary**: Red text, ghost style
+**What to copy from this system:** enterprise data-density, IBM Plex typography, rigorous WCAG 2.1 AA compliance, deep component coverage for B2B.
 
-### Sizes
-- **Small**: 32px height
-- **Medium**: 40px height (default)
-- **Large**: 48px height
-- **Extra Large**: 64px height
-- **2X Large**: 80px height
+---
 
-### Structure
-- Icon (optional, 16px)
-- Label (required)
-- Padding: 16px horizontal, calculated vertical
+## When to choose Carbon
 
-### States
-- Default, Hover, Active, Focus, Disabled
-- Focus: 2px blue inset border
+- Enterprise SaaS, B2B dashboards, data-heavy admin tools.
+- Highly regulated industries (finance, healthcare, gov).
+- Apps requiring extensive form patterns (filters, multi-step wizards, complex tables).
+- Teams that value comprehensive React/Web Component libraries with long-term support.
 
-## Text Input
+---
 
-### Structure
-- Label (required, 12px)
-- Input field (40px height default)
-- Helper text (optional, 12px)
-- Error/warning message (12px)
+## Defining traits
 
-### Variants
-- Default
-- Fluid (full width)
-- With icon
-- Password (with show/hide toggle)
+| Trait | How |
+|-------|-----|
+| **2x grid** | All measurements are multiples of 2px. Spacing scale: 2, 4, 8, 12, 16, 24, 32, 40, 48, 64, 80, 96, 160. |
+| **IBM Plex Sans / Mono** | Designed in-house for clarity at small sizes. Distinctive but neutral. |
+| **High data density** | Default sizes are dense (sm = 32px). `xl` = 48px is the largest. |
+| **Strong a11y** | WCAG 2.1 AA baseline. Focus indicators are 2px solid. |
+| **Comprehensive theming** | White, Gray 10, Gray 90, Gray 100 themes. Switchable. |
+| **Productive vs Expressive** | Productive = data-dense (default). Expressive = marketing-leaning, more whitespace. |
 
-### States
-- Default, Focus, Error, Warning, Disabled, Read-only
+---
 
-## Dropdown/Select
+## Component patterns
 
-### Structure
-- Label (12px)
-- Selected value display (40px height)
-- Dropdown icon (16px chevron)
-- Menu (overlay, max 10 items visible)
+| Component | Notable detail |
+|-----------|---------------|
+| **Data Table** | Sortable, expandable, batch-actions, sticky header, dense/compact/normal/tall sizes. |
+| **Multi-Select** | Token-based with combobox filtering. |
+| **Date Picker** | Range picker, calendar grid, locale-aware. |
+| **File Uploader** | Drag-drop + button, multi-file, status per file. |
+| **Tile** | Clickable / Selectable / Expandable variants. Used heavily as alt to cards. |
+| **Notification** | Inline (in-flow), Toast (transient), Actionable (with button). |
+| **Accordion** | Single or multi-expand, with chevron animations. |
+| **Loading** | Inline (button-sized), Section, Page, Overlay. |
+| **Number Input** | Spinner buttons, keyboard arrow up/down, min/max validation. |
 
-### States
-- Closed, Open, Focus, Error, Disabled
+---
 
-## Checkbox & Radio
+## Color tokens
 
-### Sizes
-- Small: 16px
-- Medium: 20px (default)
+```
+$background, $background-hover, $background-active, $background-selected
+$layer-01, $layer-02, $layer-03  (3 levels of surface elevation)
+$text-primary, $text-secondary, $text-placeholder, $text-helper, $text-on-color
+$border-subtle, $border-strong, $border-inverse
+$support-error, $support-success, $support-warning, $support-info
+```
 
-### Structure
-- Input indicator
-- Label text (14px)
-- Helper text (optional, 12px)
+Tokens are theme-aware — same name, different value across White/Gray themes.
 
-### States
-- Unchecked, Checked, Indeterminate (checkbox only), Focus, Disabled
+---
 
-## Data Table
+## Implementation
 
-### Structure
-- Header row (background: gray-20)
-- Body rows (alternating optional)
-- Sortable columns (with icon)
-- Batch actions toolbar
-- Pagination
+- React: `@carbon/react` (v1 and beyond).
+- Web Components: `@carbon/web-components`.
+- Vue, Angular, Svelte: official ports exist.
 
-### Row Heights
-- **Compact**: 24px
-- **Short**: 32px
-- **Normal**: 48px (default)
-- **Tall**: 64px
+---
 
-### Cell Padding
-- Horizontal: 16px
-- Vertical: varies by row height
+## What to AVOID copying
 
-### Features
-- Sortable columns
-- Selectable rows (checkbox)
-- Expandable rows
-- Inline editing
-- Batch actions
-- Search/filter
-
-## Modal
-
-### Sizes
-- **Extra Small**: 384px
-- **Small**: 512px
-- **Medium**: 768px (default)
-- **Large**: 1024px
-
-### Structure
-- Overlay (gray-100 at 50% opacity)
-- Container (centered)
-- Header (label + title + close button)
-- Body (scrollable content)
-- Footer (actions, right-aligned)
-
-### Padding
-- All sides: 16px (small) or 24px (medium+)
-
-## Notification/Toast
-
-### Variants
-- **Inline**: Within page flow
-- **Toast**: Floating, auto-dismiss
-- **Banner**: Full-width, persistent
-
-### Types
-- Info (blue)
-- Success (green)
-- Warning (yellow)
-- Error (red)
-
-### Structure
-- Icon (16px)
-- Title (14px, semi-bold)
-- Subtitle (14px)
-- Action button (optional)
-- Close button
-
-## Tabs
-
-### Variants
-- **Default**: Horizontal, underline indicator
-- **Container**: With background
-- **Contained**: Tabs within a container
-
-### Structure
-- Tab item (40px height)
-- Label (14px)
-- Active indicator (2px blue underline)
-- Content panel
-
-### States
-- Default, Hover, Active, Focus, Disabled
-
-## Accordion
-
-### Structure
-- Header (40-48px height)
-- Title (14px)
-- Chevron icon (16px)
-- Content panel (collapsible)
-
-### States
-- Collapsed, Expanded, Focus, Disabled
-
-## Tag
-
-### Sizes
-- **Small**: 18px height
-- **Medium**: 24px height (default)
-
-### Variants
-- **Read-only**: Display only
-- **Dismissible**: With close button
-- **Selectable**: Interactive, can be toggled
-- **Operational**: With icon
-
-### Colors
-- Red, Magenta, Purple, Blue, Cyan, Teal, Green, Gray, Cool-gray, Warm-gray
-
-## Breadcrumb
-
-### Structure
-- Items separated by slash (/)
-- Current page (no link, gray-70)
-- Previous pages (links, blue-60)
-- Overflow menu for long paths
-
-### Sizes
-- Default: 14px
-- Large: 16px
-
-## Pagination
-
-### Structure
-- Items per page selector
-- Page number display
-- Previous/Next buttons
-- First/Last buttons (optional)
-
-### Variants
-- **Default**: Full controls
-- **Simple**: Just prev/next
-
+- Don't use Carbon for consumer products — it reads as "enterprise IBM software", which can feel sterile.
+- Don't ignore the productive/expressive distinction — using productive density for marketing pages feels cramped.
+- Don't override IBM Plex without a specific brand reason — it's tuned for the system.
+- Don't mix Carbon with Material — they share grid concepts but diverge in motion, color, and density.

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Table — MBA Design Examples</title>
+  <link rel="stylesheet" href="../tokens/tokens-modern.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-fg); padding: var(--space-8); }
+
+    .table-wrap { overflow-x: auto; border: 1px solid var(--color-border); border-radius: var(--radius-md); }
+    table { width: 100%; border-collapse: collapse; font-size: var(--font-size-sm); }
+    thead { background: var(--color-bg-subtle); }
+    th { text-align: left; padding: var(--space-3) var(--space-4); font-weight: 500; color: var(--color-fg-muted); border-bottom: 1px solid var(--color-border); white-space: nowrap; }
+    td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border); font-variant-numeric: tabular-nums; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr { transition: background var(--duration-fast) var(--easing-out); }
+    tbody tr:hover { background: var(--color-bg-muted); }
+
+    th[aria-sort] { cursor: pointer; user-select: none; }
+    th[aria-sort]:hover { color: var(--color-fg); }
+    th .sort-icon { font-size: 10px; margin-left: var(--space-1); opacity: 0.5; }
+    th[aria-sort="ascending"] .sort-icon::before  { content: "\f0d8"; opacity: 1; }
+    th[aria-sort="descending"] .sort-icon::before { content: "\f0d7"; opacity: 1; }
+
+    td.numeric { text-align: right; }
+    .pill { display: inline-flex; align-items: center; gap: var(--space-1); padding: 2px var(--space-2); font-size: var(--font-size-xs); font-weight: 500; border-radius: var(--radius-full); }
+    .pill--success { background: color-mix(in oklch, var(--color-success) 12%, transparent); color: var(--color-success); }
+    .pill--warning { background: color-mix(in oklch, var(--color-warning) 12%, transparent); color: var(--color-warning); }
+    .pill--neutral { background: var(--color-bg-muted); color: var(--color-fg-muted); }
+    .pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+    /* Skeleton row */
+    .sk { display: inline-block; height: 12px; background: var(--color-bg-muted); border-radius: 3px; vertical-align: middle; }
+    .sk--w-md { width: 120px; } .sk--w-lg { width: 180px; } .sk--w-sm { width: 60px; }
+
+    /* Empty state */
+    .empty { text-align: center; padding: var(--space-12) var(--space-6); color: var(--color-fg-muted); }
+    .empty__icon { font-size: 32px; margin-bottom: var(--space-3); opacity: 0.6; }
+    .empty__title { color: var(--color-fg); font-weight: 600; font-size: var(--font-size-base); margin: 0 0 var(--space-2); }
+
+    /* Pagination */
+    .pagination { display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-4); border-top: 1px solid var(--color-border); font-size: var(--font-size-xs); color: var(--color-fg-muted); }
+    .pagination__nav button { background: none; border: 1px solid var(--color-border); padding: var(--space-1) var(--space-3); border-radius: var(--radius-sm); cursor: pointer; color: inherit; font: inherit; margin-left: var(--space-2); }
+    .pagination__nav button:hover { background: var(--color-bg-muted); }
+    .pagination__nav button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    h2 { font-size: var(--font-size-sm); text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); margin: var(--space-8) 0 var(--space-3); }
+  </style>
+</head>
+<body>
+
+  <h2>Default — sortable, hoverable, with status pills</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th aria-sort="none">Customer <span class="sort-icon"></span></th>
+          <th aria-sort="descending">Date <span class="sort-icon"></span></th>
+          <th>Status</th>
+          <th class="numeric" aria-sort="none">Amount <span class="sort-icon"></span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Sasha Patel</td>
+          <td>Apr 17, 2026</td>
+          <td><span class="pill pill--success">Paid</span></td>
+          <td class="numeric">$2,847.50</td>
+        </tr>
+        <tr>
+          <td>Marcus Okonkwo</td>
+          <td>Apr 16, 2026</td>
+          <td><span class="pill pill--warning">Pending</span></td>
+          <td class="numeric">$412.00</td>
+        </tr>
+        <tr>
+          <td>Yuki Tanaka</td>
+          <td>Apr 15, 2026</td>
+          <td><span class="pill pill--success">Paid</span></td>
+          <td class="numeric">$18,294.12</td>
+        </tr>
+        <tr>
+          <td>Elena Rodríguez</td>
+          <td>Apr 14, 2026</td>
+          <td><span class="pill pill--neutral">Draft</span></td>
+          <td class="numeric">$3,610.78</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination">
+      <span>1–4 of 247</span>
+      <div class="pagination__nav">
+        <button type="button" disabled>← Previous</button>
+        <button type="button">Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <h2>Loading — skeleton rows</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Customer</th><th>Date</th><th>Status</th><th class="numeric">Amount</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="sk sk--w-md"></span></td><td><span class="sk sk--w-sm"></span></td><td><span class="sk sk--w-sm"></span></td><td class="numeric"><span class="sk sk--w-sm"></span></td></tr>
+        <tr><td><span class="sk sk--w-lg"></span></td><td><span class="sk sk--w-sm"></span></td><td><span class="sk sk--w-sm"></span></td><td class="numeric"><span class="sk sk--w-sm"></span></td></tr>
+        <tr><td><span class="sk sk--w-md"></span></td><td><span class="sk sk--w-sm"></span></td><td><span class="sk sk--w-sm"></span></td><td class="numeric"><span class="sk sk--w-sm"></span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Empty state</h2>
+  <div class="table-wrap">
+    <div class="empty">
+      <div class="empty__icon"><i class="fa-solid fa-file-invoice" aria-hidden="true"></i></div>
+      <p class="empty__title">No invoices yet</p>
+      <p>Create your first invoice to start tracking payments.</p>
+    </div>
+  </div>
+
+</body>
+</html>

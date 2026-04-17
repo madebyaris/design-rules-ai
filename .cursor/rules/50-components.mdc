@@ -1,376 +1,218 @@
 ---
-description: Component design patterns and best practices
-globs: ["**/*.html", "**/*.css", "**/*.jsx", "**/*.tsx", "**/*.vue", "**/*.svelte"]
+description: Component composition rules — anatomy, required states, density, interactive feedback. Read when designing or generating any component.
+globs: ["**/*.html", "**/*.css", "**/*.jsx", "**/*.tsx", "**/*.vue", "**/*.svelte", "**/*.astro"]
 alwaysApply: true
 ---
 
-# Component Patterns
+# Components
 
-Reference: `.mba-template/design-systems/*/components.md` for detailed patterns
+This rule is about **how components are composed**, not a snippet catalog. Snippets are illustrations only.
 
-## Button
+Reference systems for canonical patterns: `[.mba-template/design-systems/](mdc:.mba-template/design-systems/)` (each system has `overview.md` + `components.md`). Reference live HTML: `[.mba-template/examples/](mdc:.mba-template/examples/)`.
 
-### Variants (choose 3-4)
-- **Primary/Filled**: Solid background, high emphasis
-- **Secondary/Outlined**: Border, medium emphasis
-- **Tertiary/Ghost**: No border, low emphasis
-- **Danger/Destructive**: Red, for delete/remove actions
+---
 
-### Sizes
-- **Small**: 28-32px height
-- **Medium**: 36-40px height (default)
-- **Large**: 44-48px height
+## 1. Anatomy framework
 
-### Structure
-```html
-<button class="btn btn-primary btn-medium">
-  <!-- Use icon library (Font Awesome, Heroicons, etc.) - NEVER generate SVG -->
-  <i class="fa-solid fa-save" aria-hidden="true"></i>
-  <span>Button Text</span>
-</button>
+Every component must define five things. If you can't articulate all five, you haven't finished designing it.
+
+| Layer | Question to answer |
+|-------|--------------------|
+| **Container** | What's the outer shell? Bounds, padding, radius, background, border. |
+| **Content** | What lives inside? Text, icons, controls, slots. |
+| **Affordances** | What can the user do? Click, hover, keyboard-focus, drag, swipe. |
+| **States** | How does it look in each state? (See §2.) |
+| **Density** | Does it support compact/comfortable/spacious variants, or is it fixed? |
+
+---
+
+## 2. Required states matrix
+
+Every interactive component must specify all 8 states. Missing states is the most common AI tell.
+
+| State | Trigger | Visual change |
+|-------|---------|---------------|
+| **Default** | Resting | Base styles |
+| **Hover** | Pointer over (desktop only) | Subtle bg/border shift, cursor: pointer |
+| **Focus-visible** | Keyboard tab | 2px outline, 2px offset, `--color-border-strong` |
+| **Active / Pressed** | Click/tap held | Scale 0.98 OR slightly darker bg |
+| **Disabled** | Non-interactive | `opacity: 0.5`, `cursor: not-allowed`, `pointer-events: none` |
+| **Loading** | Async work | Spinner replaces label OR skeleton overlay |
+| **Empty** | No data (containers) | Icon + message + primary action |
+| **Error** | Validation/network | Red border + inline message + role="alert" |
+
+**Hover and focus-visible MUST look different.** Hover is for the mouse, focus-visible is for the keyboard. Using `outline: none` without replacement is a hard fail.
+
+---
+
+## 3. Density
+
+A page commits to one density (compact / comfortable / spacious — see `[10-tokens-and-scales.mdc](mdc:.cursor/rules/10-tokens-and-scales.mdc)` §10). Components inherit page density via CSS variable indirection:
+
+```css
+.page-compact { --component-padding: var(--space-2); --component-row-h: 32px; }
+.page-comfortable { --component-padding: var(--space-4); --component-row-h: 40px; }
+.page-spacious { --component-padding: var(--space-6); --component-row-h: 48px; }
 ```
 
-**IMPORTANT**: NEVER generate SVG code - use icon libraries (Font Awesome, Heroicons, etc.)
+---
 
-### States
-- Default, Hover, Active, Focus, Disabled, Loading
+## 4. Interactive feedback rule
 
-### Focus State
-- 2px outline, primary color
-- 2px offset from button
-- Visible on keyboard navigation
+Anything clickable, hoverable, or focusable must change visibly on **both** hover AND focus-visible — and the two must be visually distinct.
 
-## Input Fields
-
-### Types
-- Text, Email, Password, Number, Tel, URL, Search, Textarea
-
-### Structure
-```html
-<div class="form-field">
-  <label for="input-id">Label</label>
-  <input type="text" id="input-id" placeholder="Placeholder">
-  <span class="help-text">Help text</span>
-  <span class="error-text">Error message</span>
-</div>
+```css
+.btn { transition: background-color 100ms ease-out, transform 100ms ease-out; }
+.btn:hover { background-color: color-mix(in oklch, var(--color-accent) 90%, white); }
+.btn:focus-visible { outline: 2px solid var(--color-border-strong); outline-offset: 2px; }
+.btn:active { transform: scale(0.98); }
 ```
 
-### Sizes
-- **Small**: 32px height
-- **Medium**: 40px height (default)
-- **Large**: 48px height
+---
 
-### States
-- Default, Hover, Focus, Error, Disabled, Read-only
+## 5. Components — anatomy specs
 
-### Validation
-- Inline validation on blur
-- Error message below field
-- Error icon in field (optional)
-- Red border on error
+Each section defines anatomy and links to the full example. Do not duplicate styling rules from `10-tokens-and-scales.mdc` here.
 
-## Card
+### Button
 
-### Structure
-```html
-<div class="card">
-  <div class="card-header">
-    <h3>Title</h3>
-    <button>Action</button>
-  </div>
-  <div class="card-body">
-    Content
-  </div>
-  <div class="card-footer">
-    <button>Cancel</button>
-    <button>Save</button>
-  </div>
-</div>
-```
+- **Container:** `<button type="...">` (never `<div>`). Min-height = density row-h. Padding: vertical `--space-2/3`, horizontal `--space-4/5`. Radius `--radius-sm`.
+- **Variants:** primary (filled, brand), secondary (outlined), ghost (no border, hover bg), danger (red), link (underline on hover).
+- **Sizes:** sm (32px), md (40px), lg (48px). Match density.
+- **Loading:** disable interaction, replace label with spinner, keep width (use `min-width` from rendered label width to prevent layout jump).
+- **Full example:** `[.mba-template/examples/button.html](mdc:.mba-template/examples/button.html)`.
 
-### Variants
-- **Flat**: Border only, no shadow
-- **Elevated**: Subtle shadow
-- **Interactive**: Hover state, clickable
+### Input / Textarea
 
-### Spacing
-- Padding: 16-24px
-- Header to body: 12-16px
-- Body to footer: 16px
+- **Container:** `<div class="form-field">` wrapping `<label>` + `<input>` + optional help/error.
+- **Label:** always present, never replaced by placeholder alone. Position: above input (vertical) or left (horizontal/compact).
+- **Sizes:** sm (32px), md (40px), lg (48px).
+- **States:** default, hover (border darkens), focus-visible (2px ring), error (red border + icon + `aria-invalid="true"` + role="alert" message), disabled (opacity 0.5, bg-muted), readonly (no border, no bg).
+- **Validation:** inline on blur, never on every keystroke. Error message lives below input.
+- **Full example:** `[.mba-template/examples/input.html](mdc:.mba-template/examples/input.html)`.
 
-## Table
+### Card
 
-### Structure
-```html
-<table>
-  <thead>
-    <tr>
-      <th>Column 1</th>
-      <th>Column 2</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Data 1</td>
-      <td>Data 2</td>
-    </tr>
-  </tbody>
-</table>
-```
+- **Container:** semantic element if applicable (`<article>`, `<section>`), padding `--component-padding`, radius `--radius-md`, optional `--shadow-sm`.
+- **Variants:** flat (border, no shadow), elevated (shadow, no border), interactive (entire card clickable — wrap in `<a>` with `:focus-visible` ring).
+- **Slots:** header (title + actions), body (content), footer (secondary actions).
+- **Spacing:** header→body `--space-3`, body→footer `--space-4`.
+- **Full example:** `[.mba-template/examples/card.html](mdc:.mba-template/examples/card.html)`.
 
-### Features
-- Sortable columns (with icon)
-- Row hover state
-- Selected row state
-- Pagination
-- Empty state
+### Table
 
-### Spacing
-- Cell padding: 8-12px horizontal, 8-12px vertical
-- Row height: 40-48px
-- Header background: Subtle gray
+- **Container:** semantic `<table>`, never divs. Wrap in `<div style="overflow-x:auto">` for horizontal scroll on mobile.
+- **Header:** `<thead>` with `<th scope="col">`, sortable indicator (icon button inside `<th>` with `aria-sort`).
+- **Rows:** hover bg `--color-bg-muted`, selected state `--color-accent` at 8% mix.
+- **Cells:** padding matches density. Right-align numeric columns. Use tabular numerals (`font-variant-numeric: tabular-nums`).
+- **Required:** empty state, loading state (skeleton rows), error state, pagination, column sort.
+- **Full example:** `[.mba-template/examples/table.html](mdc:.mba-template/examples/table.html)`.
 
-## Modal/Dialog
+### Modal / Dialog
 
-### Structure
-```html
-<div class="modal-overlay">
-  <div class="modal">
-    <div class="modal-header">
-      <h2>Title</h2>
-      <button aria-label="Close">×</button>
-    </div>
-    <div class="modal-body">
-      Content
-    </div>
-    <div class="modal-footer">
-      <button>Cancel</button>
-      <button>Confirm</button>
-    </div>
-  </div>
-</div>
-```
+- **Container:** `<dialog>` element (preferred — native focus trap, native ESC dismiss) or `role="dialog" aria-modal="true"`.
+- **Sizes:** sm 400px, md 600px, lg 800px, fullscreen (mobile only).
+- **Backdrop:** `rgb(0 0 0 / 0.5)` or `backdrop-filter: blur(4px)` for premium feel.
+- **Behavior:** focus trap, return focus on close, ESC to dismiss, click backdrop to dismiss (unless destructive confirm).
+- **Animation:** scale 0.95 → 1 + opacity 0 → 1, 200ms ease-out. Backdrop opacity 0 → 1.
+- **Full example:** `[.mba-template/examples/modal.html](mdc:.mba-template/examples/modal.html)`.
 
-### Sizes
-- Small: 400-480px
-- Medium: 600px (default)
-- Large: 800-960px
-- Full: 90% viewport
+### Navigation
 
-### Behavior
-- Overlay dims background (rgba(0,0,0,0.5))
-- Center on screen
-- Trap focus inside modal
-- Escape to close (if safe)
-- Return focus on close
+- **Top nav:** semantic `<nav>` inside `<header>`, sticky, height 56–64px, contains brand + primary nav + actions.
+- **Side nav:** `<aside><nav>`, width 240–280px, collapsible to 56–64px (icons only).
+- **Mobile nav:** hamburger trigger → slide-in drawer OR bottom tab bar (3–5 items, 49pt iOS / 80dp Android).
+- **Active indicator:** left border (4px) OR background tint OR underline. Use one, not all.
+- **Full example:** `[.mba-template/examples/nav.html](mdc:.mba-template/examples/nav.html)`.
 
-## Navigation
+### Dropdown / Select / Menu
 
-### Top Navigation
-```html
-<nav class="top-nav">
-  <div class="nav-brand">Logo</div>
-  <ul class="nav-menu">
-    <li><a href="#">Link 1</a></li>
-    <li><a href="#">Link 2</a></li>
-  </ul>
-  <div class="nav-actions">
-    <button>Sign In</button>
-  </div>
-</nav>
-```
+- **Trigger:** `<button>` with chevron icon, `aria-expanded`, `aria-haspopup`.
+- **Menu:** `role="menu"` (or use native `<select>` for forms — better mobile UX).
+- **Behavior:** open on click, close on outside click + ESC, arrow keys to navigate items, Enter to select.
+- **Z-index:** `--z-dropdown` (100). Use `position: absolute` with `position-anchor` (modern) or popover API.
 
-### Side Navigation
-```html
-<aside class="side-nav">
-  <nav>
-    <ul>
-      <li class="active">
-        <icon />
-        <span>Dashboard</span>
-      </li>
-      <li>
-        <icon />
-        <span>Settings</span>
-      </li>
-    </ul>
-  </nav>
-</aside>
-```
+### Toast / Notification
 
-### Mobile Navigation
-- Hamburger menu (top-left or top-right)
-- Full-screen overlay or slide-in drawer
-- Bottom tab bar (3-5 items)
+- **Container:** `role="status"` (success/info) or `role="alert"` (error/warning).
+- **Variants:** success (green), error (red), warning (orange), info (blue) — always pair color with icon.
+- **Position:** top-right (desktop), bottom-center (mobile).
+- **Duration:** 4–6s auto-dismiss for success/info, persistent for error/warning until user dismisses.
+- **Stacking:** newest on top, max 3 visible. Older toasts fade and stack offset.
 
-## Form Layout
+### Badge / Tag / Chip
 
-### Vertical (Default)
-```html
-<form>
-  <div class="form-field">
-    <label>First Name</label>
-    <input type="text">
-  </div>
-  <div class="form-field">
-    <label>Last Name</label>
-    <input type="text">
-  </div>
-  <div class="form-actions">
-    <button type="button">Cancel</button>
-    <button type="submit">Submit</button>
-  </div>
-</form>
-```
+- **Sizes:** sm (16px), md (20px), lg (24px).
+- **Variants:** filled (high contrast), outlined (border only), subtle (bg at 10% mix).
+- **Use:** status, count, category. Never as a button — use a button for that.
 
-### Horizontal (Compact)
-```html
-<div class="form-field-horizontal">
-  <label>Label</label>
-  <input type="text">
-</div>
-```
+### Tabs
 
-### Multi-Column (Desktop)
-```html
-<div class="form-grid">
-  <div class="form-field">...</div>
-  <div class="form-field">...</div>
-</div>
-```
+- **Container:** `role="tablist"` with `role="tab"` children, `aria-selected`, `aria-controls`.
+- **Styles:** underline (default — clean), filled (active has bg), pills (rounded). Pick one per app.
+- **Behavior:** arrow keys to navigate, Enter to activate. Lazy-load tab panels for heavy content.
 
-## Dropdown/Select
+### Accordion / Disclosure
 
-### Structure
-```html
-<div class="dropdown">
-  <button class="dropdown-trigger">
-    Select Option
-    <icon name="chevron-down" />
-  </button>
-  <div class="dropdown-menu">
-    <button class="dropdown-item">Option 1</button>
-    <button class="dropdown-item">Option 2</button>
-  </div>
-</div>
-```
+- **Container:** native `<details><summary>` (preferred — built-in keyboard support).
+- **Animation:** rotate chevron 90°, animate `grid-template-rows: 0fr → 1fr` for height (modern, no JS).
+- **Modes:** single-open (radio behavior) or multi-open. Default to multi-open unless space-constrained.
 
-### Behavior
-- Click to open
-- Click outside to close
-- Arrow keys to navigate
-- Enter to select
-- Escape to close
+### Empty State
 
-## Toast/Notification
+- **Container:** centered, `--space-12` to `--space-16` vertical padding.
+- **Anatomy:** icon (48–64px, muted) + heading (H3) + 1–2 sentences of helpful copy + primary CTA + optional secondary link.
+- **Tone:** specific and actionable. Not "No data" — "No invoices yet. Create your first invoice to get started."
+- **Full example:** `[.mba-template/examples/empty-state.html](mdc:.mba-template/examples/empty-state.html)`.
 
-### Structure
-```html
-<div class="toast toast-success">
-  <icon name="check" />
-  <div class="toast-content">
-    <strong>Success</strong>
-    <p>Action completed successfully</p>
-  </div>
-  <button aria-label="Close">×</button>
-</div>
-```
+### Skeleton Loader
 
-### Types
-- Success (green)
-- Error (red)
-- Warning (orange)
-- Info (blue)
+- **When to use:** content load > 200ms, especially for cards/lists/tables.
+- **Anatomy:** match the shape of the eventual content (rectangle for text, circle for avatar). Use `--color-bg-muted` with a subtle shimmer animation (or static for `prefers-reduced-motion`).
+- **Don't use for:** buttons (use spinner inside button instead), instant content, error states.
+- **Full example:** `[.mba-template/examples/skeleton.html](mdc:.mba-template/examples/skeleton.html)`.
 
-### Position
-- Top-right (common)
-- Top-center
-- Bottom-right
-- Bottom-center
+### Inline Validation
 
-### Duration
-- 3-5 seconds (auto-dismiss)
-- Persistent (manual dismiss)
+- **Trigger:** on `blur` (not on every keystroke). Re-validate on input only after first error shown.
+- **Display:** red border on input, error icon inside input (right-aligned), error message below input (`role="alert"`, `id` referenced by `aria-describedby` on input).
+- **Success:** show green check only after async validation (e.g. "username available"), not for every valid input.
 
-## Badge
+---
 
-### Sizes
-- Small: 16px height
-- Medium: 20px height
-- Large: 24px height
+## 6. Composition rules
 
-### Variants
-- Filled (solid background)
-- Outlined (border only)
-- Dot (small indicator)
+- **One primary action per surface.** A card has one primary button, the rest are secondary or ghost.
+- **Spacing rhythm.** Inside a component, all gaps come from the same scale step (e.g. all `--space-3`, all `--space-4` — don't mix 12px and 16px in the same card).
+- **Border radius coherence.** Nested elements use ≤ parent radius. A 4px button inside an 8px card is fine; a 12px button inside an 8px card is wrong.
+- **Color budget.** A single component uses at most: 1 accent + 2 neutrals + 1 semantic (if needed).
 
-### Usage
-- Status indicators
-- Notification counts
-- Category labels
+---
 
-## Tabs
+## 7. Anti-patterns (never do)
 
-### Structure
-```html
-<div class="tabs">
-  <div class="tab-list" role="tablist">
-    <button role="tab" aria-selected="true">Tab 1</button>
-    <button role="tab">Tab 2</button>
-  </div>
-  <div class="tab-panel" role="tabpanel">
-    Content 1
-  </div>
-</div>
-```
+| ❌ Never | ✅ Instead |
+|----------|-----------|
+| `<div onclick="...">` | `<button>` |
+| Placeholder as label | Always include `<label>` |
+| `outline: none` with no replacement | Custom `:focus-visible` ring |
+| Hover-only affordance | Hover + focus-visible + keyboard-accessible |
+| Animating `width`/`height` | Animate `transform: scale()` |
+| Toast that auto-dismisses errors | Errors persist until user acks |
+| Skeleton for instant content | No skeleton (it adds perceived latency) |
+| Empty state saying "No data" | Specific message + actionable CTA |
+| Mixed densities on one page | Commit to one density |
 
-### Styles
-- Underline (active indicator below)
-- Filled (active has background)
-- Boxed (tabs look like tabs)
+---
 
-## Accordion
+## 8. Self-check before returning
 
-### Structure
-```html
-<div class="accordion">
-  <div class="accordion-item">
-    <button class="accordion-header">
-      <span>Section 1</span>
-      <icon name="chevron-down" />
-    </button>
-    <div class="accordion-content">
-      Content 1
-    </div>
-  </div>
-</div>
-```
+For each component you generate:
 
-### Behavior
-- Click to expand/collapse
-- Chevron rotates
-- Smooth animation
-- Single or multiple open
-
-## Best Practices
-
-### Do
-- Use semantic HTML
-- Include all interactive states
-- Provide keyboard navigation
-- Add ARIA labels
-- Show loading states
-- Handle empty states
-- Display error states
-- Use consistent sizing
-- Follow platform patterns
-
-### Don't
-- Use divs for buttons
-- Forget focus states
-- Ignore keyboard users
-- Skip loading indicators
-- Use color alone for status
-- Make components too complex
-- Ignore accessibility
-- Reinvent standard patterns
+- [ ] All 8 states defined (or N/A documented)?
+- [ ] `:focus-visible` ring present and visually distinct from hover?
+- [ ] Semantic HTML element used (button, dialog, table, nav)?
+- [ ] All values from `10-tokens-and-scales.mdc`?
+- [ ] Density variant supported or fixed and documented?
+- [ ] ARIA attributes for non-trivial interactions (combobox, tabs, dialog)?
+- [ ] Empty/loading/error states for any data-dependent component?

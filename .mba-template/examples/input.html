@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Input — MBA Design Examples</title>
+  <link rel="stylesheet" href="../tokens/tokens-modern.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-fg); padding: var(--space-8); max-width: 480px; margin: 0 auto; }
+    h1 { font-size: var(--font-size-h2); margin: 0 0 var(--space-6); }
+    h2 { font-size: var(--font-size-sm); text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); margin: var(--space-8) 0 var(--space-3); }
+
+    .form-field { display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-5); }
+    .form-field__label { font-size: var(--font-size-sm); font-weight: 500; color: var(--color-fg); }
+    .form-field__label--required::after { content: " *"; color: var(--color-danger); }
+    .form-field__hint { font-size: var(--font-size-xs); color: var(--color-fg-muted); }
+    .form-field__error { font-size: var(--font-size-xs); color: var(--color-danger); display: flex; align-items: center; gap: var(--space-1); }
+
+    .input {
+      height: 40px;
+      padding: 0 var(--space-3);
+      font: inherit;
+      font-size: var(--font-size-sm);
+      color: var(--color-fg);
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      transition: border-color var(--duration-fast) var(--easing-out), box-shadow var(--duration-fast) var(--easing-out);
+    }
+    .input::placeholder { color: var(--color-fg-subtle); }
+    .input:hover:not(:disabled) { border-color: var(--color-border-strong); }
+    .input:focus-visible {
+      outline: none;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px var(--focus-ring);
+    }
+    .input:disabled { background: var(--color-bg-muted); color: var(--color-fg-subtle); cursor: not-allowed; }
+    .input[readonly] { background: var(--color-bg-subtle); border-color: transparent; }
+    .input[aria-invalid="true"] { border-color: var(--color-danger); }
+    .input[aria-invalid="true"]:focus-visible { box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-danger) 25%, transparent); }
+
+    .input-wrap { position: relative; }
+    .input-wrap .input { padding-left: 36px; width: 100%; box-sizing: border-box; }
+    .input-wrap__icon { position: absolute; left: var(--space-3); top: 50%; transform: translateY(-50%); color: var(--color-fg-muted); pointer-events: none; }
+
+    textarea.input { height: auto; min-height: 96px; padding: var(--space-3); resize: vertical; font-family: inherit; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <h1>Input — all states</h1>
+
+  <h2>Default</h2>
+  <div class="form-field">
+    <label class="form-field__label" for="name">Full name</label>
+    <input class="input" id="name" type="text" placeholder="e.g. Sasha Patel">
+    <span class="form-field__hint" id="name-hint">As it appears on your ID.</span>
+  </div>
+
+  <h2>Required + email</h2>
+  <div class="form-field">
+    <label class="form-field__label form-field__label--required" for="email">Work email</label>
+    <input class="input" id="email" type="email" placeholder="you@company.com" required aria-describedby="email-hint">
+    <span class="form-field__hint" id="email-hint">We'll send your receipt here.</span>
+  </div>
+
+  <h2>With leading icon</h2>
+  <div class="form-field">
+    <label class="form-field__label" for="search">Search invoices</label>
+    <div class="input-wrap">
+      <i class="fa-solid fa-magnifying-glass input-wrap__icon" aria-hidden="true"></i>
+      <input class="input" id="search" type="search" placeholder="Search by invoice ID, name, or amount">
+    </div>
+  </div>
+
+  <h2>Error state</h2>
+  <div class="form-field">
+    <label class="form-field__label form-field__label--required" for="bad-email">Work email</label>
+    <input class="input" id="bad-email" type="email" value="not-an-email" aria-invalid="true" aria-describedby="bad-email-error">
+    <span class="form-field__error" id="bad-email-error" role="alert">
+      <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+      Enter a valid email address.
+    </span>
+  </div>
+
+  <h2>Disabled</h2>
+  <div class="form-field">
+    <label class="form-field__label" for="acct">Account ID</label>
+    <input class="input" id="acct" type="text" value="acct_8f4kj29s" disabled>
+  </div>
+
+  <h2>Readonly</h2>
+  <div class="form-field">
+    <label class="form-field__label" for="ref">Reference</label>
+    <input class="input" id="ref" type="text" value="INV-2026-0421" readonly>
+  </div>
+
+  <h2>Textarea</h2>
+  <div class="form-field">
+    <label class="form-field__label" for="notes">Notes</label>
+    <textarea class="input" id="notes" placeholder="Anything we should know about this transaction..."></textarea>
+  </div>
+</body>
+</html>

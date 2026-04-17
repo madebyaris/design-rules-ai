@@ -1,259 +1,124 @@
 ---
 name: mba-build-dashboard-page
-description: Generate a professional dashboard page with data visualization and controls
+description: Generate a compact-density, data-rich dashboard page using MBA design rules
 ---
 
 # MBA Build Dashboard Page
 
-Generate a complete, data-dense dashboard page with proper layout, realistic data, and interactive components.
+Generate a complete dashboard page. Density is **compact** by default — dashboards are for power users.
 
 ## Arguments
 
-- `dashboard_name` (required): Name of the dashboard (e.g., "Sales Analytics Dashboard", "Admin Panel")
-- `layout` (optional): sidebar-left|sidebar-right|topbar-only - default: sidebar-left
-- `widgets` (optional): Comma-separated list (e.g., "metrics,chart,table,activity") - default: "metrics,chart,table"
-- `theme` (optional): enterprise|neutral|editorial|playful - default: enterprise
-- `data_type` (optional): sales|analytics|admin|monitoring - default: analytics
-- `platform` (optional): web|desktop - default: web
+- `dashboard_type` (required) — `sales` | `analytics` | `admin` | `monitoring` | `cms` | `finance` | `custom`.
+- `metrics` (optional) — comma-separated KPIs. Default depends on `dashboard_type` (see below).
+- `primary_view` (optional, default `table`) — `table` | `chart` | `kanban` | `mixed`.
+- `shell` (optional, default `sidebar-main`) — `sidebar-main` | `top-nav-main` | `three-pane`.
+- `system` (optional, default `linear`) — design system to emulate (linear, vercel-geist, ibm-carbon recommended).
+- `density` (optional, default `compact`) — `compact` | `comfortable`. **Spacious not allowed for dashboards.**
+- `framework` (optional, default `html`) — `html` | `react` | `vue` | `svelte`.
 
-## Instructions
+## Procedure
 
-1. **Review Dashboard Patterns**:
-   - Read `.cursor/rules/60-pages-templates.mdc`
-   - Reference `.mba-template/patterns/dashboard-layouts.md`
-   - Check `.cursor/rules/50-components.mdc` for data table patterns
+### 1. READ the rules
 
-2. **Generate Page Structure**:
-   ```html
-   <!DOCTYPE html>
-   <html lang="en">
-   <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>{dashboard_name}</title>
-   </head>
-   <body>
-     <div class="dashboard-layout">
-       <header class="dashboard-header">
-         <!-- Logo, search, notifications, profile -->
-       </header>
-       
-       <aside class="dashboard-sidebar">
-         <!-- Navigation -->
-       </aside>
-       
-       <main class="dashboard-main">
-         <div class="page-header">
-           <!-- Page title, actions, filters -->
-         </div>
-         
-         <div class="metrics-grid">
-           <!-- KPI cards -->
-         </div>
-         
-         <div class="dashboard-content">
-           <!-- Charts, tables, widgets -->
-         </div>
-       </main>
-     </div>
-   </body>
-   </html>
-   ```
+- `[.cursor/rules/00-design-principles.mdc](mdc:.cursor/rules/00-design-principles.mdc)` — restraint, hierarchy, content-fits-layout.
+- `[.cursor/rules/10-tokens-and-scales.mdc](mdc:.cursor/rules/10-tokens-and-scales.mdc)` — compact density spec (§10).
+- `[.cursor/rules/50-components.mdc](mdc:.cursor/rules/50-components.mdc)` — required 8 states for every interactive piece.
+- `[.cursor/rules/60-pages-and-layouts.mdc](mdc:.cursor/rules/60-pages-and-layouts.mdc)` — dashboard archetype.
 
-3. **Header Component** (56-64px height, sticky):
-   - **Logo/Brand**: Left side
-   - **Search**: Center or left (optional)
-   - **Actions**: Right side
-     - Notifications icon (with badge if unread)
-     - Settings icon
-     - Profile avatar + dropdown
+### 2. READ the references
 
-4. **Sidebar Navigation** (240-280px, collapsible):
-   - **Logo**: Top
-   - **Navigation items**:
-     - Icon (20-24px) + Label
-     - Active indicator (left border or background)
-     - Hover state
-   - **Sections**: Grouped with headers
-   - **Collapse button**: Bottom or top-right
-   - **Collapsed state**: 56-64px width, icons only
+- `[.mba-template/patterns/dashboard-layouts.md](mdc:.mba-template/patterns/dashboard-layouts.md)` — shell options, header, sidebar, KPI row, primary view variants.
+- `[.mba-template/design-systems/{system}/components.md](mdc:.mba-template/design-systems/)` — component look + feel.
+- `[.mba-template/content/sample-content.json](mdc:.mba-template/content/sample-content.json)` — realistic data. **Use these.** Never `User 1`, `$1,000.00`, "+10%".
+- `[.mba-template/examples/table.html](mdc:.mba-template/examples/table.html)`, `[nav.html](mdc:.mba-template/examples/nav.html)`, `[empty-state.html](mdc:.mba-template/examples/empty-state.html)`, `[skeleton.html](mdc:.mba-template/examples/skeleton.html)` — patterns to mirror.
 
-5. **Page Header**:
-   - **Title** (H1): Dashboard name
-   - **Breadcrumbs**: Optional navigation trail
-   - **Actions**: Primary actions (Export, Share, etc.)
-   - **Filters**: Date range, status, category
-   - **Tabs**: If multiple views
+### 3. PLAN
 
-6. **Metrics Cards** (2-4 columns):
-   ```html
-   <div class="metric-card">
-     <div class="metric-label">Total Revenue</div>
-     <div class="metric-value">$1,234,567</div>
-     <div class="metric-change positive">+12.5%</div>
-     <div class="metric-period">vs last month</div>
-   </div>
-   ```
-   
-   **Realistic Data Examples**:
-   - Revenue: $1,234,567 (not $1,000,000)
-   - Users: 12,345 (not 10,000)
-   - Growth: +12.5% (not +10%)
-   - Conversion: 3.42% (not 3%)
+Write these out before generating:
 
-7. **Chart Widget**:
-   - **Title**: Chart name
-   - **Legend**: Color-coded
-   - **Axes**: Labeled with units
-   - **Tooltip**: On hover
-   - **Time period**: Selector (7d, 30d, 90d, 1y)
-   - **Realistic data**: Varied, not perfect lines
+1. **Shell archetype** (sidebar-main / top-nav-main / three-pane) and why.
+2. **Header** contents — brand, search, notifications, profile.
+3. **Sidebar** sections — group by workspace, account, etc.
+4. **Page header** — H1 + breadcrumbs + filters + the ONE primary action.
+5. **KPI row** — 2–4 metrics with realistic values (use `sample-content.json`):
+   - Label / value / change vs previous period / optional sparkline.
+6. **Primary view** — table, chart, or kanban — fully designed (columns, sortable, hover, empty/loading/error).
+7. **Secondary view** (optional) — activity feed, recent items, status widgets.
+8. **Density** — confirm compact (32px row, 13–14px body, `--space-2`/`--space-3` padding).
 
-8. **Data Table**:
-   - **Headers**: Sortable columns (with icon)
-   - **Rows**: 10-20 visible, pagination
-   - **Columns**: 4-8 columns
-   - **Row hover**: Subtle background
-   - **Actions**: Per row (view, edit, delete)
-   - **Selection**: Checkboxes (optional)
-   - **Empty state**: "No data available"
-   - **Loading state**: Skeleton or spinner
+### 4. STATES MATRIX (required for every data block)
 
-   **Realistic Data**:
-   ```
-   | Name          | Email                | Status  | Revenue   | Date       |
-   |---------------|----------------------|---------|-----------|------------|
-   | Sarah Johnson | sarah.j@acme.com     | Active  | $12,345   | 2024-01-15 |
-   | Michael Chen  | m.chen@techcorp.io   | Pending | $8,234    | 2024-01-14 |
-   | Emma Williams | emma.w@startup.co    | Active  | $23,456   | 2024-01-13 |
-   ```
+| Block | Empty | Loading | Error | Default |
+|-------|-------|---------|-------|---------|
+| KPI cards | "—" placeholder | Skeleton number bar | "Couldn't load" with retry | Real number |
+| Table | Empty state w/ icon + CTA | Skeleton rows | Inline alert + retry | Rows |
+| Chart | "No data for this range" | Skeleton chart | Inline alert + retry | Chart |
+| Sidebar items | n/a | n/a | n/a | n/a |
 
-9. **Activity Feed** (optional):
-   - **Avatar**: User photo (32-40px)
-   - **Action**: "Sarah Johnson created a new report"
-   - **Timestamp**: "2 hours ago"
-   - **Icon**: Action type indicator
+Generate all four states for the table and at least the empty + loading for KPIs.
 
-10. **Filters & Search**:
-    - **Search bar**: Prominent, with icon
-    - **Date range**: Picker or presets
-    - **Status filter**: Dropdown or chips
-    - **Category filter**: Multi-select
-    - **Apply/Clear**: Action buttons
+### 5. GENERATE
 
-11. **Responsive Behavior**:
-    - **Mobile** (< 640px):
-      - Sidebar: Hidden, hamburger menu
-      - Metrics: Single column
-      - Table: Card-based layout
-      - Charts: Full width, scrollable
-    - **Tablet** (640-1023px):
-      - Sidebar: Collapsible
-      - Metrics: 2 columns
-      - Table: Horizontal scroll if needed
-    - **Desktop** (1024px+):
-      - Full layout
-      - Metrics: 3-4 columns
-      - Table: Full width
+- Use semantic landmarks: `<header>`, `<aside>`, `<nav>`, `<main>`.
+- Wrap the page root in `<div class="page-compact">` (or comfortable) so `--component-padding` and `--component-row-h` resolve.
+- Use `font-variant-numeric: tabular-nums` on every numeric cell.
+- Right-align numeric columns.
+- Sticky table header.
+- Hover bg `--color-bg-muted` on rows.
+- Active nav item gets a left accent bar OR bg tint, never both.
 
-12. **Empty States**:
-    - "No data available"
-    - "No results found"
-    - "Start by adding your first item"
-    - Icon + message + CTA
+### 6. SELF-CRITIQUE (Layer C)
 
-13. **Loading States**:
-    - Skeleton screens for cards
-    - Spinner for tables
-    - Progress bar for long operations
+Score 1–5 on each. If any < 4, revise once.
 
-14. **Error States**:
-    - "Failed to load data"
-    - "Connection error"
-    - Retry button
+- **Hierarchy** — one primary action per page header? Active nav obvious?
+- **Restraint** — no redundant chrome, no decoration in tables, no unnecessary section?
+- **Rhythm** — every spacing/radius/font value from `10-tokens-and-scales.mdc`?
+- **Density** — compact density honored? No mixed densities (e.g. comfortable cards inside a compact table)?
+- **Realism** — numbers, names, dates, IDs all believable (no `User 1`, no `$1,000.00`)?
+- **States** — empty / loading / error rendered for every data-dependent block?
+- **Reference** — at home in Linear / Geist / Carbon?
 
-## Common Dashboard Types
+### 7. OUTPUT
 
-### Sales Dashboard
-- Metrics: Revenue, Orders, Conversion Rate, AOV
-- Charts: Revenue over time, Top products
-- Table: Recent orders
-- Filters: Date range, status, sales rep
+| Framework | Files |
+|-----------|-------|
+| `html` | `pages/dashboard.html`, `styles/dashboard.css` |
+| `react` | `app/dashboard/page.tsx` (Next.js) or `src/pages/Dashboard.tsx` |
+| `vue` | `src/views/Dashboard.vue` |
+| `svelte` | `src/routes/dashboard/+page.svelte` |
 
-### Analytics Dashboard
-- Metrics: Users, Sessions, Bounce Rate, Avg Duration
-- Charts: Traffic over time, Top pages
-- Table: Top referrers
-- Filters: Date range, device, country
+End with a 1-paragraph rationale: design system emulated, the density choice, and the most-used real-world dashboard you're modeling after (e.g. "Linear's project view", "Stripe's revenue dashboard").
 
-### Admin Panel
-- Metrics: Total Users, Active Sessions, Storage Used
-- Charts: User growth, Activity heatmap
-- Table: Recent users, System logs
-- Actions: User management, Settings
+## Default metrics by dashboard type
 
-### Monitoring Dashboard
-- Metrics: Uptime, Response Time, Error Rate, CPU Usage
-- Charts: Performance over time, Error trends
-- Table: Recent incidents
-- Alerts: Critical issues
+| Type | Suggested KPIs |
+|------|----------------|
+| sales | Revenue · Orders · Conversion rate · Avg order value |
+| analytics | Users · Sessions · Bounce rate · Avg duration |
+| admin | Total users · Active sessions · Storage used · API calls |
+| monitoring | Uptime % · Avg response time · Error rate · Incidents |
+| cms | Posts published · Drafts · Views · Comments |
+| finance | Balance · MRR · Burn rate · Runway |
 
-## Output Files
-
-1. `pages/dashboard.html` - Complete dashboard page
-2. `pages/dashboard.css` - Page-specific styles
-3. `components/metric-card.html` - Reusable metric card
-4. `components/data-table.html` - Reusable data table
-5. `docs/dashboard-guide.md` - Documentation
-
-## Quality Checks
-
-- [ ] Semantic HTML structure
-- [ ] Sidebar navigation functional
-- [ ] Metrics cards with realistic data
-- [ ] Data table with sortable columns
-- [ ] Charts with proper labels
-- [ ] Filters/search implemented
-- [ ] Responsive layout (mobile, tablet, desktop)
-- [ ] Empty states designed
-- [ ] Loading states included
-- [ ] Error states handled
-- [ ] WCAG AA contrast
-- [ ] Keyboard navigation
-- [ ] Focus indicators
-- [ ] No Lorem Ipsum
-- [ ] Realistic, varied data
-
-## Example Usage
+## Example invocations
 
 ```
-/mba-build-dashboard-page dashboard_name="Sales Analytics Dashboard" layout="sidebar-left" widgets="metrics,chart,table,activity" theme="enterprise" data_type="sales"
+/mba-build-dashboard-page dashboard_type="sales" framework="react" system="vercel-geist"
+/mba-build-dashboard-page dashboard_type="monitoring" primary_view="chart" shell="sidebar-main" system="linear"
+/mba-build-dashboard-page dashboard_type="custom" metrics="MRR,Active workspaces,Trial conversions,NPS" primary_view="mixed"
 ```
 
-This will generate a complete sales analytics dashboard with enterprise theme, sidebar navigation, and all specified widgets.
+## Definition of done
 
-## Anti-Patterns to Avoid
-
-Reference `.cursor/rules/80-anti-ai-patterns.mdc`:
-- No perfect round numbers (use $1,234.56 not $1,000)
-- No all-same dates (vary timestamps)
-- No missing empty states
-- No missing loading states
-- No missing error states
-- No inconsistent spacing
-- No low contrast text
-- No tiny click targets
-- No generic "User 1", "User 2" names
-- No Lorem Ipsum text
-
-## Accessibility Requirements
-
-- Semantic landmarks (header, nav, main, aside)
-- Proper heading hierarchy
-- ARIA labels for icons
-- Keyboard navigation for all interactions
-- Focus indicators on all interactive elements
-- Screen reader support for charts (data table fallback)
-- Color not sole indicator (use icons too)
-- WCAG AA contrast minimum
-
+- [ ] Density: compact (or comfortable if argued).
+- [ ] One primary action in the page header.
+- [ ] Realistic numbers + names from `sample-content.json`.
+- [ ] Tabular numerals on numeric columns, right-aligned.
+- [ ] Empty / loading / error states for the table and the KPI row.
+- [ ] Active nav state distinct (one signal, not two).
+- [ ] Sidebar collapses to icons or hamburger on narrow viewports.
+- [ ] Mobile: tables horizontally scroll OR collapse to card list.
+- [ ] No mixed densities on the page.
+- [ ] 1-paragraph rationale written.

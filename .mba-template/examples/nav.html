@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Navigation — MBA Design Examples</title>
+  <link rel="stylesheet" href="../tokens/tokens-modern.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-fg); margin: 0; }
+
+    /* ---------- Top nav ---------- */
+    .topnav { display: flex; align-items: center; justify-content: space-between; height: 60px; padding: 0 var(--space-6); border-bottom: 1px solid var(--color-border); background: var(--color-bg); position: sticky; top: 0; z-index: var(--z-sticky); }
+    .topnav__brand { font-weight: 700; font-size: var(--font-size-base); display: flex; align-items: center; gap: var(--space-2); }
+    .topnav__brand i { color: var(--color-accent); }
+    .topnav__menu { display: flex; gap: var(--space-1); list-style: none; padding: 0; margin: 0; }
+    .topnav__link { display: inline-flex; align-items: center; padding: var(--space-2) var(--space-3); font-size: var(--font-size-sm); color: var(--color-fg-muted); text-decoration: none; border-radius: var(--radius-sm); transition: background var(--duration-fast) var(--easing-out), color var(--duration-fast) var(--easing-out); }
+    .topnav__link:hover { color: var(--color-fg); background: var(--color-bg-muted); }
+    .topnav__link[aria-current="page"] { color: var(--color-fg); font-weight: 500; }
+    .topnav__link:focus-visible { outline: 2px solid var(--color-border-strong); outline-offset: 2px; }
+    .topnav__actions { display: flex; gap: var(--space-2); align-items: center; }
+    .icon-btn { width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; background: none; border: none; border-radius: var(--radius-sm); cursor: pointer; color: var(--color-fg-muted); }
+    .icon-btn:hover { background: var(--color-bg-muted); color: var(--color-fg); }
+    .avatar { width: 32px; height: 32px; border-radius: var(--radius-full); background: var(--color-accent); color: var(--color-accent-fg); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; }
+
+    /* ---------- Layout for sidenav demo ---------- */
+    .layout { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 60px); }
+
+    /* ---------- Side nav ---------- */
+    .sidenav { background: var(--color-bg-subtle); border-right: 1px solid var(--color-border); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-1); }
+    .sidenav__section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-subtle); padding: var(--space-3) var(--space-2) var(--space-1); }
+    .sidenav__link { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); font-size: var(--font-size-sm); color: var(--color-fg-muted); text-decoration: none; transition: background var(--duration-fast) var(--easing-out), color var(--duration-fast) var(--easing-out); position: relative; }
+    .sidenav__link i { width: 16px; text-align: center; }
+    .sidenav__link:hover { background: var(--color-bg-muted); color: var(--color-fg); }
+    .sidenav__link[aria-current="page"] {
+      background: var(--color-bg-muted);
+      color: var(--color-fg);
+      font-weight: 500;
+    }
+    .sidenav__link[aria-current="page"]::before {
+      content: "";
+      position: absolute;
+      left: -4px;
+      top: 6px;
+      bottom: 6px;
+      width: 3px;
+      border-radius: var(--radius-full);
+      background: var(--color-accent);
+    }
+    .sidenav__link:focus-visible { outline: 2px solid var(--color-border-strong); outline-offset: 2px; }
+
+    main { padding: var(--space-8); color: var(--color-fg-muted); }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAV -->
+  <header>
+    <nav class="topnav" aria-label="Primary">
+      <div class="topnav__brand">
+        <i class="fa-solid fa-bolt" aria-hidden="true"></i>
+        Lumina
+      </div>
+      <ul class="topnav__menu">
+        <li><a class="topnav__link" href="#" aria-current="page">Overview</a></li>
+        <li><a class="topnav__link" href="#">Invoices</a></li>
+        <li><a class="topnav__link" href="#">Customers</a></li>
+        <li><a class="topnav__link" href="#">Reports</a></li>
+        <li><a class="topnav__link" href="#">Settings</a></li>
+      </ul>
+      <div class="topnav__actions">
+        <button class="icon-btn" type="button" aria-label="Notifications">
+          <i class="fa-solid fa-bell" aria-hidden="true"></i>
+        </button>
+        <button class="icon-btn" type="button" aria-label="Account menu">
+          <span class="avatar">SP</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- SIDE NAV + MAIN -->
+  <div class="layout">
+    <aside>
+      <nav class="sidenav" aria-label="Sections">
+        <span class="sidenav__section-label">Workspace</span>
+        <a class="sidenav__link" href="#" aria-current="page"><i class="fa-solid fa-house"></i> Overview</a>
+        <a class="sidenav__link" href="#"><i class="fa-solid fa-file-invoice"></i> Invoices</a>
+        <a class="sidenav__link" href="#"><i class="fa-solid fa-users"></i> Customers</a>
+        <a class="sidenav__link" href="#"><i class="fa-solid fa-chart-line"></i> Reports</a>
+
+        <span class="sidenav__section-label">Account</span>
+        <a class="sidenav__link" href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+        <a class="sidenav__link" href="#"><i class="fa-solid fa-circle-question"></i> Help</a>
+      </nav>
+    </aside>
+    <main>
+      <p>Main content area. Active state shows the left accent bar + filled bg.</p>
+    </main>
+  </div>
+
+</body>
+</html>

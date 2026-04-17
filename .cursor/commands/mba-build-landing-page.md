@@ -1,176 +1,154 @@
 ---
 name: mba-build-landing-page
-description: Generate a professional landing page with proper structure and content
+description: Generate a content-first marketing landing page using MBA design rules
 ---
 
 # MBA Build Landing Page
 
-Generate a complete, professional landing page with semantic structure, realistic content, and conversion-focused design.
+Generate a complete marketing landing page. **Content-first**: write what the product *does* before designing the layout.
 
 ## Arguments
 
-- `product_name` (required): Name of the product/service (e.g., "Acme Analytics Platform")
-- `industry` (optional): Industry/category (e.g., "analytics", "fintech", "saas", "ecommerce") - default: "saas"
-- `sections` (optional): Comma-separated list - default: "hero,social-proof,features,how-it-works,pricing,faq,cta"
-- `theme` (optional): enterprise|neutral|editorial|playful - default: neutral
-- `cta_text` (optional): Primary call-to-action text - default: "Get Started"
-- `platform` (optional): web|mobile - default: web
+- `product_name` (required) — e.g. "Lumina Invoicing".
+- `industry` (optional, default `saas`) — `saas` | `developer-tools` | `fintech` | `analytics` | `ecommerce` | `health` | `creative` | `b2b` | `consumer`.
+- `sections` (optional) — comma-separated. Default `hero,social-proof,features,how-it-works,pricing,faq,cta`.
+- `system` (optional, default `vercel-geist`) — design system to emulate.
+- `cta_text` (optional, default `Start free`) — primary CTA text.
+- `framework` (optional, default `html`) — `html` | `react` (Next.js page) | `astro`.
 
-## Instructions
+## Procedure
 
-1. **Review Page Patterns**:
-   - Read `.cursor/rules/60-pages-templates.mdc`
-   - Reference `.mba-template/patterns/landing-page-sections.md`
-   - Check `.cursor/rules/10-visual-hierarchy.mdc`
+### 1. READ the rules
 
-2. **Generate Page Structure**:
-   ```html
-   <!DOCTYPE html>
-   <html lang="en">
-   <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>{product_name} - {tagline}</title>
-     <meta name="description" content="{description}">
-   </head>
-   <body>
-     <header><!-- Navigation --></header>
-     <main>
-       <section class="hero"><!-- Hero section --></section>
-       <section class="social-proof"><!-- Logos/testimonials --></section>
-       <section class="features"><!-- Features grid --></section>
-       <section class="how-it-works"><!-- Process steps --></section>
-       <section class="pricing"><!-- Pricing tiers --></section>
-       <section class="faq"><!-- FAQ accordion --></section>
-       <section class="cta"><!-- Final CTA --></section>
-     </main>
-     <footer><!-- Footer --></footer>
-   </body>
-   </html>
-   ```
+- `[.cursor/rules/00-design-principles.mdc](mdc:.cursor/rules/00-design-principles.mdc)` — Layer A principles, especially "content sets the layout".
+- `[.cursor/rules/10-tokens-and-scales.mdc](mdc:.cursor/rules/10-tokens-and-scales.mdc)` — values to use.
+- `[.cursor/rules/60-pages-and-layouts.mdc](mdc:.cursor/rules/60-pages-and-layouts.mdc)` — landing archetype, Z-pattern scan, density rules.
 
-3. **Hero Section** (60-80vh):
-   - **Headline**: Clear value proposition (< 60 chars)
-     - Example: "Turn Data Into Decisions in Minutes"
-   - **Subheadline**: Supporting detail (2-3 sentences)
-     - Example: "Acme Analytics helps teams visualize complex data with intuitive dashboards. No coding required. Start analyzing in under 5 minutes."
-   - **Primary CTA**: Prominent button (e.g., "Start Free Trial")
-   - **Secondary CTA**: Alternative action (e.g., "Watch Demo")
-   - **Visual**: Product screenshot, illustration, or hero image
-   - **Trust indicators**: "No credit card required" or "14-day free trial"
+### 2. READ the references
 
-4. **Social Proof Section**:
-   - **Customer logos**: 4-8 well-known companies (grayscale)
-   - **Testimonials**: 2-3 quotes with:
-     - Customer photo (48-64px avatar)
-     - Quote (2-3 sentences)
-     - Name, title, company
-   - **Stats**: Key metrics
-     - "10,000+ teams trust Acme"
-     - "4.8/5 average rating"
-     - "99.9% uptime"
+- `[.mba-template/patterns/landing-page-sections.md](mdc:.mba-template/patterns/landing-page-sections.md)` — anatomy of every section.
+- `[.mba-template/design-systems/{system}/components.md](mdc:.mba-template/design-systems/)` — borrowed look + feel.
+- `[.mba-template/content/sample-content.json](mdc:.mba-template/content/sample-content.json)` — names, companies, testimonials, copy snippets. **Use these.** Never "Acme Corp" or "John Doe".
 
-5. **Features Section** (2-4 columns):
-   - **Icon**: 32-48px per feature
-   - **Title**: 18-24px, semibold
-   - **Description**: 2-3 sentences
-   - Examples:
-     - "Real-Time Dashboards" - "See your data update instantly..."
-     - "Custom Reports" - "Build reports tailored to your needs..."
-     - "Team Collaboration" - "Share insights with your team..."
+### 3. CONTENT FIRST (write before designing)
 
-6. **How It Works** (3-4 steps):
-   - Step numbers (large, prominent)
-   - Step title
-   - Step description
-   - Optional illustration
+Before any markup, write these out in plain text:
 
-7. **Pricing Section** (if included):
-   - 2-3 tiers (Starter, Pro, Enterprise)
-   - Price (realistic: $29/mo, $99/mo, Custom)
-   - Features list (5-8 items per tier)
-   - CTA button per tier
-   - Highlight recommended tier
+1. **One-sentence product description** — "Lumina helps freelancers send polished invoices and get paid in 1 click." Write this honestly. Don't pad it.
+2. **Headline** — derived from #1. ≤ 60 characters. Benefit, not feature. ("Get paid faster, not later." — not "AI-powered invoicing platform".)
+3. **Subhead** — 1–2 sentences expanding the headline. Concrete proof or context.
+4. **Primary CTA** — action verb. "Start free", "Try the demo", "Book a call". NOT "Get started", "Click here", "Learn more".
+5. **3 features** — each with: 2-word title, 1-sentence description. Use the user's words, not yours.
+6. **3 testimonial sources** — pull names from `sample-content.json`, write believable quotes specific to the product.
+7. **Pricing** (if included) — 2–3 tiers, realistic prices ($9 / $29 / $99 or $19 / $49 / Custom), real feature lists.
 
-8. **FAQ Section**:
-   - 5-8 common questions
-   - Accordion pattern
-   - Clear, helpful answers
+Only AFTER #1–7 are written, start markup. The layout serves the content.
 
-9. **CTA Section**:
-   - Headline: "Ready to get started?"
-   - Subheadline: Brief encouragement
-   - Large CTA button
-   - Trust indicators
-   - Contrasting background
+### 4. PLAN the layout
 
-10. **Footer**:
-    - Logo
-    - Navigation links (Product, Company, Resources, Legal)
-    - Social media links
-    - Copyright
-    - Contact info
+Apply rules from `60-pages-and-layouts.mdc`:
 
-11. **Content Guidelines**:
-    - **NO Lorem Ipsum** - use realistic, industry-appropriate content
-    - **Specific benefits** - not generic "best solution"
-    - **Real numbers** - "$1.2M saved", "45% faster", "10,000+ users"
-    - **Action-oriented** - "Start analyzing", not "Click here"
-    - **Conversational tone** - friendly but professional
+- Density: **spacious** (24px base, 16–18px body, 80–96px section padding).
+- Scan: **Z-pattern**.
+- Focal point: ONE primary CTA above the fold. Secondary CTA visually quieter.
+- Section order from `sections` arg, default order:
+  1. Header / nav (sticky, transparent over hero)
+  2. Hero (60–80vh)
+  3. Social proof (logos OR stats OR anchor testimonial — pick one)
+  4. Features (3-column grid)
+  5. How it works (3 steps)
+  6. Testimonials (1 anchor or 3-up)
+  7. Pricing (optional)
+  8. FAQ (`<details>` accordions)
+  9. Final CTA
+  10. Footer
 
-12. **Responsive Design**:
-    - Mobile: Single column, stacked sections
-    - Tablet: 2 columns where appropriate
-    - Desktop: Full layout with max-width 1280-1440px
+### 5. GENERATE
 
-13. **Accessibility**:
-    - Semantic landmarks (header, nav, main, section, footer)
-    - Proper heading hierarchy (H1 → H2 → H3)
-    - Alt text for images
-    - WCAG AA contrast
-    - Keyboard navigation
-    - Focus indicators
+Output structure:
 
-## Output Files
-
-1. `pages/landing.html` - Complete landing page
-2. `pages/landing.css` - Page-specific styles
-3. `docs/landing-page-guide.md` - Documentation
-
-## Quality Checks
-
-- [ ] Semantic HTML structure
-- [ ] Clear value proposition in hero
-- [ ] Realistic, industry-appropriate content
-- [ ] No Lorem Ipsum or placeholders
-- [ ] All sections properly structured
-- [ ] Responsive layout (mobile, tablet, desktop)
-- [ ] WCAG AA contrast ratios
-- [ ] Proper heading hierarchy (H1 → H2 → H3)
-- [ ] CTAs prominent and action-oriented
-- [ ] Social proof included
-- [ ] Trust indicators present
-- [ ] Footer complete
-- [ ] Images have alt text
-- [ ] Meta tags for SEO
-
-## Example Usage
-
-```
-/mba-build-landing-page product_name="Acme Analytics Platform" industry="analytics" sections="hero,social-proof,features,pricing,faq,cta" theme="neutral" cta_text="Start Free Trial"
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{product_name} — {one-sentence-from-step-3}</title>
+  <meta name="description" content="{step-3-#1}">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header><nav class="topnav">...</nav></header>
+  <main>
+    <section class="hero">...</section>
+    <section class="social-proof">...</section>
+    <section class="features">...</section>
+    <section class="how-it-works">...</section>
+    <section class="testimonials">...</section>
+    <section class="pricing">...</section>
+    <section class="faq">...</section>
+    <section class="cta">...</section>
+  </main>
+  <footer>...</footer>
+</body>
+</html>
 ```
 
-This will generate a complete landing page for an analytics SaaS product with neutral theme.
+CSS uses tokens from `[.mba-template/tokens/tokens-modern.css](mdc:.mba-template/tokens/tokens-modern.css)`. Import it at the top of the stylesheet OR inline its variables.
 
-## Anti-Patterns to Avoid
+### 6. SELF-CRITIQUE (Layer C)
 
-Reference `.cursor/rules/80-anti-ai-patterns.mdc`:
-- No generic "Lorem ipsum" text
-- No "Click here" buttons
-- No centered paragraphs
-- No rainbow colors
-- No excessive gradients
-- No unrealistic data (all perfect numbers)
-- No missing empty states
-- No tiny touch targets on mobile
+Score 1–5 on each. If any < 4, revise once.
 
+- Hierarchy — primary CTA wins above the fold?
+- Restraint — could you remove a section, gradient, or graphic and lose nothing?
+- Rhythm — every value from `10-tokens-and-scales.mdc`?
+- Content fit — copy reads like a real product, not generic SaaS-speak?
+- Accessibility — semantic landmarks, heading hierarchy intact, focus-visible everywhere, real `<label>`s, alt text?
+- Reference — would this look at home alongside Vercel / Stripe / Linear marketing pages?
+
+Then run the `60-pages-and-layouts.mdc` §8 self-check.
+
+### 7. OUTPUT
+
+| Framework | Files |
+|-----------|-------|
+| `html` | `pages/landing.html`, `pages/landing.css` |
+| `react` (Next.js App Router) | `app/page.tsx`, `app/page.module.css` (or Tailwind classes) |
+| `astro` | `src/pages/index.astro` |
+
+End with a 1-paragraph rationale: design system emulated, the one most distinctive choice, and which testimonial / stat carries the most weight.
+
+## Anti-patterns to avoid
+
+| ❌ | ✅ |
+|----|----|
+| Lorem ipsum | Real, specific, industry-appropriate copy |
+| "Click here" / "Get started" CTA | Action verbs: "Start free", "Try the demo" |
+| Two equally-weighted CTAs | One primary, one secondary (visually quieter) |
+| Centered body text | Left-align body. Center only headlines and hero copy. |
+| 6+ feature cells | 3, max 4. Cognitive overload above that. |
+| "Acme", "John Doe", `user@example.com` | Names from `sample-content.json` |
+| Perfect round numbers ($1,000) | Realistic ($1,247, +12.4%) |
+| Centered logo wall with 12 logos | 4–8 logos, grayscale, single row |
+| Generated `<svg>` paths | Icon library (Font Awesome, Lucide, Heroicons) |
+| Heavy gradients on every section | One subtle gradient max, used as anchor |
+
+## Example invocations
+
+```
+/mba-build-landing-page product_name="Lumina Invoicing" industry="fintech" system="vercel-geist" cta_text="Start free"
+/mba-build-landing-page product_name="Helm CI" industry="developer-tools" sections="hero,features,how-it-works,cta" framework="astro"
+```
+
+## Definition of done
+
+- [ ] Steps 3.1–3.7 written out before any markup.
+- [ ] Hero has ONE primary CTA above the fold.
+- [ ] Section spacing rhythm consistent (one scale value per gap type).
+- [ ] All copy from `sample-content.json` or written specifically — no generic "leverage AI" filler.
+- [ ] Realistic numbers, names, testimonials.
+- [ ] Mobile layout tested mentally (single column, stacked sections).
+- [ ] Heading hierarchy: one H1 in hero, then H2 per section, H3 inside.
+- [ ] Footer has 3–5 link columns + copyright + social.
+- [ ] 1-paragraph rationale written.

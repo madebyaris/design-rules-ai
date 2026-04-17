@@ -1,112 +1,109 @@
-# Material Design 3 - Component Patterns
+# Material Design 3 — Components Cheat Sheet
 
-## Buttons
+**Canonical docs:** https://m3.material.io
 
-### Variants
-- **Filled**: High emphasis, filled background
-- **Filled Tonal**: Medium emphasis, tonal background
-- **Outlined**: Medium emphasis, outlined
-- **Text**: Low emphasis, no background
-- **Elevated**: Medium emphasis, with shadow
+**What to copy from this system:** dynamic color (theme from wallpaper), tonal palettes, surface tinting for elevation, comprehensive component library.
 
-### Sizes
-- Height: 40dp (default)
-- Padding: 24dp horizontal
-- Icon: 18dp
+---
 
-## FAB (Floating Action Button)
+## When to choose Material 3
 
-### Sizes
-- **Small**: 40dp
-- **Medium**: 56dp (default)
-- **Large**: 96dp
-- **Extended**: Variable width, 56dp height
+- Android apps (default).
+- Cross-platform apps that target Android first.
+- You want a comprehensive, prescriptive system with first-party components.
+- Dynamic color (Material You) is a feature of your product.
 
-### Variants
-- **Surface**: Default color
-- **Primary**: Primary color
-- **Secondary**: Secondary color
-- **Tertiary**: Tertiary color
+---
 
-## Cards
+## Defining traits
 
-### Variants
-- **Elevated**: With shadow
-- **Filled**: With background color
-- **Outlined**: With border
+| Trait | How |
+|-------|-----|
+| **Dynamic color** | Generate full palette from a single seed (often user wallpaper on Android 12+). |
+| **Tonal palette** | 13 tones (0–100) per color role: primary, secondary, tertiary, error, neutral, neutral-variant. |
+| **Surface tinting** | Elevation expressed as a tint of the primary color overlaid on the surface, not just shadow. |
+| **State layers** | Hover/focus/pressed apply a translucent state-color layer on top of the component. |
+| **Shape system** | 5 shape families (none / xs / sm / md / lg / xl / full) — most components use `sm` (4px) or `md` (8px). |
+| **Type scale** | Display / Headline / Title / Body / Label, each with Large/Medium/Small. |
 
-### Structure
-- Optional media (16:9 or 1:1 ratio)
-- Header (optional)
-- Content area
-- Actions (optional, right-aligned)
+---
 
-## Navigation
+## Component patterns
 
-### Navigation Bar (Bottom)
-- Height: 80dp
-- 3-5 destinations
-- Active indicator (pill shape)
-- Icon + label
+| Component | Notable variants |
+|-----------|-----------------|
+| **Button** | Filled, Filled Tonal, Elevated, Outlined, Text. Plus FAB (Small/Medium/Large/Extended). |
+| **Text field** | Filled or Outlined. Filled is the M3 default. |
+| **Card** | Elevated, Filled, Outlined. |
+| **Top app bar** | Center-aligned, Small (64dp), Medium (112dp), Large (152dp). |
+| **Bottom app bar** | 80dp, with FAB and overflow. |
+| **Navigation bar** | 80dp, 3–5 destinations. |
+| **Navigation rail** | 80dp vertical (tablet/foldable). |
+| **Navigation drawer** | Standard 360dp, Modal overlays. |
+| **Snackbar** | Bottom-center, 1–3 lines, optional action. |
+| **Dialog** | Basic, Full-screen, Date picker, Time picker. |
 
-### Navigation Rail (Side)
-- Width: 80dp
-- Vertical layout
-- Icon + optional label
-- FAB at top (optional)
+---
 
-### Navigation Drawer
-- Width: 360dp (standard), 256dp (modal)
-- Header area
-- Destination list
-- Active indicator (pill shape)
+## Color roles
 
-## Dialogs
+```css
+:root {
+  --md-sys-color-primary: ...;
+  --md-sys-color-on-primary: ...;
+  --md-sys-color-primary-container: ...;
+  --md-sys-color-on-primary-container: ...;
+  /* ...same for secondary, tertiary, error, surface, surface-variant, outline... */
+}
+```
 
-### Types
-- **Basic**: Simple message + actions
-- **Full-screen**: Mobile, full screen
-- **Alert**: Important message, requires action
+Each role has an "on-" pair (text/icon color that goes on top of it) and a "-container" pair (lower-emphasis variant).
 
-### Structure
-- Icon (optional, 24dp)
-- Headline
-- Supporting text
-- Actions (right-aligned)
+---
 
-## Chips
+## Elevation (5 levels)
 
-### Variants
-- **Assist**: Suggestions, smart replies
-- **Filter**: Toggle selection
-- **Input**: User-entered content
-- **Suggestion**: Recommended actions
+Level 0 (no elevation) → Level 5 (highest). Each level adds shadow + surface tint:
 
-### Sizes
-- Height: 32dp
-- Padding: 16dp horizontal
-- Icon: 18dp
+```
+Level 0: surface
+Level 1: surface + 5%  primary tint  (cards default)
+Level 2: surface + 8%  primary tint  (elevated cards, FAB)
+Level 3: surface + 11% primary tint  (modal sheets)
+Level 4: surface + 12% primary tint  (nav drawers)
+Level 5: surface + 14% primary tint  (top app bars on scroll)
+```
 
-## Text Fields
+Use the `surfaceContainerHigh` / `surfaceContainerHighest` color tokens in M3 — they encode the tint already.
 
-### Variants
-- **Filled**: With background
-- **Outlined**: With border
+---
 
-### Structure
-- Label (floating or fixed)
-- Input area (56dp height)
-- Leading icon (optional)
-- Trailing icon (optional)
-- Supporting text
-- Error text
+## Touch targets
 
-## Snackbar
+- Minimum 48dp × 48dp.
+- Spacing 8dp between adjacent targets.
 
-### Structure
-- Single line text (14px)
-- Action button (optional)
-- Close button (optional)
-- Width: 344-672dp (desktop), full-width (mobile)
-- Duration: 4-10 seconds
+---
 
+## Motion
+
+- Standard easing: `cubic-bezier(0.2, 0, 0, 1)` (M3 emphasized standard).
+- Durations: 50ms (instant) / 200ms (short) / 300ms (medium) / 500ms (long).
+- Container transforms: shared-axis, fade-through, container-transform.
+
+---
+
+## Implementation
+
+- **Compose (Android):** `MaterialTheme { Surface { ... } }` with M3 color scheme.
+- **Web (Material Web):** `@material/web` package, web components.
+- **Tailwind:** there are unofficial M3 plugins; for production prefer Material Web.
+
+---
+
+## What to AVOID copying
+
+- Don't apply M3 to non-Android apps that look out of place — iOS users perceive Material as "the wrong system".
+- Don't disable dynamic color without a strong reason — it's M3's signature.
+- Don't mix M3 with iOS-style components (filled buttons + iOS bordered = visual chaos).
+- Don't skip state layers — they're how M3 conveys interactivity.

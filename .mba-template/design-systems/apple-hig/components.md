@@ -1,195 +1,102 @@
-# Apple HIG - Component Patterns
+# Apple HIG — Components Cheat Sheet
 
-## Buttons (iOS)
+**Canonical docs:** https://developer.apple.com/design/human-interface-guidelines
 
-### Styles
-- **Filled**: High emphasis, tinted background
-- **Gray**: Medium emphasis, gray background
-- **Tinted**: Medium emphasis, tinted text
-- **Plain**: Low emphasis, plain text
+**What to copy from this system:** safe area discipline, Dynamic Type, depth via blur and translucency, native gestures, restrained color.
 
-### Sizes
-- **Small**: 28pt height
-- **Medium**: 34pt height
-- **Large**: 44pt height (default)
+---
 
-### Configurations
-- **Title only**
-- **Title + icon**
-- **Icon only** (with label for accessibility)
+## When to choose Apple HIG
 
-## Navigation Bar
+- iOS, iPadOS, macOS, visionOS apps.
+- Cross-platform apps where iOS quality matters most.
+- You want native-feel SwiftUI/UIKit components.
 
-### Components
-- **Title**: Centered or large (inline)
-- **Back button**: Left side, automatic
-- **Trailing buttons**: Right side (1-2 items)
-- **Search bar**: Optional, below title
+---
 
-### Styles
-- **Standard**: Translucent, adapts to scroll
-- **Compact**: Smaller, for scrolled state
-- **Large**: Large title, expands when at top
+## Defining traits
 
-## Tab Bar
+| Trait | How |
+|-------|-----|
+| **Safe areas** | Respect insets always. Use `safe-area-inset-*` (web) or `.safeAreaInset()` (SwiftUI). |
+| **Dynamic Type** | Never fixed sizes. Use semantic styles (`.body`, `.headline`, `.caption`). |
+| **System colors** | Adapt to light/dark/high-contrast automatically. Use `Color.label`, `.secondaryLabel`, `.systemBackground`. |
+| **Translucency / vibrancy** | Bars, sheets, popovers use blur backdrop with vibrancy-shifted text. |
+| **SF Symbols** | Use SF Symbols (5,000+ icons) as the icon language. Configurable weight, scale, color. |
+| **Edge-swipe back** | Don't override the system back-swipe gesture. |
+| **Tap, swipe, long-press, drag, pinch** | Standard gesture vocabulary — don't reinvent. |
 
-### Structure
-- 2-5 tabs (3-4 recommended)
-- Icon + label (both required)
-- Badge (optional, for notifications)
-- Selected state: Tinted icon + label
+---
 
-### Icon Size
-- 25pt × 25pt (iPhone)
-- 30pt × 30pt (iPad)
-- Line weight: Regular or Medium
+## Component patterns
 
-## Lists (Table View)
+| Component | Notable detail |
+|-----------|---------------|
+| **Navigation bar** | 44pt compact, 96pt with large title. Auto-collapses to compact on scroll. |
+| **Tab bar** | 49pt, 2–5 tabs. Always at bottom (iPhone). |
+| **Toolbar** | 44pt at bottom, contextual to current view. |
+| **Sheets** | Detents: `.medium`, `.large`. Dismissable via grabber + swipe. |
+| **Buttons** | `.borderedProminent` (filled), `.bordered` (tinted), `.plain` (text), `.borderless`. |
+| **Lists** | Inset grouped (default in iOS settings), Grouped, Plain. Use `List` in SwiftUI. |
+| **Alerts** | 1–2 buttons. Title + message + actions. Destructive role for destructive actions. |
+| **Action sheets** | Bottom sheet on iPhone, popover on iPad. Cancel button always present. |
+| **Pickers** | Wheel (compact), inline, menu, segmented. Match to context. |
 
-### Styles
-- **Inset**: Rounded corners, margins
-- **Inset Grouped**: Grouped sections
-- **Plain**: Full width, no margins
-- **Grouped**: Sections with headers
+---
 
-### Row Types
-- **Default**: Title only
-- **Subtitle**: Title + subtitle below
-- **Value 1**: Title + value (right-aligned)
-- **Value 2**: Title (left) + value (right)
+## Color
 
-### Accessories
-- Disclosure indicator (chevron)
-- Detail button (info icon)
-- Checkmark
-- Custom view
+```css
+/* Web equivalents using -apple-system tokens */
+color: -apple-system-label;             /* primary text */
+color: -apple-system-secondary-label;   /* secondary text */
+background: -apple-system-grouped-background;
+```
 
-## Sheets & Modals
+In SwiftUI:
+```swift
+Color(.label)
+Color(.systemBackground)
+Color(.systemBlue)  // iOS tint
+```
 
-### Sheet (iOS 15+)
-- **Medium detent**: Half screen
-- **Large detent**: Full screen
-- Drag indicator at top
-- Dismiss by swiping down
+System tint colors per platform: blue (iOS default), can be overridden per-app via `accentColor`.
 
-### Modal
-- Full screen or page sheet
-- Close button (X) in nav bar
-- Presented from bottom (iOS)
+---
 
-## Alerts & Action Sheets
+## Typography
 
-### Alert
-- Title (bold, 17pt)
-- Message (regular, 13pt)
-- 1-2 buttons (vertical if 2+)
-- Destructive button (red text)
+- **SF Pro** (UI), **SF Pro Display** (large titles), **New York** (serif), **SF Mono** (code).
+- Web fallback: `-apple-system, BlinkMacSystemFont`.
+- Always use semantic Dynamic Type styles. Never hardcode sizes.
 
-### Action Sheet
-- Title (optional)
-- Message (optional)
-- Multiple actions (list)
-- Cancel button (bottom, separated)
+```swift
+Text("Hello").font(.body)         // 17pt, scales with Dynamic Type
+Text("Title").font(.largeTitle)   // 34pt
+```
 
-## Text Fields
+---
 
-### Styles
-- **Rounded**: Rounded corners, fill background
-- **Plain**: Underline only (macOS)
+## Depth via blur (not shadow)
 
-### Components
-- Placeholder text
-- Clear button (X)
-- Left/right views (icons)
-- Secure entry (password)
+- Sheets, popovers, navigation bars use translucent material backdrops:
+  - `.regularMaterial`, `.thinMaterial`, `.thickMaterial`, `.ultraThinMaterial`.
+- Web equivalent: `backdrop-filter: blur(20px) saturate(180%)`.
+- Avoid heavy shadows — they look foreign on iOS.
 
-## Segmented Control
+---
 
-### Structure
-- 2-5 segments
-- Equal width or proportional
-- Selected state: Filled
-- Unselected: Transparent
+## Touch targets
 
-### Usage
-- Switching views/modes
-- Filtering content
-- Selecting options
+- Minimum 44pt × 44pt.
+- Recommended 48pt for primary actions.
 
-## Progress Indicators
+---
 
-### Activity Indicator
-- Spinning circle
-- Small or large size
-- Indeterminate progress
+## What to AVOID copying
 
-### Progress Bar
-- Horizontal bar
-- Determinate progress (0-100%)
-- Track + fill
-
-## Switches
-
-### Structure
-- Toggle control
-- 51pt × 31pt
-- On: Green (or accent color)
-- Off: Gray
-
-### Usage
-- Binary on/off states
-- Immediate effect
-- Label on left
-
-## Steppers
-
-### Structure
-- Minus button
-- Value display
-- Plus button
-- Compact or expanded style
-
-## Sliders
-
-### Structure
-- Track (gray)
-- Fill (tinted)
-- Thumb (circular)
-- Min/max icons (optional)
-
-## Pickers
-
-### Styles
-- **Wheel**: Spinning wheel (iOS)
-- **Menu**: Dropdown menu
-- **Inline**: Expanded list
-- **Compact**: Button that opens menu
-
-### Date Picker
-- Wheel style (iOS)
-- Graphical style (calendar)
-- Compact style (button)
-
-## Context Menus
-
-### Structure
-- Triggered by long press
-- List of actions
-- Icons + labels
-- Destructive action (red, bottom)
-- Preview (optional)
-
-## Toolbars
-
-### iOS Toolbar
-- Height: 44pt
-- Bottom of screen
-- 2-5 items
-- Equal spacing
-
-### macOS Toolbar
-- Height: 52pt
-- Top of window
-- Customizable items
-- Icon + label or icon only
-
+- Don't override safe areas to fill notch/home indicator (looks broken).
+- Don't use Material elevation shadows on iOS — feels like an Android port.
+- Don't disable Dynamic Type — accessibility regression.
+- Don't use SF Symbols on non-Apple platforms (license restriction; use Lucide/Heroicons).
+- Don't use bottom navigation that mimics Android's Material nav bar — use the iOS tab bar instead.

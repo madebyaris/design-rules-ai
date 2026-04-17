@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Skeleton Loader — MBA Design Examples</title>
+  <link rel="stylesheet" href="../tokens/tokens-modern.css">
+  <style>
+    body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-fg); padding: var(--space-8); }
+    .grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); max-width: 960px; margin: 0 auto; }
+
+    .card { padding: var(--space-5); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); }
+
+    .sk {
+      display: block;
+      background: linear-gradient(
+        90deg,
+        var(--color-bg-muted) 0%,
+        color-mix(in oklch, var(--color-bg-muted) 60%, var(--color-bg-subtle)) 50%,
+        var(--color-bg-muted) 100%
+      );
+      background-size: 200% 100%;
+      border-radius: var(--radius-sm);
+      animation: shimmer 1.4s var(--easing-in-out) infinite;
+    }
+    .sk--circle { border-radius: var(--radius-full); }
+    .sk--text { height: 12px; }
+    .sk--heading { height: 18px; }
+    .sk--block { height: 80px; }
+
+    @keyframes shimmer {
+      from { background-position: 200% 0; }
+      to   { background-position: -200% 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .sk { animation: none; background: var(--color-bg-muted); }
+    }
+
+    .row { display: flex; align-items: center; gap: var(--space-3); }
+    .stack { display: flex; flex-direction: column; gap: var(--space-2); }
+    .stack > * + * { margin-top: 0; }
+
+    h2 { font-size: var(--font-size-sm); text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); margin: var(--space-6) 0 var(--space-3); max-width: 960px; margin-left: auto; margin-right: auto; }
+  </style>
+</head>
+<body>
+
+  <h2>Card list — skeleton loader</h2>
+  <div class="grid">
+
+    <div class="card">
+      <div class="row">
+        <span class="sk sk--circle" style="width: 40px; height: 40px;"></span>
+        <div class="stack" style="flex: 1; gap: var(--space-2);">
+          <span class="sk sk--text" style="width: 60%;"></span>
+          <span class="sk sk--text" style="width: 40%;"></span>
+        </div>
+      </div>
+      <div class="stack" style="margin-top: var(--space-4); gap: var(--space-2);">
+        <span class="sk sk--text"></span>
+        <span class="sk sk--text" style="width: 80%;"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="stack" style="gap: var(--space-3);">
+        <span class="sk sk--heading" style="width: 70%;"></span>
+        <span class="sk sk--text"></span>
+        <span class="sk sk--text" style="width: 90%;"></span>
+        <span class="sk sk--block" style="margin-top: var(--space-2);"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <span class="sk sk--circle" style="width: 40px; height: 40px;"></span>
+        <div class="stack" style="flex: 1; gap: var(--space-2);">
+          <span class="sk sk--text" style="width: 50%;"></span>
+          <span class="sk sk--text" style="width: 30%;"></span>
+        </div>
+      </div>
+      <div class="stack" style="margin-top: var(--space-4); gap: var(--space-2);">
+        <span class="sk sk--text"></span>
+        <span class="sk sk--text" style="width: 65%;"></span>
+      </div>
+    </div>
+
+  </div>
+
+  <h2>Skeleton rules</h2>
+  <div class="card" style="max-width: 960px; margin: 0 auto;">
+    <ul style="margin: 0; padding-left: var(--space-5); line-height: 1.7; color: var(--color-fg-muted); font-size: var(--font-size-sm);">
+      <li>Match the shape of the eventual content (rectangles for text, circles for avatars).</li>
+      <li>Use only when load &gt; 200ms — anything faster, skip the skeleton (it adds perceived latency).</li>
+      <li>Honor <code>prefers-reduced-motion</code> — disable shimmer, leave a static placeholder.</li>
+      <li>Never use skeletons inside buttons. Use a spinner inside the button instead.</li>
+      <li>Cap skeleton rows to what fits the visible viewport — don't render 50 fake rows.</li>
+    </ul>
+  </div>
+
+</body>
+</html>

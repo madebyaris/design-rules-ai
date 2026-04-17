@@ -1,0 +1,103 @@
+---
+description: Core design principles, non-negotiables, and self-critique loop. Read FIRST before generating any UI.
+globs: ["**/*.html", "**/*.css", "**/*.jsx", "**/*.tsx", "**/*.vue", "**/*.svelte", "**/*.astro"]
+alwaysApply: true
+---
+
+# Design Principles
+
+You are generating professional UI/UX. Output must be indistinguishable from work by a senior product designer at Linear, Vercel, or Stripe — never look "AI-generated".
+
+This rule has three layers. Read all three. Strong models lean on Layer A. Weaker models lean on Layer B. Every model runs Layer C before returning.
+
+---
+
+## Layer A — Principles (the "why")
+
+These seven principles drive every design decision. When in doubt, return to them.
+
+1. **Restraint over decoration.** Every element earns its place. If you can remove it without losing meaning, remove it. No "polish for polish's sake" — gradients, shadows, animations, and accent colors are spent like a budget.
+
+2. **Hierarchy through contrast, not size alone.** Use weight, color, whitespace, and position before reaching for bigger fonts. A 14px bold label next to 14px regular metadata creates more hierarchy than 32px next to 14px.
+
+3. **Rhythm via a single scale.** One spacing scale, one type scale, one radius scale per project. Mixing scales is the #1 AI tell. If a value isn't in the scale, it doesn't exist.
+
+4. **Content sets the layout, not the reverse.** Write the real content first (headline, body, labels), then design around it. Never design a hero with placeholder text and hope content fits later.
+
+5. **Depth is earned.** Shadows and elevation separate planes (modal above page, dropdown above content). They do not "add polish". Flat is the default; depth is a deliberate signal.
+
+6. **Reference a real system.** Pick one design system (Linear, Vercel Geist, shadcn/ui, Material 3, Apple HIG) per project and stay inside it. Mixing systems creates incoherence. See `.mba-template/design-systems/`.
+
+7. **Boring on purpose.** The chrome (buttons, cards, nav) should be quiet and predictable. Surprise lives in the content and in motion — never in the UI shell.
+
+---
+
+## Layer B — Non-negotiables (the "what")
+
+Hard rules. No exceptions, no creative interpretations.
+
+### Tokens
+- Use **only** values from `[.cursor/rules/10-tokens-and-scales.mdc](mdc:.cursor/rules/10-tokens-and-scales.mdc)`.
+- Reference CSS variables from `[.mba-template/tokens/tokens-modern.css](mdc:.mba-template/tokens/tokens-modern.css)` (preferred) or `[.mba-template/tokens/tokens.css](mdc:.mba-template/tokens/tokens.css)` (legacy).
+- Forbidden: 7px, 13px, 19px, 23px, or any spacing/radius/font-size not in the approved scale.
+
+### Icons
+- **Never generate SVG markup.** Use an icon library:
+  - Font Awesome: `<i class="fa-solid fa-user" aria-hidden="true"></i>`
+  - Heroicons (React): `<UserIcon className="size-5" />`
+  - Lucide: `<User size={20} />`
+- See `[.mba-template/ICON-QUICK-REFERENCE.md](mdc:.mba-template/ICON-QUICK-REFERENCE.md)`.
+
+### Content
+- **No Lorem ipsum. No "Acme Corp", "John Doe", "user@example.com" defaults.**
+- Pull realistic names, emails, companies, and copy from `[.mba-template/content/sample-content.json](mdc:.mba-template/content/sample-content.json)`.
+- Numbers are imperfect (`$1,234.56`, `12,847 users`, `+12.4%` — never `$1,000.00`, `10,000`, `+10%`).
+
+### Accessibility (WCAG AA floor)
+- Touch targets ≥ 44px × 44px on mobile, ≥ 32px × 32px on desktop.
+- Contrast ≥ 4.5:1 for body text, ≥ 3:1 for text 18px+ or bold 14px+.
+- Focus outline: 2px solid, 2px offset, uses `:focus-visible` (never the deprecated `:focus`).
+- Semantic HTML: `<button>` not `<div onclick>`, `<nav>`, `<main>`, `<article>`, `<aside>`.
+- All form inputs have a `<label>`. All icon-only buttons have `aria-label`. Decorative icons are `aria-hidden="true"`.
+- Honor `prefers-reduced-motion` for any animation > 200ms or any movement.
+
+### Motion
+- Animate only `transform` and `opacity`. Never `width`, `height`, `margin`, `top/left`.
+- Durations: 100ms (hover), 200ms (buttons/inputs), 300ms (modals/drawers), 500ms (page transitions).
+- Easing: `ease-out` for entrances, `ease-in` for exits, `ease-in-out` for state changes.
+
+### Composition
+- One primary action per screen above the fold. Other actions are secondary.
+- One density per page (compact / comfortable / spacious — see `[.cursor/rules/50-components.mdc](mdc:.cursor/rules/50-components.mdc)`).
+- Body text left-aligned. Center-align only for short headlines, empty states, and hero copy.
+- Maximum 2–3 accent colors. Plus one neutral scale and 4 semantic colors (success/warning/error/info).
+
+---
+
+## Layer C — Self-critique (run before returning code)
+
+Before you output, score the design 1–5 on each dimension. If any score is below 4, revise once.
+
+| Dimension | Question | Pass = 4+ |
+|-----------|----------|-----------|
+| **Hierarchy** | Can a user identify the primary action in under 1 second? | Yes, no scanning needed |
+| **Restraint** | Could I remove a gradient, shadow, or border and lose nothing? | No removable element exists |
+| **Rhythm** | Does every spacing/radius/font value belong to the approved scale? | 100% scale compliance |
+| **Content fit** | Is the copy realistic, specific, and free of "Lorem"/"Acme"/"John Doe"? | All copy is real and specific |
+| **Accessibility** | Semantic HTML, focus-visible, AA contrast, 44px touch targets, real labels? | All checked |
+| **Reference** | Could this code live inside a Linear / Vercel / Stripe codebase without standing out? | Yes, indistinguishable |
+
+After revision, briefly state in one sentence which design system you're emulating and why. Example: "Emulating Vercel Geist for restraint and monospace numerics — fits a developer-tool dashboard."
+
+---
+
+## When the user asks for "great", "OG", "premium", or "world-class" design
+
+Default to: Linear (for app UI), Vercel Geist (for marketing/dev tools), or shadcn/ui (for SaaS apps). Do **not** default to gradients, glassmorphism, or "cyberpunk neon" unless explicitly requested. Restraint is the signal of taste.
+
+## Reading order for further detail
+
+1. `[10-tokens-and-scales.mdc](mdc:.cursor/rules/10-tokens-and-scales.mdc)` — every approved value.
+2. `[50-components.mdc](mdc:.cursor/rules/50-components.mdc)` — component anatomy and required states.
+3. `[60-pages-and-layouts.mdc](mdc:.cursor/rules/60-pages-and-layouts.mdc)` — page archetypes and layout primitives.
+4. `[95-platform-specific.mdc](mdc:.cursor/rules/95-platform-specific.mdc)` — only when targeting iOS, Android, or desktop apps.

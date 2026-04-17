@@ -1,0 +1,204 @@
+---
+description: All approved design tokens and scales. Single source of truth for spacing, type, color, radius, motion, z-index, shadow, elevation, breakpoints.
+globs: ["**/*.html", "**/*.css", "**/*.jsx", "**/*.tsx", "**/*.vue", "**/*.svelte", "**/*.astro"]
+alwaysApply: true
+---
+
+# Tokens and Scales
+
+The complete list of approved values. **No value outside these tables is allowed.** Reference CSS variables from `[.mba-template/tokens/tokens-modern.css](mdc:.mba-template/tokens/tokens-modern.css)` (preferred) or `[.mba-template/tokens/tokens.css](mdc:.mba-template/tokens/tokens.css)` (legacy).
+
+---
+
+## 1. Spacing (8px base, 4px half-step)
+
+| Token | Value | Use for |
+|-------|-------|---------|
+| `--space-1` | 4px | Icon-to-text gap, tight inline elements |
+| `--space-2` | 8px | Default small (compact) |
+| `--space-3` | 12px | Button padding (vertical), form field gaps |
+| `--space-4` | 16px | Default medium, card inner padding (compact) |
+| `--space-5` | 20px | Comfortable default |
+| `--space-6` | 24px | Card padding, section inner spacing |
+| `--space-8` | 32px | Section spacing, page margins (desktop) |
+| `--space-10` | 40px | Large gaps |
+| `--space-12` | 48px | Major section spacing |
+| `--space-16` | 64px | Page section, hero padding |
+| `--space-20` | 80px | Hero spacing |
+| `--space-24` | 96px | Major page division |
+
+**Forbidden:** any value not above (no 6px, 7px, 10px, 14px, 18px, 22px, 28px, 36px, 56px, 72px).
+
+---
+
+## 2. Typography
+
+**Font stack:** system stack (`-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`) or modern alternatives (Inter, Geist Sans, SF Pro). Mono: SF Mono, Geist Mono, JetBrains Mono.
+
+| Element | Size | Weight | Line height | Letter spacing |
+|---------|------|--------|-------------|----------------|
+| Display | 48–60px | 700 | 1.1 | -0.025em |
+| H1 | 32–48px | 700 | 1.15 | -0.02em |
+| H2 | 24–32px | 600 | 1.2 | -0.015em |
+| H3 | 20–24px | 600 | 1.3 | -0.01em |
+| H4 | 16–18px | 600 | 1.4 | 0 |
+| Body | 14–16px | 400 | 1.5–1.6 | 0 |
+| Small | 12–14px | 400 | 1.4 | 0 |
+| Caption | 11–12px | 500 | 1.3 | 0.025em |
+| All-caps label | 11–12px | 600 | 1.2 | 0.06em |
+
+**Line length:** 50–75 characters for body text. Use `max-width: 65ch` on prose containers.
+
+**Modern (preferred):** use fluid sizes via `clamp()` from `tokens-modern.css`, e.g. `--font-size-h1: clamp(2rem, 4vw, 3rem)`.
+
+---
+
+## 3. Color (semantic tokens only)
+
+Never invent hex values. Use semantic tokens; map them to OKLCH in `tokens-modern.css`.
+
+| Token | Use |
+|-------|-----|
+| `--color-fg` | Primary text |
+| `--color-fg-muted` | Secondary text, captions |
+| `--color-fg-subtle` | Disabled text, hints |
+| `--color-bg` | Page background |
+| `--color-bg-subtle` | Subtle surfaces (cards on page) |
+| `--color-bg-muted` | Hover backgrounds, code blocks |
+| `--color-border` | Default borders |
+| `--color-border-strong` | Emphasized borders, focus rings |
+| `--color-accent` | Primary brand color |
+| `--color-accent-fg` | Text on `--color-accent` background |
+| `--color-success` | Positive feedback |
+| `--color-warning` | Caution states |
+| `--color-danger` | Errors, destructive actions |
+| `--color-info` | Informational notices |
+
+**Palette caps:** 1 brand accent, 1 neutral scale (50–950), 4 semantic colors. Maximum 2–3 *visible* accent hues per page.
+
+**Modern (preferred):** use `light-dark(--color-bg-light, --color-bg-dark)` from `tokens-modern.css` for automatic theme switching.
+
+**Contrast floors:** 4.5:1 (body), 3:1 (large text 18px+ / bold 14px+), 3:1 (UI controls and graphical objects).
+
+---
+
+## 4. Border Radius
+
+| Token | Value | Use |
+|-------|-------|-----|
+| `--radius-none` | 0 | Tables, full-bleed, side panels |
+| `--radius-sm` | 4px | Buttons, inputs, tags, chips |
+| `--radius-md` | 8px | Cards, dropdowns, popovers |
+| `--radius-lg` | 12px | Modals, large panels, sheets |
+| `--radius-full` | 9999px | Pills, avatars, circular buttons only |
+
+**Forbidden:** 6px, 10px, 14px, 16px+ on small elements, mixing radii within a card (e.g. `border-radius: 4px 12px 4px 12px`).
+
+---
+
+## 5. Motion
+
+| Duration | Use |
+|----------|-----|
+| `--duration-instant` 50ms | Micro-feedback (selection highlight) |
+| `--duration-fast` 100ms | Hover, focus, color shifts |
+| `--duration-normal` 200ms | Buttons, inputs, dropdowns |
+| `--duration-slow` 300ms | Modals, drawers, sheets |
+| `--duration-slower` 500ms | Page transitions, view transitions |
+
+| Easing | Use |
+|--------|-----|
+| `cubic-bezier(0.16, 1, 0.3, 1)` | Entrances (ease-out, expressive) |
+| `cubic-bezier(0.7, 0, 0.84, 0)` | Exits (ease-in, expressive) |
+| `cubic-bezier(0.4, 0, 0.2, 1)` | State changes (Material standard) |
+| `linear` | Loading indicators only |
+
+**Animate only `transform` and `opacity`.** Never `width`, `height`, `margin`, `top`, `left` (causes layout thrash).
+
+**Always honor:** `@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }`.
+
+---
+
+## 6. Z-Index Scale
+
+Pick from this scale only. Never invent random z-index values like `z-index: 9999` outside these tokens.
+
+| Token | Value | Use |
+|-------|-------|-----|
+| `--z-base` | 0 | Default flow |
+| `--z-raised` | 10 | Sticky headers, raised cards |
+| `--z-dropdown` | 100 | Dropdowns, selects, menus |
+| `--z-sticky` | 200 | Sticky elements above dropdowns |
+| `--z-overlay` | 300 | Page overlays, scrims |
+| `--z-modal` | 400 | Modals, dialogs |
+| `--z-popover` | 500 | Popovers, tooltips above modals |
+| `--z-toast` | 600 | Toast notifications |
+| `--z-tooltip` | 700 | Tooltips (always on top) |
+
+---
+
+## 7. Shadow / Elevation
+
+Shadows separate planes. Do not use shadows for "polish".
+
+| Token | Value | Use |
+|-------|-------|-----|
+| `--shadow-none` | `none` | Default (flat) |
+| `--shadow-xs` | `0 1px 2px rgb(0 0 0 / 0.05)` | Subtle separation, inputs on focus |
+| `--shadow-sm` | `0 1px 3px rgb(0 0 0 / 0.08), 0 1px 2px rgb(0 0 0 / 0.04)` | Cards, raised buttons |
+| `--shadow-md` | `0 4px 6px rgb(0 0 0 / 0.07), 0 2px 4px rgb(0 0 0 / 0.04)` | Dropdowns, popovers |
+| `--shadow-lg` | `0 10px 15px rgb(0 0 0 / 0.1), 0 4px 6px rgb(0 0 0 / 0.05)` | Modals, sheets |
+| `--shadow-xl` | `0 20px 25px rgb(0 0 0 / 0.1), 0 8px 10px rgb(0 0 0 / 0.04)` | High-elevation overlays |
+
+**Rule:** elevation must increase monotonically as elements stack (z-index ↑ → shadow ↑). A modal cannot have less shadow than the page card it sits above.
+
+In dark mode, replace shadows with subtle borders (`1px solid color-mix(in oklch, var(--color-fg) 8%, transparent)`).
+
+---
+
+## 8. Breakpoints
+
+| Token | Value | Target |
+|-------|-------|--------|
+| `--bp-sm` | 640px | Large phone, small tablet |
+| `--bp-md` | 768px | Tablet portrait |
+| `--bp-lg` | 1024px | Tablet landscape, small laptop |
+| `--bp-xl` | 1280px | Desktop |
+| `--bp-2xl` | 1536px | Large desktop |
+
+**Mobile-first:** start with mobile styles, enhance with `@media (min-width: ...)`.
+
+**Modern (preferred):** prefer container queries (`@container (min-width: 480px)`) for component-level responsiveness. Use media queries only for page-level layout shifts. See `[.mba-template/patterns/container-queries.md](mdc:.mba-template/patterns/container-queries.md)`.
+
+---
+
+## 9. Icon sizes
+
+| Size | Use |
+|------|-----|
+| 14px | Inline with small text (12–14px body) |
+| 16px | Inline with body text (14–16px) |
+| 20px | Buttons, nav items, default UI icon |
+| 24px | Section headers, prominent UI |
+| 32px | Feature icons, large nav |
+| 48px+ | Hero illustrations, empty states |
+
+**Never generate SVG markup.** Use Font Awesome, Heroicons, Lucide, or Material Symbols. See `[.mba-template/ICON-QUICK-REFERENCE.md](mdc:.mba-template/ICON-QUICK-REFERENCE.md)`.
+
+---
+
+## 10. Density
+
+A page commits to one density. Mixing densities is forbidden.
+
+| Density | Base spacing | Body text | Row height | Use |
+|---------|--------------|-----------|------------|-----|
+| **Compact** | 8px (`--space-2`) | 13–14px | 32px | Dashboards, admin, data tables, IDEs |
+| **Comfortable** | 16px (`--space-4`) | 14–16px | 40px | SaaS apps, settings, default |
+| **Spacious** | 24px (`--space-6`) | 16–18px | 48px | Marketing, content sites, onboarding |
+
+---
+
+## Quick lookup
+
+When you need a value and aren't sure: scroll up. If it's not in a table here, it doesn't exist.

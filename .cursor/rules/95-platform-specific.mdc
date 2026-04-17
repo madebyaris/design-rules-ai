@@ -1,204 +1,138 @@
 ---
-description: Platform-specific design guidelines (iOS, Android, Desktop)
-globs: ["**/*.html", "**/*.css", "**/*.jsx", "**/*.tsx", "**/*.vue", "**/*.svelte", "**/*.swift", "**/*.kt"]
+description: Platform-specific deltas for iOS, Android, desktop apps (Electron/Tauri). Apply ONLY when targeting these platforms — read this rule when the task mentions iOS, iPhone, iPad, Android, Material Design, desktop app, Electron, Tauri, Swift, SwiftUI, or Kotlin.
+globs: ["**/*.swift", "**/*.kt", "**/*.kts", "**/*.dart", "src-tauri/**/*"]
 alwaysApply: false
 ---
 
-# Platform-Specific Guidelines
+# Platform-Specific Deltas
 
-## Web Responsive
+This rule covers ONLY what differs from web defaults. Spacing, color, typography, accessibility, and component anatomy come from `[00-design-principles.mdc](mdc:.cursor/rules/00-design-principles.mdc)`, `[10-tokens-and-scales.mdc](mdc:.cursor/rules/10-tokens-and-scales.mdc)`, and `[50-components.mdc](mdc:.cursor/rules/50-components.mdc)`. Do not duplicate them here.
 
-Reference: `.mba-template/platforms/web-responsive.md`
+For full canonical references see `[.mba-template/platforms/](mdc:.mba-template/platforms/)`.
 
-### Key Points
-- Mobile-first approach
-- Breakpoints: 640px, 768px, 1024px, 1280px
-- Touch targets: 44px × 44px minimum
-- Responsive typography
-- Flexible layouts
+---
 
-## Desktop Apps (Electron/Tauri)
+## iOS / iPadOS
 
-Reference: `.mba-template/platforms/desktop-apps.md`
+### Safe areas — non-negotiable
+- Top: status bar + Dynamic Island / notch (44–59pt). Use `safe-area-inset-top`.
+- Bottom: home indicator (34pt). Use `safe-area-inset-bottom`.
+- Web: `viewport-fit=cover` + `padding: env(safe-area-inset-*)`.
 
-### Window Management
-- Title bar: 32-40px (Windows), 22px (macOS)
-- Window controls: native or custom
-- Drag region for moving window
-- Resize from all edges
+### Native font
+- SF Pro (UI), SF Pro Display (large titles), SF Mono (code), New York (serif).
+- Web fallback: `-apple-system, BlinkMacSystemFont`.
 
-### Keyboard Shortcuts
-- Cmd/Ctrl + N: New
-- Cmd/Ctrl + S: Save
-- Cmd/Ctrl + W: Close
-- Cmd/Ctrl + Q: Quit
-- Cmd/Ctrl + ,: Preferences
-
-### Layout
-- Menu bar: 28-32px
-- Toolbar: 40-48px
-- Sidebar: 240-280px (collapsible)
-- Status bar: 24-28px
-
-### Interaction
-- Click targets: 24px × 24px minimum
-- Hover states essential
-- Right-click context menus
-- Keyboard navigation
-
-## iOS Mobile
-
-Reference: `.mba-template/platforms/ios-mobile.md`
-
-### Safe Areas
-- Top: Status bar + notch (44-59pt)
-- Bottom: Home indicator (34pt)
-- Always respect safe area insets
+### Dynamic Type
+- Never use fixed `pt` sizes. Use `UIFont.preferredFont(forTextStyle:)` (SwiftUI: `.font(.body)`) or web `font: -apple-system-body`.
 
 ### Navigation
-- Navigation bar: 44pt (compact), 96pt (large title)
-- Tab bar: 49pt, 2-5 tabs
-- Back button: Automatic
-- Swipe back gesture
+- Navigation bar: 44pt compact, 96pt with large title.
+- Tab bar: 49pt, 2–5 tabs.
+- Back: automatic + edge swipe gesture (don't override).
 
-### Typography
-- SF Pro font family
-- Dynamic Type support (12 sizes)
-- Never use fixed sizes
+### Buttons (UIKit/SwiftUI variants)
+- `.borderedProminent` (filled), `.bordered` (tinted), `.plain` (text). No outlined variant — that's Material.
 
-### Colors
-- System colors (adapt to light/dark)
-- Semantic colors (label, background, etc.)
-- Test in both modes
+### Touch targets
+- Minimum 44pt × 44pt. Recommended 48pt.
 
-### Components
-- Buttons: Filled, Gray, Tinted, Plain
-- Lists: Inset, Grouped, Plain
-- Sheets: Medium/Large detents
-- Alerts: 1-2 buttons
+### Sheets
+- Detents: medium (half-screen), large (full). Use `.presentationDetents([.medium, .large])` in SwiftUI.
 
-### Touch Targets
-- Minimum: 44pt × 44pt
-- Recommended: 48pt × 48pt
+### Test
+- VoiceOver (Settings → Accessibility → VoiceOver), Reduce Motion, both light and dark mode.
 
-### Gestures
-- Tap, Long press, Swipe, Pinch, Drag
-- Don't block system gestures
+---
 
-## Android Mobile
+## Android
 
-Reference: `.mba-template/platforms/android-mobile.md`
+### Material Design 3 (M3)
+- Use `MaterialTheme` (Compose) or `Material3` themes (XML).
+- Dynamic color: derive palette from wallpaper via `dynamicLightColorScheme()` / `dynamicDarkColorScheme()`.
+- Tonal palettes: 13 tones per color role.
+- Elevation expressed via surface tinting, not just shadow.
 
-### Material Design 3
-- Dynamic color from wallpaper
-- Tonal palettes (13 tones)
-- Elevation via tinting
-- State layers for interaction
+### Native font
+- Roboto (default) or Roboto Flex (variable). Code: Roboto Mono.
+
+### Type scale (M3)
+- Display, Headline, Title, Body, Label — each with Large / Medium / Small.
+- Support system font scaling (don't disable `fontScale`).
 
 ### Navigation
-- Top app bar: 64dp
-- Bottom navigation: 80dp, 3-5 items
-- Navigation drawer: 360dp (standard)
-- Navigation rail: 80dp (vertical)
+- Top app bar: 64dp.
+- Bottom navigation: 80dp, 3–5 destinations.
+- Navigation drawer: 360dp standard.
+- Navigation rail: 80dp (vertical, for tablets/foldables).
 
-### Typography
-- Roboto font family
-- Type scale: Display, Headline, Title, Body, Label
-- Support system font scaling
+### Buttons (M3)
+- `Filled`, `FilledTonal`, `Outlined`, `Text`, `Elevated`. FAB: Small 40dp / Medium 56dp / Large 96dp.
 
-### Colors
-- Color roles (primary, secondary, tertiary, error)
-- Surface tinting for elevation
-- Light and dark themes
+### Touch targets
+- Minimum 48dp × 48dp. Spacing 8dp between adjacent targets.
 
-### Components
-- Buttons: Filled, Filled Tonal, Outlined, Text, Elevated
-- FAB: Small (40dp), Medium (56dp), Large (96dp)
-- Cards: Elevated, Filled, Outlined
-- Text fields: Filled, Outlined
+### Test
+- TalkBack, both light and dark themes, dynamic color enabled and disabled.
 
-### Touch Targets
-- Minimum: 48dp × 48dp
-- Spacing: 8dp between targets
+---
 
-### Gestures
-- Tap, Long press, Swipe, Pinch
-- System gesture navigation
+## Desktop apps (Electron / Tauri)
 
-## Cross-Platform Considerations
+### Window chrome
+- Title bar: 32–40px (Windows), 22px (macOS — traffic lights).
+- Custom title bar: define drag region (`-webkit-app-region: drag` on container, `no-drag` on interactive elements).
+- Resize from all edges (default), or set min/max sizes.
 
-### Shared Principles
-- Consistent spacing scale
-- Semantic color system
-- Clear visual hierarchy
-- Accessible design
-- Responsive layouts
+### Layout chrome
+- Menu bar: 28–32px (Windows native menu OR custom). On macOS, use the system menu bar via app menu.
+- Toolbar: 40–48px.
+- Sidebar: 240–280px, collapsible.
+- Status bar: 24–28px.
 
-### Platform Differences
-- **Navigation**: iOS (bottom tabs), Android (bottom nav), Desktop (sidebar)
-- **Typography**: SF Pro (iOS), Roboto (Android), System (Desktop)
-- **Interactions**: Touch (mobile), Mouse+Keyboard (desktop)
-- **Patterns**: Follow platform conventions
+### Keyboard shortcuts (must support)
+| Action | macOS | Windows / Linux |
+|--------|-------|-----------------|
+| New | ⌘N | Ctrl+N |
+| Open | ⌘O | Ctrl+O |
+| Save | ⌘S | Ctrl+S |
+| Close | ⌘W | Ctrl+W |
+| Quit | ⌘Q | Ctrl+Q (Alt+F4) |
+| Preferences | ⌘, | Ctrl+, |
+| Find | ⌘F | Ctrl+F |
+| Undo / Redo | ⌘Z / ⌘⇧Z | Ctrl+Z / Ctrl+Y |
 
-### Adaptive Design
-```javascript
-// Detect platform
-const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-const isAndroid = /Android/.test(navigator.userAgent);
-const isDesktop = !isIOS && !isAndroid;
+### Click targets
+- Minimum 24px × 24px (mouse-driven, denser than touch). Hover states are mandatory.
 
-// Apply platform-specific styles
-if (isIOS) {
-  // iOS-specific code
-} else if (isAndroid) {
-  // Android-specific code
-} else {
-  // Desktop code
-}
-```
+### Right-click
+- Context menus expected for lists, text fields, content areas. Use native menu APIs (Tauri: `Menu`, Electron: `Menu.buildFromTemplate`).
 
-## Platform-Specific Rules
+### System theme
+- Honor `prefers-color-scheme`. On Tauri, listen to `tauri::api::os::os_type` and theme events. On Electron, `nativeTheme.shouldUseDarkColors`.
 
-### When Targeting iOS
-- Use SF Pro font
-- Respect safe areas
-- Support Dynamic Type
-- Use iOS components
-- Follow Apple HIG
-- Test with VoiceOver
+---
 
-### When Targeting Android
-- Use Roboto font
-- Implement Material Design 3
-- Support dynamic color
-- Use Material components
-- Follow Material guidelines
-- Test with TalkBack
+## Cross-platform decision tree
 
-### When Targeting Desktop
-- Support keyboard shortcuts
-- Implement window management
-- Use native menus
-- Support system theme
-- Test keyboard navigation
-- Respect system preferences
+When the same product targets multiple platforms:
 
-## Best Practices
+1. **Shared:** spacing scale, semantic color tokens, typography hierarchy, accessibility floor — all from core rules.
+2. **Diverge:**
+   - Navigation: bottom tabs (iOS), bottom nav (Android), sidebar (desktop), top nav (web).
+   - Fonts: SF Pro (iOS), Roboto (Android), system stack (desktop/web).
+   - Components: filled/bordered/plain (iOS), filled/tonal/outlined/text/elevated (Android M3), shadcn-style (web).
+   - Gestures: edge swipe back (iOS), system gesture nav (Android), keyboard + mouse (desktop).
 
-### Do
-- Follow platform conventions
-- Use platform components
-- Respect system preferences
-- Test on target platforms
-- Support platform gestures
-- Use platform fonts
-- Adapt to screen sizes
+3. **Never:** force one design across all platforms. A web-styled iOS app feels broken. A Material Android app on iOS feels foreign.
 
-### Don't
-- Force one design everywhere
-- Ignore platform patterns
-- Block system gestures
-- Use wrong components
-- Ignore accessibility
-- Hardcode dimensions
-- Skip platform testing
+---
+
+## Self-check
+
+- [ ] Using platform-native font?
+- [ ] Honoring safe areas (mobile) / window chrome (desktop)?
+- [ ] Touch targets meet platform minimum (44pt iOS / 48dp Android / 24px desktop)?
+- [ ] Following platform navigation pattern (tabs / nav / sidebar)?
+- [ ] Tested in both light and dark mode?
+- [ ] Tested with platform's screen reader (VoiceOver / TalkBack / NVDA)?

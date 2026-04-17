@@ -1,0 +1,300 @@
+/**
+ * MBA Design System — Modern Tokens (2026)
+ *
+ * Modern layer on top of the 2025 tokens.css. Adds:
+ *   - OKLCH color space (perceptually uniform, predictable lightness shifts)
+ *   - light-dark() function (single-source automatic theming)
+ *   - Fluid typography via clamp() (size scales with viewport)
+ *   - color-mix() recipes (derive hover/focus/disabled tints from one base)
+ *   - Container query units (cqi/cqw) for component-level responsiveness
+ *   - Reserved view-transition-name conventions
+ *   - @property declarations for animatable custom properties
+ *
+ * Browser support: Chrome 123+, Safari 17.5+, Firefox 124+.
+ * Falls back gracefully — older browsers ignore unsupported features.
+ *
+ * Use this file by default. Use tokens.css only if you need <2024 browser support.
+ */
+
+/* =========================================================
+   color-scheme — opt every component into native theming
+   ========================================================= */
+:root {
+  color-scheme: light dark;
+}
+
+/* =========================================================
+   COLOR — OKLCH palette
+   OKLCH params: lightness (0–1), chroma (0–~0.4), hue (0–360deg)
+   ========================================================= */
+:root {
+  /* Neutral scale — true gray (chroma 0) */
+  --neutral-0:    oklch(1     0    0);
+  --neutral-50:   oklch(0.985 0    0);
+  --neutral-100:  oklch(0.97  0    0);
+  --neutral-200:  oklch(0.922 0    0);
+  --neutral-300:  oklch(0.87  0    0);
+  --neutral-400:  oklch(0.708 0    0);
+  --neutral-500:  oklch(0.556 0    0);
+  --neutral-600:  oklch(0.439 0    0);
+  --neutral-700:  oklch(0.371 0    0);
+  --neutral-800:  oklch(0.269 0    0);
+  --neutral-900:  oklch(0.205 0    0);
+  --neutral-950:  oklch(0.145 0    0);
+  --neutral-1000: oklch(0     0    0);
+
+  /* Brand accent — change hue/chroma to rebrand. Default: indigo. */
+  --accent-50:  oklch(0.97  0.014 254);
+  --accent-100: oklch(0.93  0.034 256);
+  --accent-200: oklch(0.88  0.059 254);
+  --accent-300: oklch(0.81  0.105 252);
+  --accent-400: oklch(0.71  0.143 254);
+  --accent-500: oklch(0.62  0.188 260);  /* primary brand */
+  --accent-600: oklch(0.546 0.215 262);
+  --accent-700: oklch(0.488 0.243 264);
+  --accent-800: oklch(0.424 0.199 265);
+  --accent-900: oklch(0.379 0.146 265);
+  --accent-950: oklch(0.282 0.091 267);
+
+  /* Semantic colors */
+  --success-500: oklch(0.696 0.17  162);  /* green */
+  --warning-500: oklch(0.795 0.184 86);   /* amber */
+  --danger-500:  oklch(0.628 0.258 28);   /* red */
+  --info-500:    oklch(0.685 0.169 237);  /* blue */
+}
+
+/* =========================================================
+   SEMANTIC TOKENS — light-dark() automatic theming
+   Reference these in components, not the raw palette.
+   ========================================================= */
+:root {
+  /* Backgrounds */
+  --color-bg:        light-dark(var(--neutral-0),   var(--neutral-950));
+  --color-bg-subtle: light-dark(var(--neutral-50),  var(--neutral-900));
+  --color-bg-muted:  light-dark(var(--neutral-100), var(--neutral-800));
+
+  /* Foregrounds */
+  --color-fg:        light-dark(var(--neutral-950), var(--neutral-50));
+  --color-fg-muted:  light-dark(var(--neutral-600), var(--neutral-400));
+  --color-fg-subtle: light-dark(var(--neutral-500), var(--neutral-500));
+
+  /* Borders */
+  --color-border:        light-dark(var(--neutral-200), var(--neutral-800));
+  --color-border-strong: light-dark(var(--neutral-400), var(--neutral-600));
+
+  /* Accent */
+  --color-accent:        light-dark(var(--accent-600), var(--accent-500));
+  --color-accent-fg:     light-dark(var(--neutral-0),  var(--neutral-0));
+  --color-accent-muted:  light-dark(var(--accent-50),  var(--accent-950));
+
+  /* Semantic */
+  --color-success: light-dark(oklch(0.55 0.17  162), oklch(0.75 0.17  162));
+  --color-warning: light-dark(oklch(0.65 0.184 86),  oklch(0.82 0.184 86));
+  --color-danger:  light-dark(oklch(0.55 0.22  28),  oklch(0.72 0.22  28));
+  --color-info:    light-dark(oklch(0.55 0.17  237), oklch(0.75 0.17  237));
+}
+
+/* Manual override (when user sets data-theme on <html>) */
+[data-theme="light"] { color-scheme: light; }
+[data-theme="dark"]  { color-scheme: dark; }
+
+/* =========================================================
+   COLOR-MIX RECIPES — derive states from a single base
+   Use these in component CSS instead of hardcoding tints.
+   ========================================================= */
+:root {
+  /* Hover: 90% base + 10% white (lightens) — flip in dark mode */
+  --hover-mix: light-dark(white, black);
+  /* Focus ring: accent at 30% over bg */
+  --focus-ring: color-mix(in oklch, var(--color-accent) 30%, transparent);
+  /* Disabled: 50% opacity proxy */
+  --disabled-opacity: 0.5;
+}
+
+/* Example usage in a component:
+   .btn:hover  { background: color-mix(in oklch, var(--color-accent) 90%, var(--hover-mix)); }
+   .btn:focus-visible { box-shadow: 0 0 0 3px var(--focus-ring); }
+*/
+
+/* =========================================================
+   FLUID TYPOGRAPHY — clamp(MIN, PREFERRED, MAX)
+   Sizes scale smoothly between viewport breakpoints.
+   ========================================================= */
+:root {
+  --font-size-xs:    clamp(0.75rem,  0.72rem + 0.15vw, 0.875rem);  /* 12 → 14 */
+  --font-size-sm:    clamp(0.875rem, 0.84rem + 0.18vw, 1rem);       /* 14 → 16 */
+  --font-size-base:  clamp(1rem,     0.95rem + 0.25vw, 1.125rem);   /* 16 → 18 */
+  --font-size-lg:    clamp(1.125rem, 1.06rem + 0.32vw, 1.25rem);    /* 18 → 20 */
+  --font-size-xl:    clamp(1.25rem,  1.16rem + 0.45vw, 1.5rem);     /* 20 → 24 */
+  --font-size-h4:    clamp(1.125rem, 1rem    + 0.6vw,  1.5rem);     /* 18 → 24 */
+  --font-size-h3:    clamp(1.25rem,  1.06rem + 1vw,    1.875rem);   /* 20 → 30 */
+  --font-size-h2:    clamp(1.5rem,   1.18rem + 1.6vw,  2.25rem);    /* 24 → 36 */
+  --font-size-h1:    clamp(2rem,     1.5rem  + 2.5vw,  3rem);       /* 32 → 48 */
+  --font-size-display: clamp(2.5rem, 1.7rem + 4vw,     3.75rem);    /* 40 → 60 */
+
+  /* Modern font stacks (preferred over legacy system stack) */
+  --font-sans:    "Inter", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Geist", "Inter", ui-sans-serif, -apple-system, sans-serif;
+  --font-mono:    "Geist Mono", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+/* =========================================================
+   SPACING — same scale as legacy, expressed in rem
+   ========================================================= */
+:root {
+  --space-1:  0.25rem;  /*  4px */
+  --space-2:  0.5rem;   /*  8px */
+  --space-3:  0.75rem;  /* 12px */
+  --space-4:  1rem;     /* 16px */
+  --space-5:  1.25rem;  /* 20px */
+  --space-6:  1.5rem;   /* 24px */
+  --space-8:  2rem;     /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+}
+
+/* =========================================================
+   RADIUS
+   ========================================================= */
+:root {
+  --radius-none: 0;
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-full: 9999px;
+}
+
+/* =========================================================
+   Z-INDEX SCALE — pick from this list only
+   ========================================================= */
+:root {
+  --z-base:     0;
+  --z-raised:   10;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-popover:  500;
+  --z-toast:    600;
+  --z-tooltip:  700;
+}
+
+/* =========================================================
+   SHADOWS — light mode tuned, dark mode uses borders instead
+   ========================================================= */
+:root {
+  --shadow-none: none;
+  --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.08), 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-md: 0 4px 6px rgb(0 0 0 / 0.07), 0 2px 4px rgb(0 0 0 / 0.04);
+  --shadow-lg: 0 10px 15px rgb(0 0 0 / 0.1), 0 4px 6px rgb(0 0 0 / 0.05);
+  --shadow-xl: 0 20px 25px rgb(0 0 0 / 0.1), 0 8px 10px rgb(0 0 0 / 0.04);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* In dark mode shadows mostly disappear; rely on borders + bg-subtle */
+    --shadow-xs: 0 0 0 1px color-mix(in oklch, var(--color-fg) 8%, transparent);
+    --shadow-sm: 0 0 0 1px color-mix(in oklch, var(--color-fg) 10%, transparent);
+    --shadow-md: 0 0 0 1px color-mix(in oklch, var(--color-fg) 12%, transparent), 0 4px 6px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 0 0 1px color-mix(in oklch, var(--color-fg) 14%, transparent), 0 10px 15px rgb(0 0 0 / 0.4);
+    --shadow-xl: 0 0 0 1px color-mix(in oklch, var(--color-fg) 16%, transparent), 0 20px 25px rgb(0 0 0 / 0.5);
+  }
+}
+
+/* =========================================================
+   MOTION
+   ========================================================= */
+:root {
+  --duration-instant: 50ms;
+  --duration-fast:    100ms;
+  --duration-normal:  200ms;
+  --duration-slow:    300ms;
+  --duration-slower:  500ms;
+
+  --easing-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --easing-in:     cubic-bezier(0.7, 0, 0.84, 0);
+  --easing-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --easing-linear: linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* =========================================================
+   BREAKPOINTS — for use with media queries
+   Prefer container queries (@container) for component-level.
+   ========================================================= */
+:root {
+  --bp-sm:  640px;
+  --bp-md:  768px;
+  --bp-lg:  1024px;
+  --bp-xl:  1280px;
+  --bp-2xl: 1536px;
+}
+
+/* =========================================================
+   CONTAINER QUERIES — example component setup
+   ========================================================= */
+.cq-container {
+  container-type: inline-size;
+  container-name: card;
+}
+/* Then in a component:
+   @container card (min-width: 480px) { .card { padding: var(--space-6); } }
+*/
+
+/* =========================================================
+   VIEW TRANSITIONS — opt-in for SPA-style nav
+   ========================================================= */
+@view-transition {
+  navigation: auto;
+}
+
+/* Reserved view-transition-name conventions:
+     view-transition-name: page-root;       — root container per page
+     view-transition-name: hero;            — hero/header element
+     view-transition-name: card-{id};       — list item ↔ detail
+     view-transition-name: theme-toggle;    — dark mode toggle
+*/
+
+/* =========================================================
+   @PROPERTY — register custom props for animation
+   Lets you animate gradient angles, color mixes, etc.
+   ========================================================= */
+@property --gradient-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --accent-mix {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+/* =========================================================
+   FOCUS RING — apply globally for free a11y
+   ========================================================= */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-border-strong);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* =========================================================
+   DENSITY — apply to a page root (.page-compact / -comfortable / -spacious)
+   ========================================================= */
+.page-compact     { --component-padding: var(--space-2); --component-row-h: 32px; --component-text: var(--font-size-sm); }
+.page-comfortable { --component-padding: var(--space-4); --component-row-h: 40px; --component-text: var(--font-size-base); }
+.page-spacious    { --component-padding: var(--space-6); --component-row-h: 48px; --component-text: var(--font-size-lg); }

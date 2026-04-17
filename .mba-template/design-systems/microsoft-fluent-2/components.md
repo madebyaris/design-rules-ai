@@ -1,237 +1,100 @@
-# Microsoft Fluent 2 - Component Patterns
+# Microsoft Fluent 2 — Components Cheat Sheet
 
-## Button
+**Canonical docs:** https://fluent2.microsoft.design
 
-### Variants
-- **Primary**: Filled, high emphasis, brand color
-- **Outline**: Outlined, medium emphasis
-- **Subtle**: Ghost, low emphasis
-- **Transparent**: No background, minimal emphasis
+**What to copy from this system:** depth via Acrylic/Mica materials, system-integrated theming, comprehensive cross-platform tokens, productivity-app patterns.
 
-### Sizes
-- **Small**: 24px height
-- **Medium**: 32px height (default)
-- **Large**: 40px height
+---
 
-### Structure
-- Icon (optional, 16px or 20px)
-- Label (required)
-- Padding: 12px horizontal (medium)
+## When to choose Fluent 2
 
-### States
-- Default, Hover, Pressed, Disabled, Focus (2px outline)
+- Windows-first apps (WinUI 3, WPF, web apps targeting Windows users).
+- Microsoft 365-style productivity tools.
+- Apps that benefit from Acrylic/Mica window backgrounds (Teams, Outlook, Office).
+- Cross-platform apps where Windows feels first-class.
 
-## Input
+---
 
-### Variants
-- **Outline**: With border (default)
-- **Underline**: Underline only
-- **Filled**: With background
+## Defining traits
 
-### Structure
-- Label (above or floating)
-- Input field (32px height)
-- Content before/after (icons)
-- Description text (below)
-- Error message (below, red)
+| Trait | How |
+|-------|-----|
+| **Materials (Acrylic, Mica)** | Translucent backgrounds with system blur. Mica picks up desktop wallpaper. |
+| **Reveal effect** | Cursor-tracking highlight on hoverable surfaces (subtle gradient follows pointer). |
+| **Depth via layering** | Layers stack with subtle elevation, not heavy shadows. |
+| **Segoe UI Variable** | The Windows 11 system font — variable font with Display/Text/Small optical sizes. |
+| **System theming** | Inherits Windows accent color and theme by default. |
+| **Connected experiences** | Components designed to feel native across Web, Windows, iOS, Android. |
 
-### States
-- Default, Hover, Focus, Error, Disabled, Read-only
+---
 
-## Dropdown/Combobox
+## Component patterns
 
-### Structure
-- Label (optional)
-- Selected value display
-- Chevron icon (12px)
-- Dropdown menu (overlay)
-- Search (optional, in menu)
+| Component | Notable detail |
+|-----------|---------------|
+| **Button** | Primary, Secondary, Subtle, Outline, Transparent. Plus Compound (icon + text + meta). |
+| **Menu** | Item, Group, Item with submenu, Checkbox, Radio. Keyboard nav full. |
+| **Combobox** | Free input + dropdown, async data, virtualized for large lists. |
+| **Drawer** | Inline (push content) or Overlay. Left/right edges. |
+| **Card** | Filled, Outline, Subtle. Often combines with Reveal effect. |
+| **Toast** | Bottom-right, stack, dismissible, intent variants (info/success/warning/error). |
+| **Dialog** | Modal with focus trap, size variants, action buttons in footer. |
+| **TreeView** | Expandable hierarchies, async load, drag-drop optional. |
+| **DataGrid** | Sortable, resizable, virtualized, cell-edit, row-select. |
 
-### Menu
-- Max height: 300px (scrollable)
-- Item height: 32px
-- Item padding: 8px horizontal
+---
 
-## Checkbox & Radio
+## Materials (web equivalents)
 
-### Sizes
-- Small: 16px
-- Medium: 20px (default)
-- Large: 24px
+```css
+/* Acrylic — translucent + blur */
+.acrylic {
+  background-color: color-mix(in oklch, var(--surface) 60%, transparent);
+  backdrop-filter: blur(60px) saturate(125%);
+}
 
-### Structure
-- Input indicator
-- Label (right of indicator)
-- Description (optional, below)
+/* Mica (Windows 11) — subtle, almost-flat with depth hint */
+.mica {
+  background-color: color-mix(in oklch, var(--surface) 80%, var(--accent) 5%);
+}
+```
 
-### States
-- Unchecked, Checked, Indeterminate, Disabled
+Native Windows: use `MicaController` or `DesktopAcrylicController` in WinUI 3.
 
-## Card
+---
 
-### Variants
-- **Filled**: With background
-- **Outline**: With border
-- **Subtle**: Minimal styling
+## Color
 
-### Structure
-- Header (optional)
-- Preview (optional, image/media)
-- Content area
-- Footer (optional, actions)
+- System accent color (user's Windows accent, or app brand).
+- Neutral foreground: `oklch(0.16 0 0)` light / `oklch(0.95 0 0)` dark.
+- Semantic colors: `colorPaletteRedForeground1`, etc. (Fluent token names are verbose by design).
+- Use `colorNeutralBackground{1,2,3,4,5}` for layered surfaces.
 
-### Interaction
-- Static (non-interactive)
-- Selectable (checkbox)
-- Navigable (clickable)
+---
 
-## Dialog/Modal
+## Typography (Segoe UI Variable)
 
-### Sizes
-- Small: 480px
-- Medium: 600px (default)
-- Large: 840px
+```css
+font-family: "Segoe UI Variable", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+font-feature-settings: "liga", "kern";
+```
 
-### Structure
-- Overlay (backdrop)
-- Surface (dialog container)
-- Title (20px, semibold)
-- Content (scrollable)
-- Actions (footer, right-aligned)
+Optical sizes via `font-optical-sizing: auto`. Variable axes: weight (300–900), italic.
 
-### Types
-- **Modal**: Blocks interaction
-- **Non-modal**: Allows background interaction
-- **Alert**: Simple message + actions
+---
 
-## Tabs
+## Implementation
 
-### Variants
-- **Horizontal**: Default, top of content
-- **Vertical**: Side of content
+- React: `@fluentui/react-components` (Fluent UI v9, the current line).
+- Web Components: `@fluentui/web-components` (Fluent UI 2 in standards-based components).
+- Native Windows: WinUI 3 (XAML).
+- React Native: `@fluentui/react-native`.
 
-### Structure
-- Tab item (32px height)
-- Label (14px)
-- Icon (optional, 20px)
-- Active indicator (2px underline or background)
+---
 
-### States
-- Default, Hover, Selected, Disabled
+## What to AVOID copying
 
-## Menu
-
-### Structure
-- Menu item (32px height)
-- Icon (optional, left, 20px)
-- Label (14px)
-- Shortcut (optional, right)
-- Submenu indicator (chevron)
-
-### Dividers
-- 1px line between groups
-- 8px spacing around divider
-
-### Types
-- **Context menu**: Right-click
-- **Dropdown menu**: From button
-- **Menu bar**: Top of window
-
-## Accordion
-
-### Structure
-- Header (44px height)
-- Title (14px, semibold)
-- Chevron icon (12px, rotates)
-- Content panel (collapsible)
-- Padding: 12px
-
-### States
-- Collapsed, Expanded, Hover, Focus
-
-## Tooltip
-
-### Structure
-- Arrow pointing to target
-- Content (max 200px width)
-- Padding: 8px 12px
-- Text: 12px
-
-### Positioning
-- Above (preferred)
-- Below, Left, Right (fallback)
-- Auto-adjust to viewport
-
-## Badge
-
-### Sizes
-- Tiny: 6px (dot only)
-- Small: 16px
-- Medium: 20px (default)
-- Large: 24px
-
-### Variants
-- **Filled**: Solid background
-- **Ghost**: Outlined
-- **Tint**: Subtle background
-
-### Usage
-- Notification count
-- Status indicator
-- Category label
-
-## Progress
-
-### Variants
-- **Bar**: Horizontal bar
-- **Ring**: Circular progress
-- **Spinner**: Indeterminate loading
-
-### Bar
-- Height: 2px (thin), 4px (default), 8px (thick)
-- Indeterminate: Animated gradient
-
-### Ring
-- Sizes: 16px, 20px, 24px, 28px, 32px
-- Stroke width: 2px, 3px, 4px
-
-## Avatar
-
-### Sizes
-- 20px, 24px, 28px, 32px, 36px, 40px, 48px, 56px, 64px, 72px, 96px, 120px, 128px
-
-### Variants
-- **Image**: User photo
-- **Icon**: Generic icon
-- **Initials**: User initials (1-2 letters)
-
-### Badge
-- Status indicator (online, busy, away, offline)
-- Position: Bottom-right corner
-
-## Divider
-
-### Variants
-- **Default**: Horizontal line
-- **Vertical**: Vertical line
-- **Subtle**: Lighter color
-- **Strong**: Darker color
-- **With content**: Text or icon in center
-
-### Thickness
-- 1px (default)
-- 2px (strong)
-
-## Persona/Profile Card
-
-### Structure
-- Avatar (48px or larger)
-- Primary text (name, 14px semibold)
-- Secondary text (role, 12px)
-- Tertiary text (optional, 12px)
-- Presence badge (status)
-
-### Sizes
-- Small: Compact layout
-- Large: Extended info, actions
-
+- Don't add Acrylic/Mica on web without considering performance (blur is GPU-heavy on mobile).
+- Don't ship Reveal effect to a touch device (no cursor → no effect, just dead code).
+- Don't use Fluent on Apple-platform apps — the depth language reads as Windows.
+- Don't pile on multiple translucent layers — clarity drops fast.

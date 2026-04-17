@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Modal — MBA Design Examples</title>
+  <link rel="stylesheet" href="../tokens/tokens-modern.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-fg); padding: var(--space-8); }
+
+    .btn { height: 40px; padding: 0 var(--space-4); font-size: var(--font-size-sm); font-weight: 500; border-radius: var(--radius-sm); border: 1px solid transparent; cursor: pointer; transition: background var(--duration-fast) var(--easing-out), transform var(--duration-fast) var(--easing-out); display: inline-flex; align-items: center; gap: var(--space-2); }
+    .btn:focus-visible { outline: 2px solid var(--color-border-strong); outline-offset: 2px; }
+    .btn:active { transform: scale(0.98); }
+    .btn--primary { background: var(--color-accent); color: var(--color-accent-fg); }
+    .btn--primary:hover { background: color-mix(in oklch, var(--color-accent) 90%, var(--hover-mix)); }
+    .btn--ghost { background: transparent; color: var(--color-fg); border-color: transparent; }
+    .btn--ghost:hover { background: var(--color-bg-muted); }
+    .btn--danger { background: var(--color-danger); color: white; }
+
+    /* Native <dialog> styling */
+    dialog {
+      width: min(440px, 92vw);
+      padding: 0;
+      border: none;
+      border-radius: var(--radius-lg);
+      background: var(--color-bg);
+      color: var(--color-fg);
+      box-shadow: var(--shadow-xl);
+      animation: pop var(--duration-normal) var(--easing-out);
+    }
+    dialog::backdrop {
+      background: color-mix(in oklch, black 40%, transparent);
+      backdrop-filter: blur(4px);
+      animation: fade var(--duration-normal) var(--easing-out);
+    }
+    @keyframes pop { from { transform: scale(0.96); opacity: 0; } }
+    @keyframes fade { from { opacity: 0; } }
+
+    .modal__head { display: flex; align-items: start; justify-content: space-between; gap: var(--space-4); padding: var(--space-6) var(--space-6) var(--space-2); }
+    .modal__title { font-size: var(--font-size-lg); font-weight: 600; margin: 0; }
+    .modal__close { background: none; border: none; cursor: pointer; color: var(--color-fg-muted); padding: var(--space-1); font-size: 18px; line-height: 1; border-radius: var(--radius-sm); }
+    .modal__close:hover { background: var(--color-bg-muted); color: var(--color-fg); }
+    .modal__body { padding: var(--space-2) var(--space-6) var(--space-4); color: var(--color-fg-muted); font-size: var(--font-size-sm); line-height: 1.6; }
+    .modal__foot { display: flex; gap: var(--space-2); justify-content: flex-end; padding: var(--space-4) var(--space-6) var(--space-6); }
+
+    @media (prefers-reduced-motion: reduce) {
+      dialog, dialog::backdrop { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <button class="btn btn--primary" id="open" type="button">Delete invoice</button>
+
+  <!--
+    Native <dialog> notes:
+    - showModal() applies focus trap + ESC-to-close automatically
+    - Use ::backdrop for the overlay
+    - method="dialog" inside <form> auto-closes on submit
+    - autofocus attribute moves focus into the dialog on open
+  -->
+  <dialog id="confirm" aria-labelledby="confirm-title">
+    <div class="modal__head">
+      <h2 class="modal__title" id="confirm-title">Delete invoice INV-2026-0421?</h2>
+      <button class="modal__close" type="button" data-close aria-label="Close">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal__body">
+      This will permanently remove the invoice and notify Sasha Patel via email. You can't undo this action.
+    </div>
+    <div class="modal__foot">
+      <button class="btn btn--ghost" type="button" data-close>Cancel</button>
+      <button class="btn btn--danger" type="button" autofocus>
+        <i class="fa-solid fa-trash" aria-hidden="true"></i>
+        Delete invoice
+      </button>
+    </div>
+  </dialog>
+
+  <script>
+    const dlg = document.getElementById('confirm');
+    document.getElementById('open').addEventListener('click', () => dlg.showModal());
+    dlg.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => dlg.close()));
+    // Click backdrop to close (skip for destructive confirms in real apps)
+    dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+  </script>
+</body>
+</html>
