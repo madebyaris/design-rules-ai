@@ -79,6 +79,10 @@ Each section defines anatomy and links to the full example. Do not duplicate sty
 - **Container:** `<button type="...">` (never `<div>`). Min-height = density row-h. Padding: vertical `--space-2/3`, horizontal `--space-4/5`. Radius `--radius-sm`.
 - **Variants:** primary (filled, brand), secondary (outlined), ghost (no border, hover bg), danger (red), link (underline on hover).
 - **Sizes:** sm (32px), md (40px), lg (48px). Match density.
+- **Default size is mandatory.** The base `.btn` class (no size modifier) MUST resolve to `md`. A button without a size variant must never render with zero padding or browser defaults. Either set `md` styles directly on `.btn`, or write `.btn:not(.btn-sm):not(.btn-lg) { ... md styles ... }`.
+- **All 8 states from §2 must be defined in CSS** (default, hover, focus-visible, active, disabled, loading, empty N/A, error N/A) — even on a marketing page where only default + hover are visible. Other surfaces consume this CSS.
+- **Active / pressed:** `transform: scale(0.98)` OR `background: color-mix(in oklch, var(--color-accent) 80%, black)`. Pick one consistently.
+- **Disabled:** `opacity: 0.5; cursor: not-allowed; pointer-events: none;`.
 - **Loading:** disable interaction, replace label with spinner, keep width (use `min-width` from rendered label width to prevent layout jump).
 - **Full example:** `[.mba-template/examples/button.html](mdc:.mba-template/examples/button.html)`.
 
@@ -139,6 +143,17 @@ Each section defines anatomy and links to the full example. Do not duplicate sty
 - **Position:** top-right (desktop), bottom-center (mobile).
 - **Duration:** 4–6s auto-dismiss for success/info, persistent for error/warning until user dismisses.
 - **Stacking:** newest on top, max 3 visible. Older toasts fade and stack offset.
+
+### Avatar
+
+- **Container:** `<span>` or `<img>` wrapped in a circular div. Use `border-radius: var(--radius-full)`.
+- **Sizes:** xs (24px), sm (32px), md (40px), lg (56px), xl (80px). Pick by context (table rows = sm, profile header = xl).
+- **Content priority:**
+  1. **Real photo** (`<img alt="{full name}">`). Always preferred when one exists.
+  2. **Initials** (1–2 letters, uppercase, semibold) on a deterministic colored background derived from the name. Background formula: `background: oklch(0.85 0.08 var(--avatar-hue))` where `--avatar-hue` is `(name.charCodeAt(0) * 37) % 360`.
+  3. **Generic person icon (`fa-user`, silhouette) is FORBIDDEN as a permanent avatar.** It is the textbook AI tell. Use it only for truly unknown / anonymous users (e.g. "Guest").
+- **Group:** stack 3–5 with `margin-left: -8px` and `box-shadow: 0 0 0 2px var(--color-bg)`. Show "+N" pill for overflow.
+- **Status indicator (optional):** small circle in bottom-right corner, `--color-success` for online, etc. 8–12px diameter.
 
 ### Badge / Tag / Chip
 

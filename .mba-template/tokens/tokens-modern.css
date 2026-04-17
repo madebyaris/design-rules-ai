@@ -168,6 +168,25 @@
 }
 
 /* =========================================================
+   INSET TOKENS — "design within a design" only
+   For tiny UIs nested inside a hero illustration: phone screen
+   mockups, browser frames, mini-charts. NEVER use these in the
+   real UI. The whole point is that they live below the regular
+   scale so the inset reads as smaller than the host page.
+   ========================================================= */
+:root {
+  --inset-text-xs: 10px;
+  --inset-text-sm: 11px;
+  --inset-text-md: 12px;
+  --inset-text-lg: 13px;
+
+  --inset-radius-sm: 6px;
+  --inset-radius-md: 10px;
+  --inset-radius-lg: 16px;
+  --inset-radius-device: 28px;   /* phone/tablet outer corner */
+}
+
+/* =========================================================
    Z-INDEX SCALE — pick from this list only
    ========================================================= */
 :root {

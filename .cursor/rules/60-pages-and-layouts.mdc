@@ -34,6 +34,24 @@ Use these six primitives (Every Layout vocabulary). Compose pages from primitive
 - Settings: usually no primary action — the form's "Save" is the implicit primary, and it sticks to the bottom.
 - Empty state: one primary CTA per empty surface.
 
+### Secondary CTA — operational definition
+
+When a hero (or other surface) needs a secondary action alongside the primary, the secondary MUST be visually quieter by **at least two** of these signals — not just one:
+
+| Signal | Primary | Quieter secondary |
+|---|---|---|
+| Variant | filled (`btn-primary`) | ghost / outlined / text-only |
+| Size | `btn-lg` | `btn-md` or smaller |
+| Icon | optional brand-tinted icon | no icon, OR a smaller muted chevron |
+| Color | accent fill | `--color-fg-muted` |
+
+Two `btn-lg` buttons side by side, both with icons, even when one is `btn-primary` and one is `btn-ghost`, **fails this rule**. They read as equal weight.
+
+Acceptable patterns:
+- `btn-primary btn-lg` + `btn-ghost btn-md` (no icon)
+- `btn-primary btn-lg` + plain text link with chevron ("See how it works →")
+- `btn-primary btn-lg` only — no secondary at all
+
 If you find yourself with two equally-weighted CTAs, you've already lost. Demote one.
 
 ---
@@ -53,14 +71,15 @@ Place the focal CTA where the scan ends.
 
 | Archetype | Density (see [10-tokens-and-scales.mdc §10](mdc:.cursor/rules/10-tokens-and-scales.mdc)) |
 |-----------|------------------------------------------------------------|
-| Marketing landing | **Spacious** (24px base, 16–18px body, 80–96px section padding) |
+| Marketing landing (SaaS) | **Spacious** (24px base, 16–18px body, 80–96px section padding) |
+| Local-business / retail / hospitality | **Spacious**, photo-led, light by default |
 | Article / blog | **Spacious** with `max-width: 65ch` body |
 | SaaS dashboard | **Compact** (8px base, 13–14px body, 32px row height) |
 | Admin panel | **Compact** |
 | Settings | **Comfortable** (16px base, 14–16px body, 40px row height) |
 | Auth (login/signup) | **Comfortable**, narrow (max 400px) |
 | Onboarding | **Spacious**, single-column |
-| E-commerce product | **Comfortable** |
+| E-commerce product detail | **Comfortable** |
 | Profile | **Comfortable** |
 
 ---
@@ -84,6 +103,31 @@ Sections (compose with Stack primitive):
 10. **Footer** — 3–5 columns of links + copyright + social.
 
 Pull copy and names from `[.mba-template/content/sample-content.json](mdc:.mba-template/content/sample-content.json)`. See `[.mba-template/patterns/landing-page-sections.md](mdc:.mba-template/patterns/landing-page-sections.md)`.
+
+**The "landing" archetype above is the SaaS funnel.** It is the wrong skeleton for a brick-and-mortar shop, restaurant, salon, clinic, agency, or any real-world business that doesn't sell software subscriptions. For those, use the **local-business / retail** archetype below.
+
+### Local-business / retail / hospitality
+
+**Use when:** the brief is a pet shop, bakery, café, restaurant, salon, gym, yoga studio, dental clinic, real-estate agent, photographer, florist, boutique, pet groomer, daycare, or any other business with a physical location and/or a product catalog (not a SaaS subscription).
+
+**Density:** spacious. **Mode:** light by default (warmth and trust matter more than monochrome restraint). **Scan:** F-pattern for product/service grids, Z-pattern for the hero. **Imagery:** real photographs are **mandatory** — see `[.mba-template/patterns/imagery-and-photography.md](mdc:.mba-template/patterns/imagery-and-photography.md)`.
+
+Sections (compose with Stack primitive — pick the ones that fit; rarely need all):
+
+1. **Header / nav** — sticky, opaque (not transparent over a photo hero — text becomes unreadable). Brand wordmark + 3–5 nav items + a single primary CTA matching the business ("Visit us", "Shop", "Book a table", "Book grooming").
+2. **Hero** — Cover primitive, 60–80vh. **Real full-bleed photograph** of the product, the place, or the people/animals/food the business is about. Headline overlay (one-sentence promise: "Everything your dog needs, in one warm shop on Main Street."). 1 primary CTA appropriate to the business. Avoid generic "Start free" — this isn't an app.
+3. **Featured products / categories OR services** — Grid of 4–8 cells, each with: real product photo (square or 4:5), name, price OR "From $X" OR a short description. For a pet shop: Food, Toys, Beds, Aquariums, Small Pets. For a salon: Cut, Color, Treatments. Image is the focus, text is secondary.
+4. **About / our story** — Stack with one warm photo (interior, owner, team) + 2–3 short paragraphs. Authenticity matters more than wordcount. Mention founding year, location, what makes the place specific.
+5. **Services** (optional) — separate from products. For pet shop: grooming, boarding, training. Each with photo, 1-sentence description, "Book" button, price range.
+6. **Visit us / Find us** — Address, hours table, phone, embedded map (placeholder for Google Maps embed). For purely-online stores, swap for "Shipping & returns".
+7. **Reviews / testimonials** — Real-sounding 1–3 reviews from actual local-customer-style names. Quote, name + city, optional rating (★★★★★). For pet shops: include the pet's name in the testimonial ("Bella has been coming here for 4 years — they always remember her").
+8. **Gallery** (optional) — masonry or grid of 6–12 photos: store interior, products, happy customers/pets, staff at work. Real photos only. This is often the most-engaged section on a shop site.
+9. **Newsletter / contact** — Single-field email signup OR contact form, framed warmly ("Get notified when new puppies arrive" / "Hear about our weekend pop-ups"). NOT "Subscribe to our newsletter."
+10. **Footer** — Address + hours repeated (top reason people return to the site), social links (Instagram is critical for visual businesses), copyright, optional small links (Privacy, Returns).
+
+**Sections to AVOID on a local-business site (these are SaaS-isms):** pricing tiers, free trial CTA, "How it works" three-step funnel, feature grid with stock icons, dashboard product UI screenshots, "1,247 users trust us" stat bars (use real reviews and a real Google rating instead).
+
+**Reference systems:** Apple HIG for typography and restraint, Shopify storefront templates for product layout, Squarespace for warmth. Avoid Linear / Vercel Geist defaults — wrong register.
 
 ### Dashboard
 
@@ -196,7 +240,11 @@ See `[.mba-template/patterns/view-transitions.md](mdc:.mba-template/patterns/vie
 
 ## 8. Self-check before returning
 
+- [ ] **Vertical fit** — does the visual register match the business? (Pet shop ≠ fintech; restaurant ≠ CLI tool. See `[40-tone-and-vertical.mdc](mdc:.cursor/rules/40-tone-and-vertical.mdc)`.)
+- [ ] **Imagery** — if the vertical is in the "imagery mandatory" list (retail, hospitality, wellness, agency, real estate, food, fashion, fitness, pets), is there at least one real photograph in the hero?
+- [ ] **Skeleton fit** — for a brick-and-mortar / retail / service business, did you use the local-business archetype (with Visit Us, products, reviews) and NOT the SaaS landing skeleton (with pricing, trial CTA, feature funnel)?
 - [ ] One primary action above the fold?
+- [ ] If a secondary CTA exists in the hero, is it visually quieter by at least two signals (variant + size, or variant + no-icon)?
 - [ ] Page committed to a single density (compact / comfortable / spacious)?
 - [ ] Composed from primitives (Stack, Cluster, Grid, Sidebar, Switcher, Cover) — not one-off layouts?
 - [ ] Scan pattern matches archetype (F or Z)?
@@ -205,3 +253,5 @@ See `[.mba-template/patterns/view-transitions.md](mdc:.mba-template/patterns/vie
 - [ ] Mobile layout defined?
 - [ ] Semantic landmarks (`<header>`, `<nav>`, `<main>`, `<aside>`, `<footer>`)?
 - [ ] Heading hierarchy intact (one H1, then H2 → H3, no skips)?
+- [ ] **All major sections share a single vertical padding value** (no mix of `--space-16`, `--space-20`, `--space-24` on the same page)?
+- [ ] Zero raw `oklch(...)` / `#hex` / `rgb(...)` / `data:image/svg+xml,...` in component CSS?

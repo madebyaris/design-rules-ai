@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bedford Pet Co. — Everything your dog needs, on Bedford Avenue</title>
+  <meta name="description" content="Neighborhood pet shop in Williamsburg, Brooklyn. Premium food, toys, beds, and grooming for dogs and cats. Open 7 days.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /*
+     * REFERENCE EXAMPLE — Local-business / retail landing page
+     * Vertical: pet-shop (retail). Mode: light, warm. System: custom warm.
+     * Imagery: real Unsplash photos (mandatory for this vertical).
+     * Skeleton: local-business (NOT SaaS landing — no pricing, no free trial).
+     *
+     * This file demonstrates how a pet shop landing page should feel:
+     *   - Warm cream background (not pure white, never black)
+     *   - Real photographs lead every section
+     *   - Products grid (not feature grid)
+     *   - Visit-us section with hours and location
+     *   - "Visit us" / "Book grooming" CTAs (NOT "Start free")
+     *   - No phone mockup, no fake stats, no Lorem-style filler
+     *
+     * IMPORTANT — token import convention (READ THIS BEFORE COPYING):
+     *   This example imports `../tokens/tokens-modern.css` because the example
+     *   lives at `.mba-template/examples/` and the tokens live at
+     *   `.mba-template/tokens/`. That relative path only works HERE.
+     *
+     *   When you generate a real page (e.g. `test/landing.html` or `app/page.css`),
+     *   the output directory is somewhere else, so `../tokens/...` will 404.
+     *   Do ONE of these instead:
+     *
+     *     A) RECOMMENDED: copy `.mba-template/tokens/tokens-modern.css` into the
+     *        SAME directory as your generated CSS, then write:
+     *            @import url('./tokens-modern.css');
+     *
+     *     B) Inline the variables you actually use directly into the generated
+     *        CSS file (no @import). Self-contained, zero broken-path risk.
+     *
+     *   Do NOT just copy the line below verbatim into a different directory.
+     */
+
+    @import url('../tokens/tokens-modern.css');
+
+    /* Override the default cool neutrals with a warm cream palette */
+    :root {
+      color-scheme: light;
+      --color-bg:        #fbf7f1;          /* warm cream */
+      --color-bg-subtle: #f4ecdf;          /* warmer cream */
+      --color-bg-muted:  #ebe0cb;          /* sand */
+      --color-fg:        #2a1a0e;          /* deep brown */
+      --color-fg-muted:  #6b5a4a;          /* warm gray */
+      --color-fg-subtle: #9c8a7a;          /* soft taupe */
+      --color-border:        #e3d3b8;
+      --color-border-strong: #c4ad8a;
+      --color-accent:        #b85a3c;      /* terracotta */
+      --color-accent-fg:     #fbf7f1;
+      --color-accent-muted:  #f5d9cd;
+      --color-success: #6a8a4a;            /* sage */
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Söhne", "Inter", system-ui, sans-serif;
+      font-size: var(--font-size-base);
+      line-height: 1.6;
+      color: var(--color-fg);
+      background: var(--color-bg);
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, h4 {
+      font-family: "Recoleta", "GT Sectra", "Playfair Display", Georgia, serif;
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.015em;
+    }
+    h1 { font-size: var(--font-size-display); }
+    h2 { font-size: var(--font-size-h1); }
+    h3 { font-size: var(--font-size-h3); }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    ul { list-style: none; }
+    p { max-width: 65ch; }
+
+    .container { max-width: 1240px; margin-inline: auto; padding-inline: var(--space-6); }
+
+    /* ===== HEADER ===== */
+    .topnav {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      padding-block: var(--space-5);
+    }
+    .brand {
+      font-family: "Recoleta", "GT Sectra", serif;
+      font-size: var(--font-size-xl);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .nav-links { display: flex; gap: var(--space-6); margin-right: auto; }
+    .nav-links a { font-size: var(--font-size-sm); color: var(--color-fg-muted); }
+    .nav-links a:hover { color: var(--color-fg); }
+
+    /* ===== BUTTONS — all 8 states defined ===== */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: var(--space-2);
+      font-family: inherit;
+      font-weight: 500;
+      font-size: var(--font-size-base);
+      padding: var(--space-3) var(--space-5);
+      min-height: 44px;
+      border-radius: var(--radius-md);
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background var(--duration-fast) var(--easing-out),
+                  border-color var(--duration-fast) var(--easing-out),
+                  transform var(--duration-fast) var(--easing-out);
+    }
+    .btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+    .btn:active { transform: scale(0.98); }
+    .btn[disabled], .btn[aria-disabled="true"] {
+      opacity: 0.5; cursor: not-allowed; pointer-events: none;
+    }
+
+    .btn-primary { background: var(--color-accent); color: var(--color-accent-fg); }
+    .btn-primary:hover { background: color-mix(in oklch, var(--color-accent) 88%, black); }
+
+    .btn-ghost { background: transparent; color: var(--color-fg); border-color: var(--color-border-strong); }
+    .btn-ghost:hover { background: var(--color-bg-subtle); }
+
+    .btn-lg { font-size: var(--font-size-lg); padding: var(--space-4) var(--space-6); min-height: 52px; }
+    .btn-sm { font-size: var(--font-size-sm); padding: var(--space-2) var(--space-4); min-height: 36px; }
+
+    .btn-text {
+      background: transparent; border: none; padding: var(--space-2) 0;
+      color: var(--color-fg); font-weight: 500;
+      border-bottom: 1px solid var(--color-border-strong);
+      border-radius: 0;
+    }
+    .btn-text:hover { border-bottom-color: var(--color-fg); }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      min-height: 70vh;
+      display: grid;
+      grid-template-columns: 1fr;
+      align-items: end;
+      padding-block: var(--space-12);
+      overflow: hidden;
+      border-radius: var(--radius-lg);
+      margin-block: var(--space-4) var(--space-16);
+    }
+    .hero img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+    .hero::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 30%, rgb(0 0 0 / 0.55) 100%);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      max-width: 56ch;
+      padding: var(--space-8);
+      color: white;
+    }
+    .hero h1 { font-size: clamp(2.5rem, 1.5rem + 4vw, 4rem); margin-bottom: var(--space-4); }
+    .hero p { font-size: var(--font-size-lg); margin-bottom: var(--space-6); opacity: 0.92; max-width: 48ch; }
+    .hero-actions { display: flex; gap: var(--space-4); align-items: center; flex-wrap: wrap; }
+    .hero-actions .btn-primary { background: white; color: var(--color-fg); }
+    .hero-actions .btn-primary:hover { background: var(--color-bg-subtle); }
+    .hero-actions .btn-text { color: white; border-bottom-color: rgb(255 255 255 / 0.5); }
+    .hero-actions .btn-text:hover { border-bottom-color: white; }
+
+    /* ===== SECTION HEADER ===== */
+    .section { padding-block: var(--space-20); }
+    .section-header { margin-bottom: var(--space-10); max-width: 60ch; }
+    .section-header .eyebrow {
+      font-size: var(--font-size-sm);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      font-weight: 500;
+      margin-bottom: var(--space-3);
+    }
+    .section-header h2 { margin-bottom: var(--space-3); }
+    .section-header p { color: var(--color-fg-muted); font-size: var(--font-size-lg); }
+
+    /* ===== PRODUCT GRID ===== */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-6);
+    }
+    .product-card { display: flex; flex-direction: column; gap: var(--space-3); }
+    .product-card-image {
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: var(--radius-md);
+      background: var(--color-bg-subtle);
+    }
+    .product-card-image img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform var(--duration-slow) var(--easing-out);
+    }
+    .product-card:hover .product-card-image img { transform: scale(1.04); }
+    .product-card h3 {
+      font-family: inherit;
+      font-size: var(--font-size-base);
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+    .product-card .price { font-size: var(--font-size-sm); color: var(--color-fg-muted); }
+
+    /* ===== SERVICES (split layout) ===== */
+    .services { background: var(--color-bg-subtle); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+    }
+    .service-card {
+      display: flex; flex-direction: column; gap: var(--space-3);
+    }
+    .service-card img {
+      aspect-ratio: 4 / 3;
+      width: 100%;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-2);
+    }
+    .service-card h3 { font-family: "Recoleta", serif; font-size: var(--font-size-h4); }
+    .service-card p { color: var(--color-fg-muted); font-size: var(--font-size-sm); }
+    .service-meta {
+      display: flex; gap: var(--space-4);
+      font-size: var(--font-size-sm); color: var(--color-fg-subtle);
+      margin-top: auto; padding-top: var(--space-2);
+    }
+
+    /* ===== ABOUT (split) ===== */
+    .about { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-12); align-items: center; }
+    .about img { aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius-lg); width: 100%; }
+    .about-content h2 { margin-bottom: var(--space-5); }
+    .about-content p { color: var(--color-fg-muted); margin-bottom: var(--space-4); }
+
+    /* ===== VISIT US ===== */
+    .visit { background: var(--color-fg); color: var(--color-bg); }
+    .visit .section-header h2 { color: var(--color-bg); }
+    .visit .section-header p { color: rgb(255 255 255 / 0.7); }
+    .visit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-12); }
+    .visit-info { display: flex; flex-direction: column; gap: var(--space-6); }
+    .visit-info h3 {
+      font-family: inherit;
+      font-size: var(--font-size-sm);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgb(255 255 255 / 0.5);
+      font-weight: 500;
+      margin-bottom: var(--space-2);
+    }
+    .visit-info p, .visit-info a { color: var(--color-bg); font-size: var(--font-size-lg); }
+    .visit-info a:hover { color: var(--color-accent-muted); }
+    .hours-table { width: 100%; border-collapse: collapse; }
+    .hours-table td {
+      padding-block: var(--space-2);
+      font-size: var(--font-size-base);
+      color: rgb(255 255 255 / 0.85);
+      border-bottom: 1px solid rgb(255 255 255 / 0.1);
+    }
+    .hours-table td:last-child { text-align: right; color: var(--color-bg); }
+    .map-placeholder {
+      aspect-ratio: 4 / 3;
+      background: rgb(255 255 255 / 0.06);
+      border: 1px dashed rgb(255 255 255 / 0.2);
+      border-radius: var(--radius-md);
+      display: grid;
+      place-items: center;
+      color: rgb(255 255 255 / 0.4);
+      font-size: var(--font-size-sm);
+    }
+
+    /* ===== REVIEWS ===== */
+    .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
+    .review-card {
+      padding: var(--space-6);
+      background: var(--color-bg-subtle);
+      border-radius: var(--radius-md);
+      display: flex; flex-direction: column; gap: var(--space-4);
+    }
+    .review-stars { color: var(--color-accent); font-size: var(--font-size-sm); letter-spacing: 0.08em; }
+    .review-card blockquote { font-size: var(--font-size-base); color: var(--color-fg); line-height: 1.6; }
+    .review-author { display: flex; align-items: center; gap: var(--space-3); margin-top: auto; }
+    .avatar {
+      width: 40px; height: 40px;
+      border-radius: var(--radius-full);
+      display: grid; place-items: center;
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: var(--color-fg);
+      flex-shrink: 0;
+    }
+    .review-author cite { font-style: normal; font-weight: 500; font-size: var(--font-size-sm); }
+    .review-author p { font-size: var(--font-size-xs); color: var(--color-fg-muted); }
+
+    /* ===== GALLERY ===== */
+    .gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
+    .gallery img {
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      width: 100%;
+      border-radius: var(--radius-sm);
+    }
+    .gallery img:nth-child(1), .gallery img:nth-child(6) {
+      grid-row: span 2;
+      aspect-ratio: 1 / 2;
+    }
+
+    /* ===== FOOTER ===== */
+    .site-footer {
+      background: var(--color-fg);
+      color: rgb(255 255 255 / 0.7);
+      padding-block: var(--space-12) var(--space-6);
+      margin-top: var(--space-16);
+    }
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: var(--space-8);
+      padding-bottom: var(--space-10);
+      border-bottom: 1px solid rgb(255 255 255 / 0.1);
+    }
+    .footer-brand h4 {
+      font-family: "Recoleta", serif;
+      font-size: var(--font-size-xl);
+      color: var(--color-bg);
+      margin-bottom: var(--space-3);
+    }
+    .footer-brand p { font-size: var(--font-size-sm); max-width: 32ch; }
+    .footer-col h5 {
+      font-family: inherit;
+      font-size: var(--font-size-xs);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgb(255 255 255 / 0.5);
+      margin-bottom: var(--space-4);
+      font-weight: 500;
+    }
+    .footer-col ul { display: flex; flex-direction: column; gap: var(--space-2); }
+    .footer-col a { font-size: var(--font-size-sm); }
+    .footer-col a:hover { color: var(--color-bg); }
+    .footer-bottom {
+      padding-top: var(--space-5);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: var(--space-4);
+      font-size: var(--font-size-sm);
+    }
+    .footer-social { display: flex; gap: var(--space-4); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .products { grid-template-columns: repeat(3, 1fr); }
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .gallery { grid-template-columns: repeat(3, 1fr); }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hero { min-height: 60vh; }
+      .products { grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
+      .services-grid { grid-template-columns: 1fr; }
+      .about, .visit-grid { grid-template-columns: 1fr; }
+      .gallery { grid-template-columns: repeat(2, 1fr); }
+      .gallery img:nth-child(1), .gallery img:nth-child(6) { grid-row: auto; aspect-ratio: 1 / 1; }
+      .section { padding-block: var(--space-12); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <nav class="topnav" aria-label="Main">
+        <a href="/" class="brand">Bedford Pet Co.</a>
+        <ul class="nav-links" role="list">
+          <li><a href="#products">Shop</a></li>
+          <li><a href="#services">Grooming</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#visit">Visit</a></li>
+        </ul>
+        <a href="#visit" class="btn btn-ghost btn-sm">Visit us</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO — full-bleed real photo, NOT a phone mockup -->
+    <section class="hero" aria-label="Welcome">
+      <img
+        src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=1920&q=80&auto=format&fit=crop"
+        alt="A bright pet shop interior on a sunny afternoon, with food shelves, hanging toys, and a wagging dog at the counter"
+        width="1920" height="1080"
+        loading="eager" fetchpriority="high">
+      <div class="hero-content">
+        <h1>Everything your dog needs, on Bedford Avenue.</h1>
+        <p>A neighborhood pet shop in Williamsburg — premium food, hand-picked toys, full-service grooming. Open 7 days, with a treat for every visitor.</p>
+        <div class="hero-actions">
+          <a href="#visit" class="btn btn-primary btn-lg">Visit us today</a>
+          <a href="#services" class="btn btn-text">Book grooming →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED PRODUCTS — image-first grid, NOT a feature funnel -->
+    <section class="section" id="products">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow">Shop by category</p>
+          <h2>Everything from kibble to comfy beds.</h2>
+          <p>We carry small-batch, vet-approved brands you won't find at the chain stores.</p>
+        </div>
+        <div class="products">
+          <a href="#" class="product-card">
+            <div class="product-card-image">
+              <img src="https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=600&q=80&auto=format&fit=crop"
+                   alt="A bowl of premium dry dog food with kibble varieties beside it"
+                   width="600" height="600" loading="lazy">
+            </div>
+            <h3>Food &amp; Treats</h3>
+            <p class="price">From $18</p>
+          </a>
+          <a href="#" class="product-card">
+            <div class="product-card-image">
+              <img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=600&q=80&auto=format&fit=crop"
+                   alt="A golden retriever puppy chewing on a rope toy"
+                   width="600" height="600" loading="lazy">
+            </div>
+            <h3>Toys &amp; Play</h3>
+            <p class="price">From $9</p>
+          </a>
+          <a href="#" class="product-card">
+            <div class="product-card-image">
+              <img src="https://images.unsplash.com/photo-1591946614720-90a587da4a36?w=600&q=80&auto=format&fit=crop"
+                   alt="A small cat curled up in a soft round bed"
+                   width="600" height="600" loading="lazy">
+            </div>
+            <h3>Beds &amp; Comfort</h3>
+            <p class="price">From $42</p>
+          </a>
+          <a href="#" class="product-card">
+            <div class="product-card-image">
+              <img src="https://images.unsplash.com/photo-1518155317743-a8ff43ea6a5f?w=600&q=80&auto=format&fit=crop"
+                   alt="A brown leather collar with brass buckle on a wooden surface"
+                   width="600" height="600" loading="lazy">
+            </div>
+            <h3>Collars &amp; Leashes</h3>
+            <p class="price">From $24</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES — pet shops have grooming, boarding, training -->
+    <section class="section services" id="services">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow">Services</p>
+          <h2>More than just a shop.</h2>
+          <p>Our in-store team handles grooming, training, and weekend pop-up adoptions with our partners at City Critters Rescue.</p>
+        </div>
+        <div class="services-grid">
+          <div class="service-card">
+            <img src="https://images.unsplash.com/photo-1591946614720-90a587da4a36?w=800&q=80&auto=format&fit=crop"
+                 alt="A small dog being gently brushed by a groomer in an apron"
+                 width="800" height="600" loading="lazy">
+            <h3>Full-service grooming</h3>
+            <p>Bath, brush, nail trim, ear clean, and a finishing scarf. Same-day appointments most weekdays.</p>
+            <div class="service-meta">
+              <span><i class="fa-regular fa-clock" aria-hidden="true"></i> 60–90 min</span>
+              <span>From $65</span>
+            </div>
+          </div>
+          <div class="service-card">
+            <img src="https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=800&q=80&auto=format&fit=crop"
+                 alt="A trainer working with a dog on basic commands in a quiet room"
+                 width="800" height="600" loading="lazy">
+            <h3>Puppy training</h3>
+            <p>Six-week group classes for pups 4–6 months. Sit, stay, leash manners, and the all-important recall.</p>
+            <div class="service-meta">
+              <span><i class="fa-regular fa-calendar" aria-hidden="true"></i> Tue + Sat</span>
+              <span>$220 / 6 weeks</span>
+            </div>
+          </div>
+          <div class="service-card">
+            <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800&q=80&auto=format&fit=crop"
+                 alt="A volunteer holding an adoptable dog at a weekend rescue event"
+                 width="800" height="600" loading="lazy">
+            <h3>Adoption Saturdays</h3>
+            <p>City Critters Rescue brings adoptable dogs and cats to the shop the second Saturday of every month.</p>
+            <div class="service-meta">
+              <span><i class="fa-regular fa-calendar" aria-hidden="true"></i> 2nd Sat / month</span>
+              <span>Free to attend</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT — split image + story, NOT a feature funnel -->
+    <section class="section" id="about">
+      <div class="container about">
+        <img src="https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=800&q=80&auto=format&fit=crop"
+             alt="The shop owner Maya Chen behind the counter with her shop dog Bowie, a black labrador"
+             width="800" height="1000" loading="lazy">
+        <div class="about-content">
+          <p class="eyebrow" style="font-size: var(--font-size-sm); letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent); font-weight: 500; margin-bottom: var(--space-3);">Our story</p>
+          <h2>Open since 2017, run by people who actually have pets.</h2>
+          <p>Maya opened Bedford Pet Co. after her rescue lab Bowie struggled to find food that didn't upset his stomach. The shop carries every brand she'd actually feed him — and a few she keeps stocked for the regulars.</p>
+          <p>We're independent, locally-owned, and pretty much always full of dogs. Bowie usually greets visitors. Bring your pup; we have treats.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISIT US — the most important section on a brick-and-mortar site -->
+    <section class="section visit" id="visit">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow" style="color: var(--color-accent-muted);">Visit us</p>
+          <h2>Come say hi on Bedford Avenue.</h2>
+          <p>Two blocks from the Bedford L. Stroller- and pup-friendly. Plenty of seating outside if you want to bring a coffee.</p>
+        </div>
+        <div class="visit-grid">
+          <div class="visit-info">
+            <div>
+              <h3>Address</h3>
+              <p>284 Bedford Ave<br>Brooklyn, NY 11211</p>
+            </div>
+            <div>
+              <h3>Phone</h3>
+              <p><a href="tel:+17185550127">(718) 555-0127</a></p>
+            </div>
+            <div>
+              <h3>Hours</h3>
+              <table class="hours-table">
+                <tbody>
+                  <tr><td>Monday – Friday</td><td>10:00 – 8:00</td></tr>
+                  <tr><td>Saturday</td><td>9:00 – 8:00</td></tr>
+                  <tr><td>Sunday</td><td>10:00 – 6:00</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="map-placeholder" aria-label="Map showing 284 Bedford Avenue, Brooklyn">
+            <span><i class="fa-solid fa-map-location-dot" aria-hidden="true"></i> &nbsp; Embed Google Map here</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS — real-customer voice, includes the pet's name -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow">Reviews</p>
+          <h2>Loved by neighbors and their pets.</h2>
+        </div>
+        <div class="reviews-grid">
+          <article class="review-card">
+            <div class="review-stars" aria-label="5 out of 5">★ ★ ★ ★ ★</div>
+            <blockquote>Bowie remembers Bella before we even walk in. Maya helped us switch foods three times until we found one that worked. This is the only pet shop I trust in the neighborhood.</blockquote>
+            <div class="review-author">
+              <div class="avatar" style="background: oklch(0.85 0.08 25);">MJ</div>
+              <div>
+                <cite>Marcus Johnson</cite>
+                <p>Bella's dad · Williamsburg</p>
+              </div>
+            </div>
+          </article>
+          <article class="review-card">
+            <div class="review-stars" aria-label="5 out of 5">★ ★ ★ ★ ★</div>
+            <blockquote>Best grooming on the north side. Oscar comes back smelling like a real cat and not like a dog spa. They never up-sell, and the price is what they quote.</blockquote>
+            <div class="review-author">
+              <div class="avatar" style="background: oklch(0.85 0.08 145);">PS</div>
+              <div>
+                <cite>Priya Sharma</cite>
+                <p>Oscar's mom · Greenpoint</p>
+              </div>
+            </div>
+          </article>
+          <article class="review-card">
+            <div class="review-stars" aria-label="5 out of 5">★ ★ ★ ★ ★</div>
+            <blockquote>We adopted Mira at one of their Saturday events. A year later they still ask how she's doing every time we come in. That's how a neighborhood shop should feel.</blockquote>
+            <div class="review-author">
+              <div class="avatar" style="background: oklch(0.85 0.08 265);">FH</div>
+              <div>
+                <cite>Fatima Hassan</cite>
+                <p>Mira's family · Williamsburg</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY — masonry of real moments in the shop -->
+    <section class="section" style="padding-top: 0;">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow">In the shop</p>
+          <h2>Recent visitors.</h2>
+        </div>
+        <div class="gallery">
+          <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=600&q=80&auto=format&fit=crop"
+               alt="A golden retriever puppy looking up at the camera" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=600&q=80&auto=format&fit=crop"
+               alt="A tabby kitten curled up on a fleece blanket" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=600&q=80&auto=format&fit=crop"
+               alt="A small dog with a rope toy" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1518155317743-a8ff43ea6a5f?w=600&q=80&auto=format&fit=crop"
+               alt="A leather collar on a wooden table" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=600&q=80&auto=format&fit=crop"
+               alt="A trainer crouched with a focused dog" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1583511655826-05700d52f4d9?w=600&q=80&auto=format&fit=crop"
+               alt="A French bulldog wearing a knit sweater" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=600&q=80&auto=format&fit=crop"
+               alt="An adoption Saturday volunteer with a happy dog" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1546238232-20216dec9f72?w=600&q=80&auto=format&fit=crop"
+               alt="A dog being brushed during grooming" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <h4>Bedford Pet Co.</h4>
+          <p>A neighborhood pet shop on Bedford Avenue. Open 7 days, with a treat for every visitor.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Shop</h5>
+          <ul role="list">
+            <li><a href="#">Food &amp; Treats</a></li>
+            <li><a href="#">Toys &amp; Play</a></li>
+            <li><a href="#">Beds &amp; Comfort</a></li>
+            <li><a href="#">Collars &amp; Leashes</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Services</h5>
+          <ul role="list">
+            <li><a href="#services">Grooming</a></li>
+            <li><a href="#services">Puppy training</a></li>
+            <li><a href="#services">Adoption Saturdays</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Visit</h5>
+          <ul role="list">
+            <li><a href="#visit">284 Bedford Ave</a></li>
+            <li><a href="tel:+17185550127">(718) 555-0127</a></li>
+            <li><a href="mailto:hello@bedfordpet.co">hello@bedfordpet.co</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Bedford Pet Co. · Williamsburg, Brooklyn</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Bedford Pet Co. on Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="Bedford Pet Co. on Facebook"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" aria-label="Bedford Pet Co. on Google Maps"><i class="fa-solid fa-location-dot"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

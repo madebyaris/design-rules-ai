@@ -30,6 +30,8 @@ These seven principles drive every design decision. When in doubt, return to the
 
 7. **Boring on purpose.** The chrome (buttons, cards, nav) should be quiet and predictable. Surprise lives in the content and in motion — never in the UI shell.
 
+8. **Match the register of the domain.** Borrowing the Linear/Vercel aesthetic for a pet shop, a bakery, or a yoga studio is a tonal mismatch even when every guardrail passes. Dark mode + monochrome = developer tools. Warm light + photography = retail / hospitality / wellness. Read the brief and pick a reference system that fits the *business*, not the one the model defaults to. See `[.cursor/rules/40-tone-and-vertical.mdc](mdc:.cursor/rules/40-tone-and-vertical.mdc)`.
+
 ---
 
 ## Layer B — Non-negotiables (the "what")
@@ -38,15 +40,35 @@ Hard rules. No exceptions, no creative interpretations.
 
 ### Tokens
 - Use **only** values from `[.cursor/rules/10-tokens-and-scales.mdc](mdc:.cursor/rules/10-tokens-and-scales.mdc)`.
-- Reference CSS variables from `[.mba-template/tokens/tokens-modern.css](mdc:.mba-template/tokens/tokens-modern.css)` (preferred) or `[.mba-template/tokens/tokens.css](mdc:.mba-template/tokens/tokens.css)` (legacy).
-- Forbidden: 7px, 13px, 19px, 23px, or any spacing/radius/font-size not in the approved scale.
+- In components, reference **semantic** CSS variables from `[.mba-template/tokens/tokens-modern.css](mdc:.mba-template/tokens/tokens-modern.css)` — `--color-success`, `--color-fg-muted`, `--space-4`. Never the raw palette tokens (`--success-500`, `--neutral-700`) and never the literal values (`oklch(...)`, `#hex`, `rgb(...)`). Palette tokens exist only inside the token file itself.
+- Forbidden values: 7px, 13px, 19px, 23px, or any spacing / radius / font-size not in the approved scale.
+- One narrow exception: tiny inset UIs inside a hero mockup (phone screen, browser frame, mini-chart) may use `--inset-text-xs/sm/md` and `--inset-radius-sm/md` from `tokens-modern.css`. These exist **only** for "design within a design" and may not be used in the real UI.
+
+#### Where raw color values ARE allowed (and where they are NOT)
+
+Models often "comply" by hoisting all raw values into `:root` and then quietly drop more raw values into selectors anyway. Be explicit:
+
+- ✅ **Allowed** — raw `#hex` / `oklch(...)` / `rgb(...)` inside a `:root { ... }` (or `[data-theme="dark"] { ... }`) block, **only** when defining or overriding the SAME named tokens that exist in `tokens-modern.css` (`--color-bg`, `--color-fg`, `--color-accent`, `--color-success`, `--color-warning`, `--color-danger`, `--color-info`, `--color-border`, etc.). This is theming.
+- ❌ **Forbidden** — raw `#hex` / `oklch(...)` / `rgb(...)` inside ANY component selector: `.btn`, `.hero`, `.section-header`, `body`, `h1`, `a:hover`, gradients, `box-shadow`, `linear-gradient(...)` color stops, etc. Always reference a token: `var(--color-bg)`, `var(--color-accent-fg)`, `color-mix(in oklch, var(--color-accent) 80%, black)`.
+- ❌ **Forbidden** — `color: #ffffff;` or `color: white;` even if "white" feels like a constant. Use `var(--color-accent-fg)` (or a similar semantic) so the dark/light mode swap stays consistent.
+- ❌ **Forbidden** — raw hex inside `linear-gradient(...)`, `radial-gradient(...)`, or `background:` shorthand. If you need a darker version of `--color-bg`, write `color-mix(in oklch, var(--color-bg) 90%, black)`, not `#0a0a0c`.
+
+If you find yourself reaching for a hex value mid-component because "I just need a slightly darker shade here" — that's the signal to (a) add a new semantic token in `:root` and reference it, OR (b) use `color-mix()` against an existing token. Never inline.
 
 ### Icons
-- **Never generate SVG markup.** Use an icon library:
+- **Never generate SVG.** Not `<svg>` markup, not `data:image/svg+xml,...` data URIs in CSS, not base64-encoded SVG. Always use an icon library:
   - Font Awesome: `<i class="fa-solid fa-user" aria-hidden="true"></i>`
   - Heroicons (React): `<UserIcon className="size-5" />`
   - Lucide: `<User size={20} />`
+- For chevrons, arrows, and decorative carets in CSS pseudo-elements: use the icon font's unicode (`content: "\f078"; font-family: "Font Awesome 6 Free"; font-weight: 900;`), or place an `<i>` in the markup. Never embed an SVG path.
 - See `[.mba-template/ICON-QUICK-REFERENCE.md](mdc:.mba-template/ICON-QUICK-REFERENCE.md)`.
+
+### Avatars (no real photo available)
+- For users / authors / testimonials without a real photo: render **initials** in a circle with a deterministic background color derived from the name (`color-mix()` on `--color-accent` with hue rotation, or pick from a small named palette).
+- Never use a generic `fa-user`, `fa-user-circle`, silhouette, or default Gravatar as a permanent avatar — that is the textbook AI tell.
+
+### "Logo wall" without real partner logos
+- For demo / portfolio pages with no real partners: use **small-caps text wordmarks** in `--color-fg-muted` (e.g. `<span class="logo-wordmark">FETCH&PLAY</span>`), or omit the section. Stock Font Awesome icons posing as company logos (`fa-dog`, `fa-cube`, `fa-rocket`) is the second-most obvious AI tell after the user-icon avatar.
 
 ### Content
 - **No Lorem ipsum. No "Acme Corp", "John Doe", "user@example.com" defaults.**
@@ -71,6 +93,11 @@ Hard rules. No exceptions, no creative interpretations.
 - One density per page (compact / comfortable / spacious — see `[.cursor/rules/50-components.mdc](mdc:.cursor/rules/50-components.mdc)`).
 - Body text left-aligned. Center-align only for short headlines, empty states, and hero copy.
 - Maximum 2–3 accent colors. Plus one neutral scale and 4 semantic colors (success/warning/error/info).
+- A "primary + secondary" pair must be **visually distinct**, not the same size + same icon style + adjacent. The secondary is one or more of: ghost variant, smaller size, no icon, or a plain text link.
+
+### Vertical fit (read the room)
+- The visual register must match the business. A pet shop should not feel like a fintech dashboard; a law firm should not feel like a children's book; a restaurant should not feel like a CLI tool.
+- Before generating, consult `[.cursor/rules/40-tone-and-vertical.mdc](mdc:.cursor/rules/40-tone-and-vertical.mdc)` to pick the right reference system, light/dark default, and whether real photography is mandatory for this vertical.
 
 ---
 
@@ -85,19 +112,46 @@ Before you output, score the design 1–5 on each dimension. If any score is bel
 | **Rhythm** | Does every spacing/radius/font value belong to the approved scale? | 100% scale compliance |
 | **Content fit** | Is the copy realistic, specific, and free of "Lorem"/"Acme"/"John Doe"? | All copy is real and specific |
 | **Accessibility** | Semantic HTML, focus-visible, AA contrast, 44px touch targets, real labels? | All checked |
-| **Reference** | Could this code live inside a Linear / Vercel / Stripe codebase without standing out? | Yes, indistinguishable |
+| **Reference** | Could this code live inside a top-tier codebase **for this kind of business** (Linear for dev tools, Apple for retail, an editorial site for an agency) without standing out? | Yes, indistinguishable |
+| **Tonal fit** | Does the visual register match the business? Pet shop ≠ fintech. Law firm ≠ kids' app. Restaurant ≠ CLI tool. | Register is correct |
 
 After revision, briefly state in one sentence which design system you're emulating and why. Example: "Emulating Vercel Geist for restraint and monospace numerics — fits a developer-tool dashboard."
+
+### Common AI escape hatches (auto-fail if any are present)
+
+These are the patterns models reach for when they "kind of" follow the rules but skirt the spirit. If you find any in your draft, throw it out and redo:
+
+| ❌ Escape hatch | ✅ Do this instead |
+|---|---|
+| `data:image/svg+xml,...` in CSS | Icon library glyph or `<i>` tag |
+| Inline `oklch(0.55 ...)` / `#hex` / `#fff` / `#000` in any component selector (`.btn`, `.hero`, `h2`, `body`, etc.) | `var(--color-accent-fg)`, `var(--color-bg)`, etc. — define the value once in `:root` and reference the token everywhere else |
+| Generic person/file/cube icons used as "logos" | Real wordmark text in small caps, or omit |
+| `fa-user` as testimonial avatar | Initials in deterministic colored circle |
+| Two `btn-lg` CTAs side by side, both with icons | Primary lg + ghost md + plain text link |
+| Phone-mockup hero on a non-app site | Real photograph appropriate to the vertical |
+| Dark monochrome + Inter for retail / hospitality / wellness | Light, warm, photo-led (see `40-tone-and-vertical.mdc`) |
+| "Start free trial" + pricing tiers on a brick-and-mortar shop | Visit-us / shop-now / contact CTAs instead |
+| `font-size: 13px` because it "looks right" | Use `--font-size-sm` or stay on the scale |
 
 ---
 
 ## When the user asks for "great", "OG", "premium", or "world-class" design
 
-Default to: Linear (for app UI), Vercel Geist (for marketing/dev tools), or shadcn/ui (for SaaS apps). Do **not** default to gradients, glassmorphism, or "cyberpunk neon" unless explicitly requested. Restraint is the signal of taste.
+Pick the reference system that matches the **vertical**, not your default. See `[40-tone-and-vertical.mdc](mdc:.cursor/rules/40-tone-and-vertical.mdc)` for the mapping. Restraint is the signal of taste — but restraint applied to the wrong register is just blandness in the wrong key.
+
+Common pairings:
+- Dev tools, infra, fintech dashboards → Linear, Vercel Geist, shadcn/ui (often dark, monochromatic).
+- Consumer SaaS, productivity → Apple HIG, shadcn/ui, Stripe (light by default).
+- Retail, e-commerce, restaurants, pet shops, salons, cafes → Apple HIG or a custom warm palette, **always photo-led, always light by default**.
+- Agency / portfolio / editorial → custom typography-led, image-heavy.
+- Healthcare / wellness / clinics → soft, calm, light, often sage / cream / pale neutrals.
+
+Do not default to gradients, glassmorphism, or "cyberpunk neon" unless explicitly requested.
 
 ## Reading order for further detail
 
 1. `[10-tokens-and-scales.mdc](mdc:.cursor/rules/10-tokens-and-scales.mdc)` — every approved value.
-2. `[50-components.mdc](mdc:.cursor/rules/50-components.mdc)` — component anatomy and required states.
-3. `[60-pages-and-layouts.mdc](mdc:.cursor/rules/60-pages-and-layouts.mdc)` — page archetypes and layout primitives.
-4. `[95-platform-specific.mdc](mdc:.cursor/rules/95-platform-specific.mdc)` — only when targeting iOS, Android, or desktop apps.
+2. `[40-tone-and-vertical.mdc](mdc:.cursor/rules/40-tone-and-vertical.mdc)` — vertical → aesthetic mapping. Read this whenever the brief mentions a specific business or industry.
+3. `[50-components.mdc](mdc:.cursor/rules/50-components.mdc)` — component anatomy and required states.
+4. `[60-pages-and-layouts.mdc](mdc:.cursor/rules/60-pages-and-layouts.mdc)` — page archetypes and layout primitives.
+5. `[95-platform-specific.mdc](mdc:.cursor/rules/95-platform-specific.mdc)` — only when targeting iOS, Android, or desktop apps.

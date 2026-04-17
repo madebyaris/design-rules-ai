@@ -2,6 +2,8 @@
 
 Density: **spacious**. Scan: **Z-pattern**. One primary CTA above the fold.
 
+> **Scope:** this file describes the **SaaS-style** marketing landing skeleton (hero → features → pricing → FAQ → CTA). For pet shops, restaurants, salons, agencies, clinics, and any other real-world business, see the **local-business / retail** archetype in `[../../../.cursor/rules/60-pages-and-layouts.mdc](../../../.cursor/rules/60-pages-and-layouts.mdc)` and the photography rules in `[./imagery-and-photography.md](./imagery-and-photography.md)`.
+
 ---
 
 ## Hero
@@ -13,9 +15,9 @@ Density: **spacious**. Scan: **Z-pattern**. One primary CTA above the fold.
 - Headline: H1, 32–48px (fluid: `clamp(2rem, 1.5rem + 2.5vw, 3rem)`), 700 weight, line-height 1.1. **≤ 60 characters.** State a benefit, not a feature.
 - Subhead: 18–20px, `--color-fg-muted`, line-height 1.5. **1–2 sentences max.** Add the proof or context the headline implies.
 - Primary CTA: large button, accent color, action verb ("Start free trial", "Get early access", "Book a demo"). Avoid "Click here", "Learn more", "Get started" (too generic).
-- Secondary CTA (optional): ghost or text-only ("Watch demo", "View on GitHub"). Visually quieter than primary.
+- Secondary CTA (optional): **must be visually quieter by at least two signals** — usually `btn-ghost` + `btn-md` (NOT `btn-lg`) + no icon, OR a plain text link with a chevron ("See how it works →"). Two `btn-lg` side by side is a hard fail, even when one is ghost.
 - Trust micro-copy: 12–14px, muted ("No credit card. 14-day trial." or "★★★★★ 4.8 on G2").
-- Visual: product screenshot, illustration, or short loop video. Right side on desktop, below text on mobile.
+- Visual: product screenshot, illustration, or short loop video. Right side on desktop, below text on mobile. **A phone mockup is for an actual mobile app, not for a website, a shop, or a service business** — for those, use a real photograph relevant to the vertical.
 
 **Height:** 60–80vh. Don't fill 100vh — users need a hint that more exists below.
 
@@ -30,6 +32,7 @@ Density: **spacious**. Scan: **Z-pattern**. One primary CTA above the fold.
 Pick **one** treatment per page (don't stack all three):
 
 1. **Logo wall** — 4–8 customer logos, grayscale (`filter: grayscale(1) opacity(0.6)`), single row, equal heights, no borders. Use real-sounding company names from `content/sample-content.json`.
+   - **No real logos available?** Use small-caps text wordmarks in `--color-fg-muted`: `<span class="logo-wordmark">FETCH&PLAY</span>`. **Never use stock Font Awesome icons** (`fa-dog`, `fa-cube`, `fa-rocket`) as fake logos — that is a textbook AI tell. If text wordmarks feel weak too, just omit the section.
 2. **Stats bar** — 3 metrics, large numbers (32–48px), small label below. e.g. "12,847 teams", "$2.4M tracked", "99.97% uptime".
 3. **Anchor testimonial** — one large quote with photo, name, title, company. More credible than 5 small ones.
 
@@ -71,9 +74,17 @@ Pick **one** treatment per page (don't stack all three):
 
 **Pattern:**
 - 1 anchor testimonial (above-the-fold style) OR 3-up grid (equal weight).
-- Each: quote (16–20px italic optional), photo (48px circular), name (semibold), title + company (muted).
+- Each: quote (16–20px italic optional), avatar (48px circular), name (semibold), title + company (muted).
 - Quote length: 1–2 sentences. Long quotes get skipped.
 - Sample names and titles from `content/sample-content.json`.
+
+**Avatars — NEVER use a generic `fa-user` icon.** Pick one of:
+1. Real photo (sourced from Unsplash People, properly attributed) — best.
+2. Initials in a deterministic colored circle (see Avatar primitive in `[../../../.cursor/rules/50-components.mdc](../../../.cursor/rules/50-components.mdc)`). Example markup:
+   ```html
+   <div class="avatar avatar-md" style="background: oklch(0.85 0.08 145);">MJ</div>
+   ```
+3. For pet/animal businesses, the testimonial avatar can be the pet itself ("Bella, golden retriever") with a real animal photo.
 
 ---
 

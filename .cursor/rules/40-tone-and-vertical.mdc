@@ -1,0 +1,197 @@
+---
+description: Vertical → aesthetic mapping. Read whenever the brief mentions a specific business, industry, or product. Prevents tonal mismatches like "pet shop styled as a fintech dashboard".
+globs: ["**/*.html", "**/*.css", "**/*.jsx", "**/*.tsx", "**/*.vue", "**/*.svelte", "**/*.astro"]
+alwaysApply: true
+---
+
+# Tone & Vertical Fit
+
+Most "AI-generated" web design failures are not guardrail failures (wrong padding, missing focus state). They are **register failures**: the right design system applied to the wrong business. A pet shop styled like Linear is just as broken as a pet shop styled like Lorem-ipsum bootstrap mush — the user feels the wrongness, even if every spacing token is correct.
+
+This rule exists to stop the model from defaulting to its training-data center of mass (dark mode, monochrome, Inter, dashboard funnel) for every brief.
+
+---
+
+## 1. Read the brief, classify the vertical
+
+Before generating anything, classify the project into ONE row of the matrix below. If the brief is ambiguous, ask the user — do not assume "SaaS".
+
+**Keyword triggers in the product name almost always determine the vertical:**
+
+| Keyword in brief | Vertical |
+|---|---|
+| `shop`, `store`, `boutique`, `market`, `co.` | retail |
+| `cafe`, `coffee`, `bakery`, `kitchen`, `restaurant`, `bar`, `bistro`, `eatery` | hospitality / food |
+| `clinic`, `dental`, `vet`, `wellness`, `therapy`, `medspa`, `chiro` | health / wellness |
+| `salon`, `barber`, `spa`, `nails`, `studio` (yoga/pilates/dance) | wellness / hospitality |
+| `agency`, `studio` (design/dev), `lab`, `creative`, `co.` | agency / portfolio |
+| `gym`, `fitness`, `crossfit`, `pilates`, `yoga` | fitness |
+| `realty`, `homes`, `properties`, `estate` | real estate |
+| `school`, `academy`, `learn`, `kids`, `tutor` | education / kids |
+| `bank`, `pay`, `wallet`, `invest`, `loan`, `credit`, `card` | fintech |
+| `cloud`, `infra`, `deploy`, `CI`, `db`, `api`, `dev`, `code`, `git` | dev tools |
+| `analytics`, `dashboard`, `metrics`, `intel`, `ops` | b2b SaaS / analytics |
+| `chat`, `mail`, `notes`, `tasks`, `calendar`, `social` | consumer SaaS |
+
+If the keyword is `pet`, `dog`, `cat`, `bird`, `fish`: the vertical is determined by the noun next to it. `Pet Shop` → retail. `Pet Care App` → consumer SaaS. `Pet Clinic` → health.
+
+---
+
+## 2. Vertical → Aesthetic Matrix
+
+| Vertical | Default mode | Reference systems | Hero imagery | Color register | Typography | Distinguishing trait |
+|---|---|---|---|---|---|---|
+| **Dev tools / DevOps / Infra** | dark (or system) | Vercel Geist, Linear, shadcn/ui | abstract, terminal, code, diagram | mono + 1 cool accent (blue/violet/green) | Geist / Inter / JetBrains Mono | restraint, monospace numerics |
+| **Fintech (B2B)** | light or dark | Vercel Geist, Stripe, Linear | abstract diagrams, charts | mono + green or blue | Inter, Söhne | precise, trust-coded, lots of whitespace |
+| **B2B SaaS / Analytics** | light by default | Linear, shadcn/ui, Stripe | dashboard screenshot, abstract | mono + 1 brand accent | Inter | data-rich hero, 3-up feature grid |
+| **Consumer SaaS / productivity app** | light or dark | Apple HIG, Linear, shadcn/ui | actual app screenshot, friendly | brand-led, often 2 accents | Inter, SF Pro | screenshot of the real app, not a mockup |
+| **Retail / E-commerce / Pet shop** | **light, warm** | Apple HIG, Shopify, Squarespace | **real product / lifestyle photo (REQUIRED)** | brand color + warm neutrals (cream, sand, off-white) | serif + sans (Playfair / DM Serif + Inter), or warm sans (Söhne, Recoleta) | photo dominates, products are the hero |
+| **Restaurant / Cafe / Bar** | **light, warm** OR **dark moody** | Squarespace, custom editorial | **full-bleed food/place photo (REQUIRED)** | earthy (terracotta, olive, cream) OR moody (charcoal, gold, deep red) | serif display (Playfair, GT Sectra) + clean sans body | menu is the second-most-important thing after the photo |
+| **Health / Wellness / Clinic** | **light, soft** | Apple HIG, Material 3 | calm photo (sky, hands, plants) or soft illustration | sage, cream, dusty blue, blush | rounded sans (Nunito, DM Sans) or warm serif | breathing room, no urgency, trust-coded |
+| **Salon / Spa / Yoga** | **light, soft** OR muted dark | custom editorial | atmospheric portrait or place photo | beige, taupe, blush, sage | elegant serif + light sans | luxurious whitespace, sparse type |
+| **Fitness / Gym / Crossfit** | **dark, high-contrast** | custom | **action photo (REQUIRED)** | mono + 1 saturated accent (orange/red/lime) | bold condensed sans (Bebas, Druk) | strong type, athletic energy |
+| **Agency / Portfolio / Studio** | **light or extreme dark** | custom editorial | **case-study image or bold typography hero** | mono + 1 unexpected accent | typography-led — display serif or grotesque | hero is the work itself; chrome disappears |
+| **Real Estate / Property** | light, calm | custom | **property photo (REQUIRED)** | warm neutrals + brand accent | serif display + sans | property cards with photo above all |
+| **Education / Tutor / School** | light, friendly | Material 3, custom | photo of students or learning environment | brand + 1 supporting | rounded sans | clear hierarchy, accessible |
+| **Children / Kids products** | light, playful, colorful | Material 3 expressive, custom | illustration + photo | bright multi-color, never grayscale | rounded sans (Quicksand, Rubik) | warmth, motion, friendliness |
+| **Luxury / High-end / Fashion** | light or stark dark | custom editorial | **full-bleed editorial photo (REQUIRED)** | mono + gold OR pure mono | serif (Didot, GT Super) | extreme whitespace, sparse type, hero is the only thing |
+
+---
+
+## 3. Mode (light vs dark) defaults
+
+The model's training defaults to dark mode for landing pages because Linear, Vercel, and dev tools all do. **This is wrong for most verticals.** Use this table:
+
+| Vertical | Default mode |
+|---|---|
+| Dev tools, DevOps, infra, fintech (B2B), analytics dashboards | dark or system, model's choice |
+| **Everything else** | **light by default** |
+| Specifically: retail, hospitality, food, wellness, salon, kids, education, real estate, agency (often), health | **light — dark mode is wrong** |
+| Fitness / gym | dark high-contrast (energy) |
+| Luxury fashion | light OR stark dark — pick one for editorial impact |
+
+If the user explicitly asks for dark mode on a retail/hospitality/wellness vertical, comply but warn them in the rationale: "Dark mode is unusual for {vertical}; warmer light tones typically convert better. Happy to switch back."
+
+---
+
+## 4. Imagery — when real photos are MANDATORY
+
+A landing page for these verticals **must** contain at least one real photograph in the hero. Phone mockups, dashboard screenshots, abstract gradients, icon arrangements, and AI-generated illustrations are **not substitutes**:
+
+- Retail / e-commerce / shops (pet, book, gift, plant, etc.)
+- Restaurant / cafe / bar / bakery
+- Hospitality / hotel / Airbnb-style
+- Health / wellness / clinic
+- Salon / spa / barber
+- Fitness / gym
+- Real estate / property
+- Agency / portfolio (case study image)
+- Fashion / beauty / lifestyle
+- Pet services (grooming, sitting, boarding)
+- Travel / destination
+
+For source/placeholder convention, see `[.mba-template/patterns/imagery-and-photography.md](mdc:.mba-template/patterns/imagery-and-photography.md)`.
+
+When in doubt: ask "would the real version of this site be photo-led?" If yes, your hero must have a real photo, even if it's a placeholder Unsplash URL.
+
+---
+
+## 5. The "phone mockup" trap
+
+When the brief is **a mobile app**, a phone mockup hero is correct.
+
+When the brief is **a website, shop, service, or local business**, a phone mockup hero is wrong — it signals "we are a tech startup that makes apps", which a pet shop is not. Use a real photograph instead.
+
+Quick check before reaching for a phone mockup:
+- Does this product live primarily inside a phone? → mockup OK.
+- Does this product live primarily in a physical place, on a shelf, on a plate, on a body, or in a relationship? → real photo.
+
+---
+
+## 6. Skeleton fit — SaaS funnel vs. retail layout
+
+The default landing skeleton (hero → features → pricing → FAQ → CTA) is the **SaaS subscription funnel**. It is wrong for businesses that don't sell subscriptions.
+
+| Vertical | Skeleton |
+|---|---|
+| SaaS / dev tools / fintech / B2B | SaaS landing (`landing-page-sections.md`) |
+| Retail / e-commerce / shop | local-business skeleton (`60-pages-and-layouts.mdc` §5 "Local-business / retail / hospitality") |
+| Restaurant / cafe | local-business + menu section + reservation CTA |
+| Health / wellness | local-business + services + booking CTA |
+| Agency / portfolio | editorial — case studies grid + about + contact |
+| Pet shop | local-business + products + services + visit-us |
+
+Putting a "Free 14-day trial" CTA on a brick-and-mortar pet shop is the strongest possible signal that the model misclassified the vertical and applied the wrong skeleton. Re-read this rule and start over.
+
+---
+
+## 7. Reference systems (when to borrow from where)
+
+Always pick **one** reference system per project. Mixing systems is the second-most-common AI tell after off-scale spacing.
+
+| If the brief feels like… | Borrow from |
+|---|---|
+| A developer tool / open-source project | Linear, Vercel Geist, GitHub |
+| A precise B2B product | Stripe, Vercel Geist, Linear |
+| A friendly consumer app | Apple HIG, shadcn/ui, Notion |
+| A pet shop, bakery, or local store | Apple's product pages, Shopify themes (Dawn, Sense), Squarespace templates |
+| A restaurant or café | Squarespace, custom editorial (Eater, Bon Appétit) |
+| A wellness clinic or yoga studio | Apple HIG, custom calm (Headspace, Calm) |
+| A creative agency portfolio | Editorial / brutalist / typography-led — your own taste, no system |
+| A bank / fintech | Stripe, Mercury, Wise |
+| A children's product | Material 3 Expressive, custom playful |
+| A luxury fashion brand | Bottega, The Row, custom editorial |
+
+See `[.mba-template/design-systems/](mdc:.mba-template/design-systems/)` for the detailed components.md of each shipped system.
+
+---
+
+## 8. Self-check before generating
+
+If the brief is for a real business, walk through these BEFORE writing markup:
+
+1. What vertical is this? (Pick from §2.)
+2. What's the default mode for that vertical? (§3.)
+3. Is real photography required? (§4.)
+4. Should I use the SaaS landing skeleton or the local-business skeleton? (§6.)
+5. Which reference system fits this vertical? (§7.)
+6. If the user passed `system=` and it doesn't match the vertical (e.g. `system=vercel-geist` for a pet shop), I will **override** and note the override in my rationale.
+
+If you can't answer any of these confidently, ask the user one clarifying question — don't guess "SaaS" because that's the safe default.
+
+---
+
+## 9. Worked examples
+
+**Brief:** "Build a landing page for my pet shop, PawMart."
+- Vertical: **retail** (keyword "shop")
+- Mode: **light, warm**
+- Imagery: **mandatory** — real puppies, kittens, products, shop interior
+- Skeleton: **local-business** (NOT SaaS landing — no pricing tiers, no free trial)
+- Reference: **Apple HIG + Shopify Dawn**, warm cream/brown palette
+- CTAs: "Visit us", "Shop online", "Book grooming" — NOT "Start free"
+- Avatars: pet photos OR initials, NOT `fa-user`
+
+**Brief:** "Build a landing page for Lumina Invoicing."
+- Vertical: **fintech / SaaS** (keyword "invoicing")
+- Mode: **light or dark**, model's choice
+- Imagery: dashboard screenshot or abstract diagram OK, real photo not required
+- Skeleton: **SaaS landing** with pricing tiers
+- Reference: **Vercel Geist or Stripe**
+- CTAs: "Start free", "Book a demo"
+
+**Brief:** "Build a landing page for Sage & Stem, a yoga studio in Brooklyn."
+- Vertical: **wellness / studio**
+- Mode: **light, soft** (sage, cream, dusty blue)
+- Imagery: **mandatory** — real photo of the studio, instructors, or a calm nature scene
+- Skeleton: **local-business** (services = class types, visit-us = location & schedule)
+- Reference: **Apple HIG + custom calm palette**, serif display
+- CTAs: "Book a class", "See schedule" — NOT "Start free trial"
+
+**Brief:** "Build a landing page for Forge CI, a CI/CD platform."
+- Vertical: **dev tools** (keyword "CI")
+- Mode: **dark**
+- Imagery: terminal, code, abstract diagram
+- Skeleton: **SaaS landing**
+- Reference: **Vercel Geist + Linear**
+- CTAs: "Start free", "View on GitHub"
